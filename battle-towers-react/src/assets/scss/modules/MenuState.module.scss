@@ -1,0 +1,39 @@
+@import '../variables';
+
+.menuState {
+    position: fixed;
+
+    .resolutionSuccess,
+    .resolutionError,
+    .score {
+        color: $primaryColor;
+        position: fixed;
+        bottom: 2vh;
+        font-size: 2rem;
+    }
+
+    .resolutionSuccess,
+    .resolutionError {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        left: 2vw;
+
+        i {
+            padding-left: 1vw;
+            font-size: 3rem;
+        }
+    }
+
+    .resolutionError {
+        color: $errorColor;
+    }
+
+    .resolutionSuccess {
+        color: $successColor;
+    }
+
+    .score {
+        right: 2vw;
+    }
+}
