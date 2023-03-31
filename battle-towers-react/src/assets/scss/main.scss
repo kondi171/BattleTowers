@@ -46,6 +46,7 @@ body {
         -webkit-background-clip: text;
         color: transparent;
         -webkit-text-stroke: 2px $bgColor;
+        filter: drop-shadow(0 0 5px $secondaryColor);
     }
 
     .image-wrapper {
@@ -54,6 +55,7 @@ body {
 
         img {
             width: 70%;
+            filter: drop-shadow(0 0 5px $primaryColor);
         }
     }
 

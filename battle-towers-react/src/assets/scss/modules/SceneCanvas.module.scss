@@ -1,0 +1,7 @@
+@import '../variables';
+
+.sceneCanvas {
+  width: $canvasWidth;
+  height: $canvasHeight;
+  background-color: green;
+}

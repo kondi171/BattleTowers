@@ -1,0 +1,16 @@
+@import '../variables';
+
+.gameState {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background-color: #fff;
+
+  .graphicalInterface {
+    width: calc(100vw - $canvasWidth);
+    height: 100vh;
+    // background-color: red;
+  }
+}

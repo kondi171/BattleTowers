@@ -31,7 +31,7 @@ const Menu = () => {
       width: width,
       height: height
     });
-    if (width < 1280 || height < 768) setResolutionIsOk(false);
+    if (width < 1280 || height < 720) setResolutionIsOk(false);
     else setResolutionIsOk(true);
   }
   const handleStartGame = () => setIsGameStart(!isGameStart);

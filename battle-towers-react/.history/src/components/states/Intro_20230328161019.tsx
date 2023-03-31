@@ -3,7 +3,7 @@ import { animated, useSpring } from 'react-spring';
 import styles from './../../assets/scss/modules/IntroState.module.scss';
 
 const Intro = () => {
-  const attentionMessage = 'For best experience and properly game working, we recommend min resolution 1280 x 768.';
+  const attentionMessage = 'For best experience and properly game working, we recommend min resolution 1280 x 720.';
   const [currentAttentionMessage, setCurrentAttentionMessage] = useState<string>('');
   const attentionMessageAnimation = useSpring({
     from: {
