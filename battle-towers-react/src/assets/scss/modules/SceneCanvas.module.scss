@@ -4,4 +4,7 @@
   width: $canvasWidth;
   height: $canvasHeight;
   background-color: green;
+  border-radius: 5px;
+  border: 2px solid $secondaryColor;
+  box-shadow: 0 0 4px 2px $secondaryColor;
 }
