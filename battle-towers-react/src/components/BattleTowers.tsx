@@ -5,6 +5,8 @@ import { AppContext, AppContextType } from './AppContext';
 import Intro from './states/Intro';
 import Menu from './states/Menu';
 import Game from './states/Game';
+import styles from './../assets/scss/modules/Logo.module.scss';
+import End from './states/End';
 
 const BattleTowers = () => {
   const [changeState, setChangeState] = useState<boolean>(false);
@@ -30,8 +32,8 @@ const BattleTowers = () => {
       <div className="game">
         {/* {!isGameStart ?
           <>
-            <header className='logo'>
-              <div className="image-wrapper">
+            <header className={styles.logo}>
+              <div className={styles.imageWrapper}>
                 <img src={shield} alt="Shield - element of Battle Towers logo" />
               </div>
               <h1>Battle Towers</h1>
@@ -40,6 +42,7 @@ const BattleTowers = () => {
           <Game />
         } */}
         <Game />
+        {/* <End winner={false} /> */}
       </div>
 
     </animated.div>

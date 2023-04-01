@@ -1,0 +1,27 @@
+@import '../variables';
+
+.endState {
+    font-family: $titleFont;
+    text-align: center;
+    background-image: linear-gradient(180deg, $primaryColor 0%, $bgColor 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    // -webkit-text-stroke: 2px $fontColor;
+
+    h2 {
+        font-size: 10vmin;
+    }
+
+    h3 {
+        font-family: $primaryFont;
+        font-size: 4vmin;
+        color: $fontColor;
+        filter: drop-shadow(0 0 2px $secondaryColor);
+
+        &:last-of-type {
+            padding-bottom: 10%;
+            font-family: $supportFont;
+        }
+    }
+}
