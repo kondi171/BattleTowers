@@ -7,6 +7,7 @@ import Menu from './states/Menu';
 import Game from './states/Game';
 import styles from './../assets/scss/modules/Logo.module.scss';
 import End from './states/End';
+import Scroll from './states/Scroll';
 
 const BattleTowers = () => {
   const [changeState, setChangeState] = useState<boolean>(false);
@@ -43,6 +44,7 @@ const BattleTowers = () => {
         } */}
         <Game />
         {/* <End winner={false} /> */}
+        {/* <Scroll /> */}
       </div>
 
     </animated.div>
