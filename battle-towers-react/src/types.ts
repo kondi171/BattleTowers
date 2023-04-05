@@ -5,7 +5,8 @@ export type Position = {
 
 export type Bounding = {
   width: number,
-  height: number
+  height: number,
+  radius: number
 };
 
 export type RGB = `rgb(${number}, ${number}, ${number})`;

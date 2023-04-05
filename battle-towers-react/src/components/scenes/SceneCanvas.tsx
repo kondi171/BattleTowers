@@ -51,7 +51,7 @@ const SceneCanvas = () => {
   const addTower = () => {
     const canvas = document.querySelector('canvas');
     const ctx = canvas!.getContext('2d');
-    console.log(enemies);
+    // console.log(enemies);
     if (!ctx || !canvas) return;
     if (activeTile && !activeTile.getOccupied()) {
       towers.push(new Tower(ctx, { x: activeTile.getPosition().x, y: activeTile.getPosition().y }));
@@ -91,14 +91,28 @@ const SceneCanvas = () => {
     ctx.drawImage(image, 0, 0);
     ctx.fillStyle = '#fff';
     enemies.forEach(enemy => enemy.update());
-    placementTiles.forEach(tile => {
-      tile.update(mouse);
-    });
+    placementTiles.forEach(tile => tile.update(mouse));
     towers.forEach(tower => {
-      tower.draw();
-      tower.getBullets().forEach(bullet => {
-        bullet.update(enemies);
+      tower.update();
+      tower.setTarget(undefined);
+      const validEnemies = enemies.filter((enemy, i) => {
+        const xDifference = (enemies[i].getPosition().x + enemies[i].getBounding().width / 2) - tower.getPosition().x + tower.getSize() / 2;
+        const yDifference = (enemies[i].getPosition().y + enemies[i].getBounding().height / 2) - tower.getPosition().y + tower.getSize() / 2;
+        const distance = Math.hypot(xDifference, yDifference);
+        return distance < enemy.getBounding().radius + tower.getRadius();
       });
+      tower.setTarget(validEnemies[0]);
+      console.log(validEnemies);
+      for (let i = tower.getBullets().length - 1; i >= 0; i--) {
+        const bullet = tower.getBullet(i);
+        bullet.update();
+        const xDifference = (enemies[i + 1].getPosition().x + enemies[i + 1].getBounding().width / 2) - bullet.getPosition().x;
+        const yDifference = (enemies[i + 1].getPosition().y + enemies[i + 1].getBounding().height / 2) - bullet.getPosition().y;
+        const distance = Math.hypot(xDifference, yDifference);
+        if (distance < enemies[i + 1].getBounding().radius + bullet.getRadius()) {
+          tower.getBullets().splice(i, 1);
+        }
+      }
     });
   }
   useEffect(() => {

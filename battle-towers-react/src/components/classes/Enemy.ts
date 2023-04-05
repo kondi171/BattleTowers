@@ -16,13 +16,17 @@ class Enemy {
     this.bounding = {
       width: 64,
       height: 64,
+      radius: 64
     }
     this.waypointIndex = 0;
   }
 
   public draw() {
     this.canvasRenderingContext.fillStyle = 'red';
-    this.canvasRenderingContext.fillRect(this.position.x, this.position.y, this.bounding.width, this.bounding.height);
+    // this.canvasRenderingContext.fillRect(this.position.x, this.position.y, this.bounding.width, this.bounding.height);
+    this.canvasRenderingContext.beginPath();
+    this.canvasRenderingContext.arc(this.position.x + this.bounding.width / 2, this.position.y + this.bounding.height / 2, this.bounding.radius, 0, Math.PI * 2);
+    this.canvasRenderingContext.fill();
   }
 
   public update() {
@@ -41,6 +45,7 @@ class Enemy {
   }
 
   public getPosition() { return this.position; }
+  public getBounding() { return this.bounding; }
 }
 
 export default Enemy;
