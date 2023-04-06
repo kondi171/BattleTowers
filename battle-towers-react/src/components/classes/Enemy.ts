@@ -6,6 +6,7 @@ class Enemy {
   private position: Position;
   private bounding: Bounding;
   private waypointIndex: number;
+  private health: number;
 
   constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position) {
     this.canvasRenderingContext = ctx;
@@ -16,17 +17,31 @@ class Enemy {
     this.bounding = {
       width: 64,
       height: 64,
-      radius: 64
+      radius: 32
     }
     this.waypointIndex = 0;
+    this.health = 100;
   }
 
-  public draw() {
+  private drawEnemy() {
     this.canvasRenderingContext.fillStyle = 'red';
     // this.canvasRenderingContext.fillRect(this.position.x, this.position.y, this.bounding.width, this.bounding.height);
     this.canvasRenderingContext.beginPath();
     this.canvasRenderingContext.arc(this.position.x + this.bounding.width / 2, this.position.y + this.bounding.height / 2, this.bounding.radius, 0, Math.PI * 2);
     this.canvasRenderingContext.fill();
+  }
+
+  private drawHealthBars() {
+    this.canvasRenderingContext.fillStyle = '#cc0000';
+    this.canvasRenderingContext.fillRect(this.position.x, this.position.y - 15, this.bounding.width, 10);
+
+    this.canvasRenderingContext.fillStyle = '#00c700';
+    this.canvasRenderingContext.fillRect(this.position.x, this.position.y - 15, this.bounding.width * this.health / 100, 10);
+  }
+
+  private draw() {
+    this.drawEnemy();
+    this.drawHealthBars();
   }
 
   public update() {
@@ -46,6 +61,8 @@ class Enemy {
 
   public getPosition() { return this.position; }
   public getBounding() { return this.bounding; }
+  public getHealth() { return this.health };
+  public decreaseHealth(health: number) { this.health -= health };
 }
 
 export default Enemy;

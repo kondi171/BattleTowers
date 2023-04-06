@@ -17,7 +17,7 @@ class PlacementTile {
     this.occupied = false;
   }
 
-  public draw() {
+  private draw() {
     this.canvasRenderingContext.fillStyle = this.color;
     this.canvasRenderingContext.fillRect(this.position.x, this.position.y, this.size, this.size);
   }

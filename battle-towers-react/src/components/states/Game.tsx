@@ -1,6 +1,6 @@
 import styles from './../../assets/scss/modules/GameState.module.scss';
 import logo from './../../assets/scss/modules/Logo.module.scss';
-import SceneCanvas from '../scenes/SceneCanvas';
+import SceneCanvas from '../SceneCanvas';
 import shield from './../../assets/img/shield.png';
 import { useEffect, useState } from 'react';
 import Loading from '../features/Loading';
@@ -46,7 +46,9 @@ const GameState = () => {
               <h2>World</h2>
               <h3>Desert</h3>
               <h2>Level</h2>
-              <h3>1.3</h3>
+              <h3>1</h3>
+              <h2>Wave</h2>
+              <h3>1</h3>
             </div>
             <div className={styles.levelInfo}>
               <div className={styles.life}>

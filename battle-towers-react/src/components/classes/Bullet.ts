@@ -24,7 +24,7 @@ class Bullet {
         this.enemy = enemy;
     }
 
-    public draw() {
+    private draw() {
         this.canvasRenderingContext.beginPath();
         this.canvasRenderingContext.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
         this.canvasRenderingContext.fillStyle = 'orange';
@@ -33,24 +33,19 @@ class Bullet {
 
     public update() {
         this.draw();
-        if (this.enemy.getPosition().x < this.position.x - this.enemy.getBounding().width / 2) this.position.x -= this.speed;
-        else if (this.enemy.getPosition().x > this.position.x - this.enemy.getBounding().width / 2) this.position.x += this.speed;
-        if (this.enemy.getPosition().y < this.position.y - this.enemy.getBounding().height / 2) this.position.y -= this.speed;
-        else if (this.enemy.getPosition().y > this.position.y - this.enemy.getBounding().height / 2) this.position.y += this.speed;
+        const angle = Math.atan2(
+            this.enemy.getPosition().y - this.position.y + this.enemy.getBounding().height / 2,
+            this.enemy.getPosition().x - this.position.x + this.enemy.getBounding().width / 2
+        );
+        this.velocity.x = Math.cos(angle) * this.speed;
+        this.velocity.y = Math.sin(angle) * this.speed;
 
-        // Fluent bullet strike
-        // const angle = Math.atan2(
-        //     this.enemy.getPosition().x - this.position.x,
-        //     this.enemy.getPosition().y - this.position.y
-        // );
-        // console.log(`${enemies[0].getPosition().x.toFixed()}, ${enemies[0].getPosition().y.toFixed()} | ${this.position.x.toFixed()}, ${this.position.y.toFixed()}`);
-        // this.velocity.x = Math.cos(angle);
-        // this.velocity.y = Math.sin(angle);
-
-        // this.position.x += this.velocity.x;
-        // this.position.y += this.velocity.y;
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
     }
+
     public getPosition() { return this.position };
     public getRadius() { return this.radius };
+    public getEnemy() { return this.enemy };
 }
 export default Bullet;
