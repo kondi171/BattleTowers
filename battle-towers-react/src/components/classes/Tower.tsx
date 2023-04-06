@@ -22,14 +22,6 @@ class Tower {
         this.radius = 250;
         this.frames = 0;
         this.target = null;
-        // this.bullets.push(new Bullet(
-        //     this.canvasRenderingContext,
-        //     {
-        //         x: this.position.x + this.size / 2,
-        //         y: this.position.y + this.size / 2
-        //     },
-        //     enemies[0]
-        // ));
     }
 
     private drawBlastField() {

@@ -2,11 +2,14 @@ import styles from './../../assets/scss/modules/GameState.module.scss';
 import logo from './../../assets/scss/modules/Logo.module.scss';
 import SceneCanvas from '../SceneCanvas';
 import shield from './../../assets/img/shield.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Loading from '../features/Loading';
 import { animated, useSpring } from 'react-spring';
+import { AppContext, AppContextType } from '../AppContext';
 
 const GameState = () => {
+
+  const { wave } = useContext(AppContext) as AppContextType;
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const stateAnimation = useSpring({
@@ -48,7 +51,7 @@ const GameState = () => {
               <h2>Level</h2>
               <h3>1</h3>
               <h2>Wave</h2>
-              <h3>1</h3>
+              <h3>{wave}</h3>
             </div>
             <div className={styles.levelInfo}>
               <div className={styles.life}>

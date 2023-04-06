@@ -1,6 +1,6 @@
 import styles from './../assets/scss/modules/SceneCanvas.module.scss';
 import map from './../assets/img/gameMap.png';
-import { useState, useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import Enemy from './classes/Enemy';
 import PlacementTile from './classes/PlacementTile';
 import { Mouse } from '../types';
@@ -8,13 +8,15 @@ import Tower from './classes/Tower';
 import fillPlacementTiles from './scripts/fillPlacementTiles';
 import spawnEnemies from './scripts/spawnEnemies';
 import { updateEnemies, updatePlacementTiles, updateTower } from './scripts/updateCanvas';
+import { AppContext, AppContextType } from './AppContext';
 
 const SceneCanvas = () => {
 
+  const { wave, setWave } = useContext(AppContext) as AppContextType;
   const towers: Tower[] = [];
   const mouse: Mouse = { x: 0, y: 0 };
   let enemies: Enemy[] = [];
-  let activeTile: null | PlacementTile = null;
+  let activeTile: PlacementTile | null = null;
   let placementTiles: PlacementTile[] = [];
 
   const initialize = () => {
@@ -33,7 +35,7 @@ const SceneCanvas = () => {
       animate();
     }
 
-    enemies = spawnEnemies(ctx);
+    enemies = spawnEnemies(ctx, 2);
     canvas.addEventListener('click', addTower);
     window.addEventListener('mousemove', mouseMove);
   }
@@ -79,10 +81,9 @@ const SceneCanvas = () => {
 
     if (!ctx) return;
     ctx.drawImage(image, 0, 0);
-
+    updateTower(towers, enemies);
     updateEnemies(enemies);
     updatePlacementTiles(placementTiles, mouse);
-    updateTower(towers, enemies);
   }
 
   useEffect(() => {
