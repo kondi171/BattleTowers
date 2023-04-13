@@ -1,22 +1,25 @@
+import { GameResult } from '../../enums';
+import { AppContext, AppContextType } from '../AppContext';
 import Button from '../features/Button';
 import styles from './../../assets/scss/modules/EndState.module.scss';
+import { useContext } from 'react';
 
 type EndProps = {
-    winner: boolean
+    gameResult: GameResult
 }
 
-const End = ({ winner }: EndProps) => {
+const End = ({ gameResult }: EndProps) => {
+    const { score, setEndGame, setIsGameStart } = useContext(AppContext) as AppContextType;
 
-    const handleRestart = () => {
-        console.log('Restart');
-    }
+    const handleRestart = () => { setEndGame(GameResult.UNPLAYED); }
     const handleBackToMenu = () => {
-        console.log('Back to menu');
+        setIsGameStart(false);
+        setEndGame(GameResult.UNPLAYED);
     }
 
     return (
         <section className={styles.endState}>
-            {winner ?
+            {gameResult === GameResult.WIN ?
                 <>
                     <h2>Congratulations!</h2>
                     <h3>You finished the game</h3>
@@ -24,7 +27,7 @@ const End = ({ winner }: EndProps) => {
                 </> :
                 <>
                     <h2>Game Over!</h2>
-                    <h3>Your score: 924</h3>
+                    <h3>Your score: {score}</h3>
                     <h3>Do you want to play again?</h3>
                 </>
             }

@@ -9,25 +9,40 @@ import fillPlacementTiles from './scripts/fillPlacementTiles';
 import spawnEnemies from './scripts/spawnEnemies';
 // import { getWave, updateEnemies, updatePlacementTiles, updateTower } from './scripts/updateCanvas';
 import { AppContext, AppContextType } from './AppContext';
+import Player from './classes/Player';
+import { GameResult } from '../enums';
 
 const SceneCanvas = () => {
 
-  const { setWave, setLevel, world, setWorld } = useContext(AppContext) as AppContextType;
+  const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame } = useContext(AppContext) as AppContextType;
+  const canvasBounding = {
+    width: 1280,
+    height: 768,
+  }
   const towers: Tower[] = [];
   const mouse: Mouse = { x: 0, y: 0 };
   let enemies: Enemy[] = [];
   let activeTile: PlacementTile | null = null;
   let placementTiles: PlacementTile[] = [];
   let scene: Scene;
+  let player: Player;
+  let animationID: number;
 
   const initialize = () => {
     const canvas = document.querySelector('canvas');
     const ctx = canvas!.getContext('2d');
     if (!ctx || !canvas) return;
-    canvas.width = 1280;
-    canvas.height = 768;
+    canvas.width = canvasBounding.width;
+    canvas.height = canvasBounding.height;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    player = new Player();
     scene = new Scene();
+    setLife(player.getLife());
+    setMoney(player.getMoney());
+    setScore(player.getScore());
+    setWave(scene.getWave());
+    setLevel(scene.getLevel());
+    setWorld(scene.getWorldName());
     placementTiles = fillPlacementTiles(ctx, scene);
 
     const image = new Image();
@@ -46,13 +61,18 @@ const SceneCanvas = () => {
     const ctx = canvas!.getContext('2d');
     if (!ctx || !canvas) return;
     if (activeTile && !activeTile.getOccupied()) {
-      towers.push(new Tower(ctx, { x: activeTile.getPosition().x, y: activeTile.getPosition().y }, enemies));
-      activeTile.setOccupied(true);
+      if (player.getMoney() >= 50) {
+        towers.push(new Tower(ctx, { x: activeTile.getPosition().x, y: activeTile.getPosition().y }, enemies));
+        activeTile.setOccupied(true);
+        player.setMoney(player.getMoney() - 50);
+        setMoney(player.getMoney());
+      }
     }
   }
 
   const mouseMove = (event: MouseEvent) => {
     const canvas = document.querySelector('canvas');
+    if (!canvas) return;
     const canvasTopOffset = canvas!.offsetTop;
     const canvasLeftOffset = canvas!.offsetLeft;
     mouse.x = event.clientX - canvasLeftOffset;
@@ -74,8 +94,9 @@ const SceneCanvas = () => {
   }
 
   const animate = () => {
-    requestAnimationFrame(animate);
+    animationID = requestAnimationFrame(animate);
     const canvas = document.querySelector('canvas');
+    if (!canvas) return;
     const ctx = canvas!.getContext('2d');
     const image = new Image();
     image.src = scene.getCurrentMap();
@@ -90,6 +111,7 @@ const SceneCanvas = () => {
     for (let i = enemies.length - 1; i >= 0; i--) {
       const enemy = enemies[i];
       enemy.update();
+      decreasePlayerLife(enemy, i);
     }
   }
 
@@ -126,7 +148,13 @@ const SceneCanvas = () => {
           const enemyIndex = enemies.findIndex((enemy) => {
             return bullet.getEnemy() === enemy;
           });
-          if (enemyIndex > -1) enemies.splice(enemyIndex, 1);
+          if (enemyIndex > -1) {
+            enemies.splice(enemyIndex, 1);
+            player.setMoney(player.getMoney() + 20);
+            player.setScore(player.getScore() + 8);
+            setScore(player.getScore());
+            setMoney(player.getMoney());
+          }
         }
         if (enemies.length === 0) increaseWave();
       }
@@ -160,6 +188,20 @@ const SceneCanvas = () => {
 
   const changeWorld = () => {
     console.log('World Change');
+  }
+
+  const decreasePlayerLife = (enemy: Enemy, index: number) => {
+    const worldData = scene.getCurrentWorldData();
+    if (enemy.getWaypointIndex() === worldData.waypoints.length - 1) {
+      player.setLife(player.getLife() - 1);
+      setLife(player.getLife());
+      enemies.splice(index, 1);
+      if (player.getLife() <= 0) {
+        setEndGame(GameResult.DEFEAT);
+        cancelAnimationFrame(animationID);
+      }
+      if (enemies.length === 0) increaseWave();
+    }
   }
 
   useEffect(() => {

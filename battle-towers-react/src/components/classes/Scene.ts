@@ -27,20 +27,26 @@ class Scene {
   public getCurrentMap() {
     return this.worlds[this.world - 1].maps[this.level - 1];
   }
+  public getWave() {
+    return this.wave;
+  }
+  public setWave(wave: number) {
+    this.wave = wave;
+  }
   public getLevel() {
     return this.level;
   }
   public setLevel(level: number) {
     this.level = level;
   }
+  public getWorld() {
+    return this.world;
+  }
+  public setWorld(world: number) {
+    this.world = world;
+  }
   public getWorldName() {
     return this.worlds[this.world - 1].name;
-  }
-  public getWave() {
-    return this.wave;
-  }
-  public setWave(wave: number) {
-    this.wave = wave;
   }
 }
 

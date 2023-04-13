@@ -7,8 +7,8 @@ class Player {
   private progress: Progress;
 
   constructor() {
-    this.life = 10;
-    this.money = 100;
+    this.life = 2;
+    this.money = 1000;
     this.score = 0;
     this.progress = {
       wave: 1,
@@ -16,6 +16,13 @@ class Player {
       world: 1
     }
   }
+
+  public getLife() { return this.life; }
+  public setLife(life: number) { this.life = life; }
+  public getMoney() { return this.money; }
+  public setMoney(money: number) { this.money = money; }
+  public getScore() { return this.score; }
+  public setScore(score: number) { this.score = score; }
 }
 
 export default Player;

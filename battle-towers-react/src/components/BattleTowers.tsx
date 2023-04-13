@@ -8,10 +8,11 @@ import Game from './states/Game';
 import styles from './../assets/scss/modules/Logo.module.scss';
 import End from './states/End';
 import Scroll from './states/Scroll';
+import { GameResult } from '../enums';
 
 const BattleTowers = () => {
   const [changeState, setChangeState] = useState<boolean>(false);
-  const { isGameStart } = useContext(AppContext) as AppContextType;
+  const { isGameStart, endGame } = useContext(AppContext) as AppContextType;
 
   const stateAnimation = useSpring({
     from: {
@@ -31,7 +32,7 @@ const BattleTowers = () => {
   return (
     <animated.div className="wrapper" style={stateAnimation}>
       <div className="game">
-        {/* {!isGameStart ?
+        {!isGameStart ?
           <>
             <header className={styles.logo}>
               <div className={styles.imageWrapper}>
@@ -40,10 +41,10 @@ const BattleTowers = () => {
               <h1>Battle Towers</h1>
             </header>
             {!changeState ? <Intro /> : <Menu />} </> :
-          <Game />
-        } */}
-        <Game />
-        {/* <End winner={false} /> */}
+          <>{endGame === GameResult.UNPLAYED && <Game />}</>
+        }
+        {endGame !== GameResult.UNPLAYED && <End gameResult={endGame} />}
+
         {/* <Scroll /> */}
       </div>
 

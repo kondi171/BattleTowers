@@ -9,7 +9,7 @@ import { AppContext, AppContextType } from '../AppContext';
 
 const GameState = () => {
 
-  const { wave, level, world } = useContext(AppContext) as AppContextType;
+  const { wave, level, world, life, money, score } = useContext(AppContext) as AppContextType;
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const stateAnimation = useSpring({
@@ -56,14 +56,14 @@ const GameState = () => {
             <div className={styles.levelInfo}>
               <div className={styles.life}>
                 <i className="fa fa-heart" aria-hidden="true"></i>
-                <span>10</span>
+                <span>{life}</span>
               </div>
               <div className={styles.money}>
                 <i className="fa fa-money" aria-hidden="true"></i>
-                <span>100</span>
+                <span>{money}</span>
               </div>
               <div className={styles.score}>
-                <h3>Score: <span>924</span></h3>
+                <h3>Score: <span>{score}</span></h3>
               </div>
             </div>
           </section>
