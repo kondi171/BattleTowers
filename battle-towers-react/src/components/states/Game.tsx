@@ -9,7 +9,7 @@ import { AppContext, AppContextType } from '../AppContext';
 
 const GameState = () => {
 
-  const { wave } = useContext(AppContext) as AppContextType;
+  const { wave, level, world } = useContext(AppContext) as AppContextType;
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const stateAnimation = useSpring({
@@ -47,9 +47,9 @@ const GameState = () => {
             </header>
             <div className={styles.worldInfo}>
               <h2>World</h2>
-              <h3>Desert</h3>
+              <h3>{world}</h3>
               <h2>Level</h2>
-              <h3>1</h3>
+              <h3>{level}</h3>
               <h2>Wave</h2>
               <h3>{wave}</h3>
             </div>

@@ -1,15 +1,16 @@
-import worldData from './../worlds/desert.json';
 import { Bounding, Position } from '../../types';
 
 class Enemy {
   private canvasRenderingContext: CanvasRenderingContext2D;
+  private waypoints: Position[];
   private position: Position;
   private bounding: Bounding;
   private waypointIndex: number;
   private health: number;
 
-  constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position) {
+  constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position, waypoints: Position[]) {
     this.canvasRenderingContext = ctx;
+    this.waypoints = waypoints;
     this.position = {
       x: x,
       y: y
@@ -46,7 +47,7 @@ class Enemy {
 
   public update() {
     this.draw();
-    const waypoint = worldData.levels[0].waypoints[this.waypointIndex];
+    const waypoint = this.waypoints[this.waypointIndex];
     const yDistance = waypoint.y - this.position.y - (this.bounding.height / 2);
     const xDistance = waypoint.x - this.position.x - (this.bounding.width / 2);
     const angle = Math.atan2(yDistance, xDistance);
@@ -55,7 +56,7 @@ class Enemy {
     if (
       Math.round(this.position.x + (this.bounding.width / 2)) === Math.round(waypoint.x) &&
       Math.round(this.position.y + (this.bounding.height / 2)) === Math.round(waypoint.y) &&
-      this.waypointIndex < worldData.levels[0].waypoints.length - 1
+      this.waypointIndex < this.waypoints.length - 1
     ) this.waypointIndex++;
   }
 

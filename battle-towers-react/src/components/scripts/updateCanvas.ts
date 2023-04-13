@@ -2,6 +2,17 @@ import { Mouse } from "../../types";
 import Enemy from "../classes/Enemy";
 import PlacementTile from "../classes/PlacementTile";
 import Tower from "../classes/Tower";
+import World from "../classes/Scene";
+
+let endWave = false;
+
+export const restartEndWave = () => {
+  endWave = true;
+}
+
+export const getWave = () => {
+  return endWave;
+}
 
 export const updateEnemies = (enemies: Enemy[]) => {
   for (let i = enemies.length - 1; i >= 0; i--) {
@@ -46,9 +57,7 @@ const updateBullet = (tower: Tower, enemies: Enemy[]) => {
         if (enemyIndex > -1) enemies.splice(enemyIndex, 1);
       }
       if (enemies.length === 0) {
-        // set end of wave here!
-        // endWave = true
-
+        endWave = true;
       }
     }
   }

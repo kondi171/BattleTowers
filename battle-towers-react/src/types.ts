@@ -18,3 +18,16 @@ export type Mouse = {
   x: number,
   y: number
 };
+
+export type Wave = {
+  number: number,
+  enemies: {
+
+  }
+}
+
+export type Progress = {
+  wave: number,
+  level: number,
+  world: number
+}
