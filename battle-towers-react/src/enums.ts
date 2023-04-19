@@ -3,3 +3,10 @@ export enum GameResult {
   WIN,
   DEFEAT
 };
+
+export enum StartingPoint {
+  LEFT,
+  RIGHT,
+  TOP,
+  BOTTOM
+}

@@ -1,10 +1,25 @@
 @import '../variables';
 
-.sceneCanvas {
-  width: $canvasWidth;
-  height: $canvasHeight;
-  background-color: green;
-  border-radius: 5px;
-  border: 2px solid $secondaryColor;
-  box-shadow: 0 0 4px 2px $secondaryColor;
+.canvasWrapper {
+  position: relative;
+
+  .info {
+    position: absolute;
+    left: 0%;
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    color: $fontColor;
+    font-family: $titleFont;
+    font-size: 10vmax;
+  }
+
+  .sceneCanvas {
+    width: $canvasWidth;
+    height: $canvasHeight;
+    background-color: green;
+    border-radius: 5px;
+    border: 2px solid $secondaryColor;
+    box-shadow: 0 0 4px 2px $secondaryColor;
+  }
 }

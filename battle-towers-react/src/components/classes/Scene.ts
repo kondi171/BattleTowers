@@ -1,13 +1,30 @@
+import { StartingPoint } from '../../enums';
+
 import desertData from '../worlds/desert.json';
+import forestData from '../worlds/forest.json';
+// import ...Data from '../worlds/....json';
+
 import desertLevel1 from './../../assets/img/worlds/desert/level1.png';
 import desertLevel2 from './../../assets/img/worlds/desert/level2.png';
+import desertLevel3 from './../../assets/img/worlds/desert/level3.png';
+
+import forestLevel1 from './../../assets/img/worlds/forest/level1.png';
+import forestLevel2 from './../../assets/img/worlds/forest/level2.png';
+import forestLevel3 from './../../assets/img/worlds/forest/level3.png';
 
 class Scene {
   private worlds = [
     {
       name: "Desert",
-      maps: [desertLevel1, desertLevel2],
+      maps: [desertLevel1, desertLevel2, desertLevel3],
       data: desertData,
+      startingPoint: [StartingPoint.LEFT, StartingPoint.LEFT, StartingPoint.TOP]
+    },
+    {
+      name: "Forest",
+      maps: [forestLevel1, forestLevel2, forestLevel3],
+      data: forestData,
+      startingPoint: [StartingPoint.TOP, StartingPoint.LEFT, StartingPoint.BOTTOM]
     }
   ];
 
@@ -26,6 +43,9 @@ class Scene {
   }
   public getCurrentMap() {
     return this.worlds[this.world - 1].maps[this.level - 1];
+  }
+  public getCurrentStartingPoint() {
+    return this.worlds[this.world - 1]?.startingPoint[this.level - 1];
   }
   public getWave() {
     return this.wave;

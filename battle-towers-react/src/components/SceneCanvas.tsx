@@ -1,5 +1,5 @@
 import styles from './../assets/scss/modules/SceneCanvas.module.scss';
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import Enemy from './classes/Enemy';
 import Tower from './classes/Tower';
 import PlacementTile from './classes/PlacementTile';
@@ -15,6 +15,7 @@ import { GameResult } from '../enums';
 const SceneCanvas = () => {
 
   const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame } = useContext(AppContext) as AppContextType;
+  const [info, setInfo] = useState<string>('');
   const canvasBounding = {
     width: 1280,
     height: 768,
@@ -47,9 +48,7 @@ const SceneCanvas = () => {
 
     const image = new Image();
     image.src = scene.getCurrentMap();
-    image.onload = () => {
-      animate();
-    }
+    image.onload = () => { animate(); }
 
     enemies = spawnEnemies(ctx, scene);
     canvas.addEventListener('click', addTower);
@@ -162,6 +161,14 @@ const SceneCanvas = () => {
   }
 
   const increaseWave = () => {
+    cancelAnimationFrame(animationID);
+    setInfo(`Wave ${scene.getWave()}`);
+    // setTimeout(() => {
+    // animationID = requestAnimationFrame(animate);
+    // setInfo('');
+
+    // }, 3000);
+    // animationID = requestAnimationFrame(animate);
     const canvas = document.querySelector('canvas');
     const ctx = canvas!.getContext('2d');
     if (!ctx) return;
@@ -213,7 +220,11 @@ const SceneCanvas = () => {
   }, []);
 
   return (
-    <canvas className={styles.sceneCanvas}></canvas>
+    <div className={styles.canvasWrapper}>
+      <span className={styles.info}>{info}</span>
+      <canvas className={styles.sceneCanvas}></canvas>
+    </div>
+
   );
 }
 

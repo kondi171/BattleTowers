@@ -1,0 +1,61 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "D:/Studia/II Stopień (Magister)/Semestr 2/Technologie Obiektowe/Projekt/Assets/ancientForest/TX Plant.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Studia/II Stopień (Magister)/Semestr 2/Technologie Obiektowe/Projekt/Assets/ancientForest/TX Tileset Grass.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Studia/II Stopień (Magister)/Semestr 2/Technologie Obiektowe/Projekt/Assets/ancientForest/ancientForestLevel1.tmx": {
+            "scale": 0.5516927083333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 639.8489497285816,
+                "y": 837.4227047439226
+            }
+        },
+        "TX Plant.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "background.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "td.n1.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.5,
+            "scaleInEditor": 0.5
+        }
+    },
+    "last.imagePath": "D:/Studia/II Stopień (Magister)/Semestr 2/Technologie Obiektowe/Projekt/Assets/night/Dark world/Sprites",
+    "map.height": 12,
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 20,
+    "openFiles": [
+    ],
+    "project": "Night.tiled-project",
+    "recentFiles": [
+        "TX Plant.tsx",
+        "td.n1.tsx",
+        "background.tsx",
+        "D:/Studia/II Stopień (Magister)/Semestr 2/Technologie Obiektowe/Projekt/Assets/ancientForest/ancientForestLevel1.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 64,
+        "width": 64
+    },
+    "tileset.type": 1
+}
