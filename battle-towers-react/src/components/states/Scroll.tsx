@@ -4,9 +4,9 @@ import { useSpring, animated } from 'react-spring';
 
 const Scroll = () => {
     const stateAnimation = useSpring({
-        from: { opacity: 0 },
-        to: { opacity: 1 },
-        config: { duration: 400 },
+        from: { opacity: 0, scale: 0 },
+        to: { opacity: 1, scale: 1 },
+        config: { duration: 1000 },
     });
     return (
         <animated.div className={styles.scrollState} style={stateAnimation}>

@@ -7,7 +7,6 @@ import Menu from './states/Menu';
 import Game from './states/Game';
 import styles from './../assets/scss/modules/Logo.module.scss';
 import End from './states/End';
-import Scroll from './states/Scroll';
 import { GameResult } from '../enums';
 
 const BattleTowers = () => {
@@ -32,7 +31,7 @@ const BattleTowers = () => {
   return (
     <animated.div className="wrapper" style={stateAnimation}>
       <div className="game">
-        {/* {!isGameStart ?
+        {!isGameStart ?
           <>
             <header className={styles.logo}>
               <div className={styles.imageWrapper}>
@@ -42,8 +41,8 @@ const BattleTowers = () => {
             </header>
             {!changeState ? <Intro /> : <Menu />} </> :
           <>{endGame === GameResult.UNPLAYED && <Game />}</>
-        } */}
-        <Game />
+        }
+        {/* <Game /> */}
         {endGame !== GameResult.UNPLAYED && <End gameResult={endGame} />}
       </div>
 

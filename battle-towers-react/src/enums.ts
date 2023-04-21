@@ -10,3 +10,9 @@ export enum StartingPoint {
   TOP,
   BOTTOM
 }
+
+export enum GamePart {
+  WAVE = 'wave',
+  LEVEL = 'level',
+  WORLD = 'world'
+}

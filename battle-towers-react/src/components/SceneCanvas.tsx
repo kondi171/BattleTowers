@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 import { AppContext, AppContextType } from './AppContext';
 import { Mouse } from '../types';
-import { GameResult } from '../enums';
+import { GamePart, GameResult } from '../enums';
 import styles from './../assets/scss/modules/SceneCanvas.module.scss';
 import Enemy from './classes/Enemy';
 import Tower from './classes/Tower';
@@ -161,14 +161,26 @@ const SceneCanvas = () => {
     }
   }
 
-  const gameTransition = (info: string) => {
+  const gameTransition = (part: GamePart) => {
     if (player.getLife() <= 0) return;
     cancelAnimationFrame(animationID);
-    setInfo(info);
+    setInfo(part);
     setIsInfoVisible(true);
     setTimeout(() => {
       setIsInfoVisible(false);
       animationID = requestAnimationFrame(animate);
+      if (part === GamePart.WAVE) setWave(scene.getWave());
+      else if (part === GamePart.LEVEL) {
+        setMoney(player.getMoney());
+        setLevel(scene.getLevel());
+        setWave(1);
+      } else if (part === GamePart.WORLD) {
+        setWave(1);
+        setLevel(1);
+        setWorld(scene.getWorldName());
+        setLife(player.getLife());
+        setMoney(player.getMoney());
+      }
     }, 4000);
 
     let index = 3;
@@ -191,17 +203,14 @@ const SceneCanvas = () => {
     if (scene.getWave() >= 3) increaseLevel(ctx);
     else {
       scene.setWave(scene.getWave() + 1);
-      gameTransition('wave');
+      gameTransition(GamePart.WAVE);
     }
-    setWave(scene.getWave());
     enemies = spawnEnemies(ctx, scene);
   }
 
   const increaseLevel = (ctx: CanvasRenderingContext2D) => {
     if (scene.getLevel() >= 3) changeWorld(ctx);
     else {
-      gameTransition('level');
-      setLevel(scene.getLevel() + 1);
       scene.setLevel(scene.getLevel() + 1);
       towers.splice(0, towers.length);
       placementTiles.splice(0, placementTiles.length);
@@ -209,7 +218,7 @@ const SceneCanvas = () => {
       placementTiles = fillPlacementTiles(ctx, scene);
       scene.setWave(1);
       player.setMoney(player.getMoney() + 100);
-      setMoney(player.getMoney());
+      gameTransition(GamePart.LEVEL);
     }
   }
 
@@ -218,21 +227,16 @@ const SceneCanvas = () => {
       setEndGame(GameResult.WIN);
       gameReset();
     } else {
-      gameTransition('world');
       scene.setWave(1);
       scene.setLevel(1);
       scene.setWorld(scene.getWorld() + 1);
-      setWave(1);
-      setLevel(1);
-      setWorld(scene.getWorldName());
       towers.splice(0, towers.length);
       placementTiles.splice(0, placementTiles.length);
       activeTile = null;
       placementTiles = fillPlacementTiles(ctx, scene);
       player.setLife(player.getLife() + 3);
-      setLife(player.getLife());
       player.setMoney(player.getMoney() + 100);
-      setMoney(player.getMoney());
+      gameTransition(GamePart.WORLD);
     }
   }
 
