@@ -20,7 +20,7 @@ class Bullet {
             y: 0
         }
         this.radius = 10;
-        this.speed = 5;
+        this.speed = 10;
         this.enemy = enemy;
     }
 

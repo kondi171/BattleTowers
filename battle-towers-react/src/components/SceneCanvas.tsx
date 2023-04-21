@@ -1,21 +1,25 @@
-import styles from './../assets/scss/modules/SceneCanvas.module.scss';
 import { useEffect, useContext, useState } from 'react';
+import { AppContext, AppContextType } from './AppContext';
+import { Mouse } from '../types';
+import { GameResult } from '../enums';
+import styles from './../assets/scss/modules/SceneCanvas.module.scss';
 import Enemy from './classes/Enemy';
 import Tower from './classes/Tower';
 import PlacementTile from './classes/PlacementTile';
 import Scene from './classes/Scene';
-import { Mouse } from '../types';
+import Player from './classes/Player';
 import fillPlacementTiles from './scripts/fillPlacementTiles';
 import spawnEnemies from './scripts/spawnEnemies';
 // import { getWave, updateEnemies, updatePlacementTiles, updateTower } from './scripts/updateCanvas';
-import { AppContext, AppContextType } from './AppContext';
-import Player from './classes/Player';
-import { GameResult } from '../enums';
+import TransitionInfo from './features/TransitionInfo';
 
 const SceneCanvas = () => {
 
-  const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame } = useContext(AppContext) as AppContextType;
+  const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame, endGame } = useContext(AppContext) as AppContextType;
+  const [init, setInit] = useState<boolean>(false);
   const [info, setInfo] = useState<string>('');
+  const [time, setTime] = useState<number>(3);
+  const [isInfoVisible, setIsInfoVisible] = useState<boolean>(false);
   const canvasBounding = {
     width: 1280,
     height: 768,
@@ -45,20 +49,17 @@ const SceneCanvas = () => {
     setLevel(scene.getLevel());
     setWorld(scene.getWorldName());
     placementTiles = fillPlacementTiles(ctx, scene);
-
     const image = new Image();
     image.src = scene.getCurrentMap();
     image.onload = () => { animate(); }
-
     enemies = spawnEnemies(ctx, scene);
-    canvas.addEventListener('click', addTower);
-    window.addEventListener('mousemove', mouseMove);
   }
 
   const addTower = () => {
     const canvas = document.querySelector('canvas');
-    const ctx = canvas!.getContext('2d');
-    if (!ctx || !canvas) return;
+    if (!canvas) return;
+    const ctx = canvas?.getContext('2d');
+    if (!ctx) return;
     if (activeTile && !activeTile.getOccupied()) {
       if (player.getMoney() >= 50) {
         towers.push(new Tower(ctx, { x: activeTile.getPosition().x, y: activeTile.getPosition().y }, enemies));
@@ -72,8 +73,8 @@ const SceneCanvas = () => {
   const mouseMove = (event: MouseEvent) => {
     const canvas = document.querySelector('canvas');
     if (!canvas) return;
-    const canvasTopOffset = canvas!.offsetTop;
-    const canvasLeftOffset = canvas!.offsetLeft;
+    const canvasTopOffset = canvas.getBoundingClientRect().top;
+    const canvasLeftOffset = canvas.getBoundingClientRect().left;
     mouse.x = event.clientX - canvasLeftOffset;
     mouse.y = event.clientY - canvasTopOffset;
     activeTile = null;
@@ -160,29 +161,46 @@ const SceneCanvas = () => {
     }
   }
 
-  const increaseWave = () => {
+  const gameTransition = (info: string) => {
+    if (player.getLife() <= 0) return;
     cancelAnimationFrame(animationID);
-    setInfo(`Wave ${scene.getWave()}`);
-    // setTimeout(() => {
-    // animationID = requestAnimationFrame(animate);
-    // setInfo('');
+    setInfo(info);
+    setIsInfoVisible(true);
+    setTimeout(() => {
+      setIsInfoVisible(false);
+      animationID = requestAnimationFrame(animate);
+    }, 4000);
 
-    // }, 3000);
-    // animationID = requestAnimationFrame(animate);
+    let index = 3;
+    const interval = setInterval(() => {
+      if (index === 0) {
+        clearInterval(interval);
+        setTime(3);
+      }
+      else {
+        index--;
+        setTime(index);
+      }
+    }, 1000);
+  }
+
+  const increaseWave = () => {
     const canvas = document.querySelector('canvas');
     const ctx = canvas!.getContext('2d');
     if (!ctx) return;
     if (scene.getWave() >= 3) increaseLevel(ctx);
-    else scene.setWave(scene.getWave() + 1);
+    else {
+      scene.setWave(scene.getWave() + 1);
+      gameTransition('wave');
+    }
     setWave(scene.getWave());
     enemies = spawnEnemies(ctx, scene);
   }
 
   const increaseLevel = (ctx: CanvasRenderingContext2D) => {
-    // const canvas = document.getElementById('canvas');
-    // canvas?.classList.add('active');
-    if (scene.getLevel() >= 3) changeWorld();
+    if (scene.getLevel() >= 3) changeWorld(ctx);
     else {
+      gameTransition('level');
       setLevel(scene.getLevel() + 1);
       scene.setLevel(scene.getLevel() + 1);
       towers.splice(0, towers.length);
@@ -190,11 +208,42 @@ const SceneCanvas = () => {
       activeTile = null;
       placementTiles = fillPlacementTiles(ctx, scene);
       scene.setWave(1);
+      player.setMoney(player.getMoney() + 100);
+      setMoney(player.getMoney());
     }
   }
 
-  const changeWorld = () => {
-    console.log('World Change');
+  const changeWorld = (ctx: CanvasRenderingContext2D) => {
+    if (scene.getWorld() >= scene.getWorldsLength()) {
+      setEndGame(GameResult.WIN);
+      gameReset();
+    } else {
+      gameTransition('world');
+      scene.setWave(1);
+      scene.setLevel(1);
+      scene.setWorld(scene.getWorld() + 1);
+      setWave(1);
+      setLevel(1);
+      setWorld(scene.getWorldName());
+      towers.splice(0, towers.length);
+      placementTiles.splice(0, placementTiles.length);
+      activeTile = null;
+      placementTiles = fillPlacementTiles(ctx, scene);
+      player.setLife(player.getLife() + 3);
+      setLife(player.getLife());
+      player.setMoney(player.getMoney() + 100);
+      setMoney(player.getMoney());
+    }
+  }
+
+  const gameReset = () => {
+    cancelAnimationFrame(animationID);
+    scene.setWave(1);
+    scene.setLevel(1);
+    scene.setWorld(1);
+    setWave(1);
+    setLevel(1);
+    setWorld(scene.getWorldName());
   }
 
   const decreasePlayerLife = (enemy: Enemy, index: number) => {
@@ -205,23 +254,32 @@ const SceneCanvas = () => {
       enemies.splice(index, 1);
       if (player.getLife() <= 0) {
         setEndGame(GameResult.DEFEAT);
-        cancelAnimationFrame(animationID);
+        gameReset();
       }
       if (enemies.length === 0) increaseWave();
     }
   }
 
+  window.addEventListener('click', addTower);
+  window.addEventListener('mousemove', mouseMove);
+
   useEffect(() => {
-    initialize();
+    setInit(true);
     return () => {
       window.removeEventListener('mousemove', mouseMove);
       window.removeEventListener('click', addTower);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (init) initialize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [init]);
 
   return (
     <div className={styles.canvasWrapper}>
-      <span className={styles.info}>{info}</span>
+      {isInfoVisible && <TransitionInfo info={info} time={time} />}
       <canvas className={styles.sceneCanvas}></canvas>
     </div>
 

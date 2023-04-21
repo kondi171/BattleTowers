@@ -46,7 +46,7 @@ class Tower {
 
     public update() {
         this.draw();
-        if (this.frames % 100 === 0 && this.target) {
+        if (this.frames % 10 === 0 && this.target) {
             this.bullets.push(new Bullet(
                 this.canvasRenderingContext,
                 {

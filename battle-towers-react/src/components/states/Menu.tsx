@@ -4,7 +4,7 @@ import styles from './../../assets/scss/modules/MenuState.module.scss';
 import Button from '../features/Button';
 import { AppContext } from '../AppContext';
 import { AppContextType } from '../AppContext';
-
+import react from './../../assets/img/react.png';
 type resolution = {
   width: number,
   height: number
@@ -43,15 +43,24 @@ const Menu = () => {
 
   return (
     <animated.div style={stateAppearAnimation}>
+
       <Button name="Play" click={handleStartGame} />
       <animated.div className={styles.menuState} style={stateAppearAnimation}>
+        <div className={styles.powered}>
+          <span>Powered by React</span>
+          <img src={react} alt='React logo' />
+        </div>
+        <div className={styles.journal}>
+          <span>Battle Journal</span>
+          <i className="fa fa-book" aria-hidden="true"></i>
+        </div>
         <div className={resolutionIsOk ? `${styles.resolutionSuccess}` : `${styles.resolutionError}`}>Your resolution: {resolution.width} x {resolution.height}
           {resolutionIsOk ?
             <i className="fa fa-check-circle-o" aria-hidden="true"></i> :
             <i className="fa fa-times-circle-o" aria-hidden="true"></i>
           }
         </div>
-        <div className={styles.score}>Best score: 924</div>
+        <div className={styles.score}>Best score: {localStorage.getItem('score') === '0' ? 0 : localStorage.getItem('score')}</div>
       </animated.div>
     </animated.div>
   );

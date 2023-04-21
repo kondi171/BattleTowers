@@ -36,4 +36,49 @@
     .score {
         right: 2vw;
     }
+
+    .powered {
+        position: fixed;
+        top: 2rem;
+        left: 2rem;
+        color: $fontColor;
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+
+        img {
+            margin-left: 20px;
+            width: 10%;
+            height: 10%;
+        }
+    }
+
+    .journal {
+        color: $primaryColor;
+        position: fixed;
+        right: 2rem;
+        top: 2rem;
+        font-size: 6rem;
+        transition-duration: .4s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+            opacity: 0;
+            transition-duration: .4s;
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+
+        &:hover {
+            cursor: pointer;
+            color: $secondaryColor;
+            transition-duration: .4s;
+
+            span {
+                opacity: 1;
+            }
+        }
+    }
 }

@@ -28,7 +28,7 @@ class Enemy {
       y: 0,
     }
     this.speed = 3;
-    // this.speed = 10
+    // this.speed = 10;
   }
 
   private drawEnemy() {

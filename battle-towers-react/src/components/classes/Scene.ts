@@ -33,8 +33,8 @@ class Scene {
   private wave: number;
 
   constructor() {
-    this.world = 1;
-    this.level = 1;
+    this.world = 2;
+    this.level = 3;
     this.wave = 1;
   }
 
@@ -67,6 +67,9 @@ class Scene {
   }
   public getWorldName() {
     return this.worlds[this.world - 1].name;
+  }
+  public getWorldsLength() {
+    return this.worlds.length;
   }
 }
 

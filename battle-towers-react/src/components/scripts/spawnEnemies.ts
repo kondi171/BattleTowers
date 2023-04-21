@@ -3,18 +3,21 @@ import Enemy from '../classes/Enemy';
 import Scene from '../classes/Scene';
 
 const spawnEnemies = (ctx: CanvasRenderingContext2D, scene: Scene) => {
-  const numberOfEnemies = 2;
+  const numberOfEnemies = 4;
   const enemies: Enemy[] = [];
   const worldData = scene.getCurrentWorldData();
-  const level = scene.getLevel() - 1;
-  const startingPoint = scene.getCurrentStartingPoint();
 
+  const startingPoint = scene.getCurrentStartingPoint();
+  const spaceBetween = 200;
   for (let i = 1; i <= numberOfEnemies + 1; i++) {
     let xOffset = 0;
     let yOffset = 0;
-    if (startingPoint === StartingPoint.LEFT) xOffset = i * 150;
-    if (startingPoint === StartingPoint.TOP) yOffset = i * 350;
-    const enemy = new Enemy(ctx, { x: worldData.waypoints[level].x - xOffset, y: worldData.waypoints[level].y - yOffset }, worldData.waypoints);
+
+    if (startingPoint === StartingPoint.LEFT) xOffset = i * spaceBetween;
+    else if (startingPoint === StartingPoint.TOP) yOffset = i * spaceBetween;
+    else if (startingPoint === StartingPoint.BOTTOM) yOffset = i * -spaceBetween;
+    else if (startingPoint === StartingPoint.RIGHT) xOffset = i * -spaceBetween;
+    const enemy = new Enemy(ctx, { x: worldData.waypoints[0].x - xOffset, y: worldData.waypoints[0].y - yOffset }, worldData.waypoints);
     enemies.push(enemy);
   }
 

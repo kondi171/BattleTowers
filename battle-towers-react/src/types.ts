@@ -25,9 +25,3 @@ export type Wave = {
 
   }
 }
-
-export type Progress = {
-  wave: number,
-  level: number,
-  world: number
-}

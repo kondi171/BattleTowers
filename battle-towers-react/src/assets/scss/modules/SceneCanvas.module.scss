@@ -3,15 +3,27 @@
 .canvasWrapper {
   position: relative;
 
-  .info {
+  .transitionInfo {
     position: absolute;
     left: 0%;
-    top: 25%;
+    top: 0%;
     width: 100%;
     text-align: center;
     color: $fontColor;
     font-family: $titleFont;
-    font-size: 10vmax;
+    font-size: 8rem;
+    background-color: #000;
+    opacity: .8;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h3 {
+      margin-bottom: 3rem;
+      -webkit-text-stroke: 1px $secondaryColor;
+    }
   }
 
   .sceneCanvas {
