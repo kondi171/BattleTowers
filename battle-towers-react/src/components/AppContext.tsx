@@ -1,5 +1,6 @@
 import { useState, createContext } from "react";
-import { GameResult } from "../enums";
+import { GameResult, LogType } from "../enums";
+import { Log } from "../types";
 
 export interface AppContextType {
   isGameStart: boolean,
@@ -18,6 +19,8 @@ export interface AppContextType {
   setMoney: (money: number) => void,
   score: number,
   setScore: (score: number) => void,
+  logs: Log[],
+  setLogs: (log: Log[]) => void,
 }
 type AppProviderProps = {
   children: JSX.Element,
@@ -35,6 +38,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
   const [life, setLife] = useState<number>(10);
   const [money, setMoney] = useState<number>(100);
   const [score, setScore] = useState<number>(0);
+  const [logs, setLogs] = useState<Log[]>([])
   return (
     <AppContext.Provider
       value={{
@@ -54,6 +58,8 @@ const AppProvider = ({ children }: AppProviderProps) => {
         setMoney,
         score,
         setScore,
+        logs,
+        setLogs,
       }}>
       {children}
     </AppContext.Provider>

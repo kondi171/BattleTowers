@@ -16,3 +16,9 @@ export enum GamePart {
   LEVEL = 'level',
   WORLD = 'world'
 }
+
+export enum LogType {
+  Failure,
+  Success,
+  Info
+}

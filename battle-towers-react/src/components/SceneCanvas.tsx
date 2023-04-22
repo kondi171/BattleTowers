@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 import { AppContext, AppContextType } from './AppContext';
-import { Mouse } from '../types';
-import { GamePart, GameResult } from '../enums';
+import { Log, Mouse } from '../types';
+import { GamePart, GameResult, LogType } from '../enums';
 import styles from './../assets/scss/modules/SceneCanvas.module.scss';
 import Enemy from './classes/Enemy';
 import Tower from './classes/Tower';
@@ -13,13 +13,15 @@ import spawnEnemies from './scripts/spawnEnemies';
 // import { getWave, updateEnemies, updatePlacementTiles, updateTower } from './scripts/updateCanvas';
 import TransitionInfo from './features/TransitionInfo';
 
+
 const SceneCanvas = () => {
 
-  const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame, endGame } = useContext(AppContext) as AppContextType;
+  const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame, endGame, logs } = useContext(AppContext) as AppContextType;
   const [init, setInit] = useState<boolean>(false);
   const [info, setInfo] = useState<string>('');
   const [time, setTime] = useState<number>(3);
   const [isInfoVisible, setIsInfoVisible] = useState<boolean>(false);
+
   const canvasBounding = {
     width: 1280,
     height: 768,
@@ -66,8 +68,15 @@ const SceneCanvas = () => {
         activeTile.setOccupied(true);
         player.setMoney(player.getMoney() - 50);
         setMoney(player.getMoney());
-      }
+        addToLogs('Tower has been placed!', LogType.Success);
+      } else addToLogs('Not enough money!', LogType.Failure);
     }
+  }
+
+  const addToLogs = (content: string, type: LogType) => {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], { hour12: false });
+    logs.push({ content: content, type: type, time: timeString })
   }
 
   const mouseMove = (event: MouseEvent) => {
@@ -107,6 +116,7 @@ const SceneCanvas = () => {
     updateEnemies(enemies);
     updatePlacementTiles(placementTiles, mouse);
   }
+
   const updateEnemies = (enemies: Enemy[]) => {
     for (let i = enemies.length - 1; i >= 0; i--) {
       const enemy = enemies[i];
@@ -169,17 +179,22 @@ const SceneCanvas = () => {
     setTimeout(() => {
       setIsInfoVisible(false);
       animationID = requestAnimationFrame(animate);
-      if (part === GamePart.WAVE) setWave(scene.getWave());
+      if (part === GamePart.WAVE) {
+        setWave(scene.getWave());
+        addToLogs('Wave increassed!', LogType.Success);
+      }
       else if (part === GamePart.LEVEL) {
         setMoney(player.getMoney());
         setLevel(scene.getLevel());
         setWave(1);
+        addToLogs('Level increassed!', LogType.Success);
       } else if (part === GamePart.WORLD) {
         setWave(1);
         setLevel(1);
         setWorld(scene.getWorldName());
         setLife(player.getLife());
         setMoney(player.getMoney());
+        addToLogs('New world appear!', LogType.Success);
       }
     }, 4000);
 
@@ -206,6 +221,7 @@ const SceneCanvas = () => {
       gameTransition(GamePart.WAVE);
     }
     enemies = spawnEnemies(ctx, scene);
+
   }
 
   const increaseLevel = (ctx: CanvasRenderingContext2D) => {
@@ -254,6 +270,7 @@ const SceneCanvas = () => {
     const worldData = scene.getCurrentWorldData();
     if (enemy.getWaypointIndex() === worldData.waypoints.length - 1) {
       player.setLife(player.getLife() - 1);
+      addToLogs('Lost life!', LogType.Failure);
       setLife(player.getLife());
       enemies.splice(index, 1);
       if (player.getLife() <= 0) {
@@ -285,6 +302,7 @@ const SceneCanvas = () => {
     <div className={styles.canvasWrapper}>
       {isInfoVisible && <TransitionInfo info={info} time={time} />}
       <canvas className={styles.sceneCanvas}></canvas>
+
     </div>
 
   );

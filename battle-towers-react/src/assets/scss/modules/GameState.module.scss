@@ -1,5 +1,31 @@
 @import '../variables';
 
+::selection {
+  background-color: $primaryColor;
+  color: $bgColor;
+}
+
+::-webkit-scrollbar {
+  background-color: $bgColor;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bgColor;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $primaryColor;
+  transition-duration: .4s;
+  border-radius: 100vw;
+  border: 3px solid $bgColor;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $secondaryColor;
+}
+
 .gameState {
   width: 100vw;
   height: 100vh;
@@ -21,22 +47,23 @@
   .graphicalInterface {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
     width: 20%;
-    height: 100vh;
     padding: 2vw;
+    // height: ;
+    margin-top: 4%;
 
     .worldInfo {
-      margin-top: -30%;
 
       h2,
       h3 {
         text-align: center;
-        line-height: 250%;
+        line-height: 200%;
         display: block;
         width: 100%;
         color: $primaryColor;
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
 
       h3 {
@@ -50,6 +77,7 @@
       align-items: center;
       flex-wrap: wrap;
       font-size: 1.5rem;
+      margin-bottom: 30%;
 
       .life,
       .money {
@@ -57,7 +85,7 @@
         justify-content: space-between;
         align-items: center;
         color: $fontColor;
-        font-size: 2rem;
+        font-size: 1.5rem;
         width: 80%;
         line-height: 250%;
 
@@ -85,6 +113,57 @@
           color: $fontColor;
         }
       }
+
     }
+
+    .logs {
+      font-size: .8rem;
+      opacity: .7;
+      padding: 1rem;
+      border-radius: 4px;
+      background-color: #000;
+      color: $fontColor;
+      width: 100%;
+      height: 190px;
+      max-height: 190px;
+      overflow-y: hidden;
+      line-height: 250%;
+      outline-offset: 4px;
+      outline: 2px solid $primaryColor;
+
+      .empty {
+        font-size: 2rem;
+        display: block;
+        text-transform: uppercase;
+        text-align: center;
+        width: 100%;
+        height: 20%;
+        margin: 40% 0;
+      }
+
+      .time {
+        color: $fontColor;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .failure {
+        display: flex;
+        justify-content: space-between;
+        color: $errorColor;
+      }
+
+      .success {
+        color: $successColor;
+      }
+
+      .info {
+        color: $fontColor;
+      }
+    }
+
   }
 }

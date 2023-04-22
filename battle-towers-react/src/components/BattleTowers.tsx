@@ -31,7 +31,7 @@ const BattleTowers = () => {
   return (
     <animated.div className="wrapper" style={stateAnimation}>
       <div className="game">
-        {!isGameStart ?
+        {/* {!isGameStart ?
           <>
             <header className={styles.logo}>
               <div className={styles.imageWrapper}>
@@ -41,8 +41,8 @@ const BattleTowers = () => {
             </header>
             {!changeState ? <Intro /> : <Menu />} </> :
           <>{endGame === GameResult.UNPLAYED && <Game />}</>
-        }
-        {/* <Game /> */}
+        } */}
+        <Game />
         {endGame !== GameResult.UNPLAYED && <End gameResult={endGame} />}
       </div>
 

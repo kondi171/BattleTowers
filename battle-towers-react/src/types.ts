@@ -1,3 +1,5 @@
+import { LogType } from "./enums";
+
 export type Position = {
   x: number,
   y: number
@@ -24,4 +26,10 @@ export type Wave = {
   enemies: {
 
   }
+}
+
+export type Log = {
+  content: string,
+  type: LogType,
+  time: string
 }
