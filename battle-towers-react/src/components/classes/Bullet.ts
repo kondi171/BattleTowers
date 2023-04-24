@@ -26,7 +26,7 @@ class Bullet extends Sprite {
         this.bulletCanon = new Image();
         this.bulletCanon.src = cannonBullet;
     }
-    private draw(angle: number) {
+    protected draw(angle: number) {
         this.canvasRenderingContext.save();
         this.canvasRenderingContext.translate(this.position.x, this.position.y);
         this.canvasRenderingContext.rotate(angle);

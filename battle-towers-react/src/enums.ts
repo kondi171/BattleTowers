@@ -18,7 +18,18 @@ export enum GamePart {
 }
 
 export enum LogType {
-  Failure,
-  Success,
-  Info
+  FAILURE,
+  SUCCESS,
+  INFO
+}
+
+export enum BattleJournalPage {
+  ENEMIES,
+  TOWERS,
+  RULES
+}
+
+export enum Direction {
+  LEFT,
+  RIGHT
 }

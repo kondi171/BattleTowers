@@ -43,8 +43,8 @@ class Scene {
   private wave: number;
 
   constructor() {
-    this.world = 1;
-    this.level = 1;
+    this.world = 3;
+    this.level = 3;
     this.wave = 1;
   }
 

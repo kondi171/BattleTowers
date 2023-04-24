@@ -1,6 +1,6 @@
 import { Position } from "../../types";
 import Bullet from "./Bullet";
-import Enemy from "./Enemy";
+import Enemy from "./enemies/Enemy";
 
 class Tower {
     private canvasRenderingContext: CanvasRenderingContext2D;
@@ -39,14 +39,14 @@ class Tower {
         this.canvasRenderingContext.fillStyle = 'blue';
         this.canvasRenderingContext.fillRect(this.position.x, this.position.y, this.size, this.size);
     }
-    private draw() {
+    protected draw() {
         this.drawTower();
         this.drawBlastField();
     }
 
     public update() {
         this.draw();
-        if (this.frames % 10 === 0 && this.target) {
+        if (this.frames % 100 === 0 && this.target) {
             this.bullets.push(new Bullet(
                 this.canvasRenderingContext,
                 {

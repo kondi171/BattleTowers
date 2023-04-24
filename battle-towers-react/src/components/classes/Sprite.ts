@@ -21,7 +21,8 @@ abstract class Sprite {
             hold: 4
         }
     }
-    // abstract private draw() {};
+    protected abstract draw(angle?: number): void;
+    public abstract update(): void;
 }
 
 export default Sprite;

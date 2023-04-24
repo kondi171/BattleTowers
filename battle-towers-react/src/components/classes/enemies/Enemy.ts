@@ -1,21 +1,21 @@
-import { Bounding, Position } from '../../types';
+import { Direction } from '../../../enums';
+import { Bounding, Position } from '../../../types';
+import Sprite from '../Sprite';
+import enemy from './../../../assets/img/sprites/enemies/commonOrc.png';
 
-class Enemy {
-  private canvasRenderingContext: CanvasRenderingContext2D;
+class Enemy extends Sprite {
+
   private waypoints: Position[];
-  private position: Position;
   private bounding: Bounding;
   private waypointIndex: number;
   private health: number;
   private velocity: Position;
   private speed: number;
+  private direction: Direction | null;
+
   constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position, waypoints: Position[]) {
-    this.canvasRenderingContext = ctx;
+    super(ctx, { x: x, y: y }, enemy, { max: 7 });
     this.waypoints = waypoints;
-    this.position = {
-      x: x,
-      y: y
-    }
     this.bounding = {
       width: 64,
       height: 64,
@@ -27,16 +27,59 @@ class Enemy {
       x: 0,
       y: 0,
     }
-    this.speed = 0;
-    // this.speed = 10;
+    this.speed = 2;
+    this.direction = null;
   }
 
   private drawEnemy() {
-    this.canvasRenderingContext.fillStyle = 'red';
-    // this.canvasRenderingContext.fillRect(this.position.x, this.position.y, this.bounding.width, this.bounding.height);
-    this.canvasRenderingContext.beginPath();
-    this.canvasRenderingContext.arc(this.position.x + this.bounding.width / 2, this.position.y + this.bounding.height / 2, this.bounding.radius, 0, Math.PI * 2);
-    this.canvasRenderingContext.fill();
+    const cropWidth = this.image.width / this.frames.max;
+    const crop = {
+      position: {
+        x: cropWidth * this.frames.current,
+        y: 0
+      },
+      width: cropWidth,
+      height: this.image.height
+    }
+
+    if (this.waypointIndex !== this.waypoints.length - 2) {
+      if (this.waypoints[this.waypointIndex].x < this.waypoints[this.waypointIndex + 1].x) this.direction = Direction.RIGHT
+      else this.direction = Direction.LEFT
+    }
+    if (this.direction === Direction.RIGHT) {
+      this.canvasRenderingContext.drawImage(
+        this.image,
+        crop.position.x,
+        crop.position.y,
+        crop.width,
+        crop.height,
+        this.position.x - 15,
+        this.position.y,
+        crop.width,
+        crop.height
+      );
+    } else {
+      this.canvasRenderingContext.scale(-1, 1);
+      this.canvasRenderingContext.drawImage(
+        this.image,
+        crop.position.x,
+        crop.position.y,
+        crop.width,
+        crop.height,
+        -this.position.x - this.bounding.width - 15,
+        this.position.y,
+        crop.width,
+        crop.height
+      );
+      this.canvasRenderingContext.scale(-1, 1);
+    }
+
+
+    this.frames.elapsed++;
+    if (this.frames.elapsed % this.frames.hold === 0) {
+      this.frames.current++;
+      if (this.frames.current >= this.frames.max - 1) this.frames.current = 0;
+    }
   }
 
   private drawHealthBars() {
@@ -47,7 +90,7 @@ class Enemy {
     this.canvasRenderingContext.fillRect(this.position.x, this.position.y - 15, this.bounding.width * this.health / 100, 10);
   }
 
-  private draw() {
+  protected draw() {
     this.drawEnemy();
     this.drawHealthBars();
   }

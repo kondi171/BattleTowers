@@ -33,3 +33,10 @@ export type Log = {
   type: LogType,
   time: string
 }
+
+export type Frames = {
+  max: number,
+  current: number,
+  elapsed: number,
+  hold: number
+}
