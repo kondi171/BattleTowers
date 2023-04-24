@@ -11,7 +11,7 @@ class Tower {
     private target: Enemy | null;
     private frames: number;
 
-    constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position, enemies: Enemy[]) {
+    constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position) {
         this.canvasRenderingContext = ctx;
         this.position = {
             x: x,

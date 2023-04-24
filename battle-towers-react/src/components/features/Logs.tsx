@@ -14,7 +14,7 @@ const Logs = () => {
         const { type, content, time } = log;
         return (
           <div className={styles.text} key={index}>
-            {type === LogType.Failure ?
+            {type === LogType.FAILURE ?
               <div className={styles.row}>
                 <span className={styles.failure}>{content}</span>
                 <span className={styles.time}>{time}</span>

@@ -33,3 +33,9 @@ export enum Direction {
   LEFT,
   RIGHT
 }
+
+export enum HealthBarDivider {
+  SOLDIER_ORC = 100,
+  SCOUT_ORC = 50,
+  WARRIOR_ORC = 200
+}

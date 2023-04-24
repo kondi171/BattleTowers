@@ -1,20 +1,21 @@
-import { Direction } from '../../../enums';
+import { Direction, HealthBarDivider } from '../../../enums';
 import { Bounding, Position } from '../../../types';
 import Sprite from '../Sprite';
-import enemy from './../../../assets/img/sprites/enemies/commonOrc.png';
 
-class Enemy extends Sprite {
+abstract class Enemy extends Sprite {
 
   private waypoints: Position[];
-  private bounding: Bounding;
   private waypointIndex: number;
-  private health: number;
   private velocity: Position;
-  private speed: number;
   private direction: Direction | null;
+  protected bounding: Bounding;
+  protected health: number;
+  protected speed: number;
+  protected healthBarDivider: HealthBarDivider;
+  protected enemyName: string;
 
-  constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position, waypoints: Position[]) {
-    super(ctx, { x: x, y: y }, enemy, { max: 7 });
+  constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position, waypoints: Position[], imageSrc: string) {
+    super(ctx, { x: x, y: y }, imageSrc, { max: 7 });
     this.waypoints = waypoints;
     this.bounding = {
       width: 64,
@@ -29,6 +30,8 @@ class Enemy extends Sprite {
     }
     this.speed = 2;
     this.direction = null;
+    this.healthBarDivider = HealthBarDivider.SOLDIER_ORC;
+    this.enemyName = 'Scout';
   }
 
   private drawEnemy() {
@@ -74,7 +77,6 @@ class Enemy extends Sprite {
       this.canvasRenderingContext.scale(-1, 1);
     }
 
-
     this.frames.elapsed++;
     if (this.frames.elapsed % this.frames.hold === 0) {
       this.frames.current++;
@@ -83,16 +85,71 @@ class Enemy extends Sprite {
   }
 
   private drawHealthBars() {
+    const barHeight = 10;
+    const borderRadius = 5;
+
     this.canvasRenderingContext.fillStyle = '#cc0000';
-    this.canvasRenderingContext.fillRect(this.position.x, this.position.y - 15, this.bounding.width, 10);
+    this.fillHealthBars(
+      this.canvasRenderingContext,
+      this.position.x,
+      this.position.y - barHeight - borderRadius,
+      this.bounding.width,
+      barHeight,
+      borderRadius
+    );
 
     this.canvasRenderingContext.fillStyle = '#00c700';
-    this.canvasRenderingContext.fillRect(this.position.x, this.position.y - 15, this.bounding.width * this.health / 100, 10);
+    this.fillHealthBars(
+      this.canvasRenderingContext,
+      this.position.x,
+      this.position.y - barHeight - borderRadius,
+      this.bounding.width * this.health / this.healthBarDivider,
+      barHeight,
+      borderRadius
+    );
+  }
+
+  private drawHealthValue() {
+    this.canvasRenderingContext.fillStyle = '#ffffff';
+    this.canvasRenderingContext.font = 'bold 18px sans-serif';
+    this.canvasRenderingContext.textAlign = 'center';
+    this.canvasRenderingContext.fillText(
+      `${this.health} / ${this.healthBarDivider}`,
+      this.position.x + this.bounding.width / 2,
+      this.position.y - 20
+    );
+  }
+  private drawEnemyName() {
+    this.canvasRenderingContext.fillStyle = '#cc0000';
+    this.canvasRenderingContext.font = 'bold 18px sans-serif';
+    this.canvasRenderingContext.textAlign = 'center';
+    this.canvasRenderingContext.fillText(
+      this.enemyName,
+      this.position.x + this.bounding.width / 2,
+      this.position.y + 100
+    );
+  }
+
+  private fillHealthBars(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+    ctx.fill();
   }
 
   protected draw() {
     this.drawEnemy();
     this.drawHealthBars();
+    this.drawHealthValue();
+    this.drawEnemyName();
   }
 
   public update() {
@@ -116,9 +173,10 @@ class Enemy extends Sprite {
 
   public getPosition() { return this.position; }
   public getBounding() { return this.bounding; }
-  public getHealth() { return this.health };
-  public decreaseHealth(health: number) { this.health -= health };
   public getWaypointIndex() { return this.waypointIndex; }
+  public getHealth() { return this.health; }
+  public decreaseHealth(health: number) { this.health -= health; }
+  public getSpeed() { return this.speed; }
 }
 
 export default Enemy;

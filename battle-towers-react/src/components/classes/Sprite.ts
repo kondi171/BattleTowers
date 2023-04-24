@@ -22,7 +22,7 @@ abstract class Sprite {
         }
     }
     protected abstract draw(angle?: number): void;
-    public abstract update(): void;
+    public abstract update(speed?: number, health?: number): void;
 }
 
 export default Sprite;

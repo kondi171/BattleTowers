@@ -3,7 +3,7 @@ import { AppContext, AppContextType } from './AppContext';
 import { Log, Mouse } from '../types';
 import { GamePart, GameResult, LogType } from '../enums';
 import styles from './../assets/scss/modules/SceneCanvas.module.scss';
-import Enemy from './classes/Enemy';
+import Enemy from './classes/enemies/Enemy';
 import Tower from './classes/Tower';
 import PlacementTile from './classes/PlacementTile';
 import Scene from './classes/Scene';
@@ -64,12 +64,12 @@ const SceneCanvas = () => {
     if (!ctx) return;
     if (activeTile && !activeTile.getOccupied()) {
       if (player.getMoney() >= 50) {
-        towers.push(new Tower(ctx, { x: activeTile.getPosition().x, y: activeTile.getPosition().y }, enemies));
+        towers.push(new Tower(ctx, { x: activeTile.getPosition().x, y: activeTile.getPosition().y }));
         activeTile.setOccupied(true);
         player.setMoney(player.getMoney() - 50);
         setMoney(player.getMoney());
-        addToLogs('Tower has been placed!', LogType.Success);
-      } else addToLogs('Not enough money!', LogType.Failure);
+        addToLogs('Tower has been placed!', LogType.SUCCESS);
+      } else addToLogs('Not enough money!', LogType.FAILURE);
     }
   }
 
@@ -87,7 +87,6 @@ const SceneCanvas = () => {
     mouse.x = event.clientX - canvasLeftOffset;
     mouse.y = event.clientY - canvasTopOffset;
     activeTile = null;
-    // Bounding Error!
     for (let i = 0; i < placementTiles.length; i++) {
       const tile = placementTiles[i];
       if (
@@ -181,20 +180,20 @@ const SceneCanvas = () => {
       animationID = requestAnimationFrame(animate);
       if (part === GamePart.WAVE) {
         setWave(scene.getWave());
-        addToLogs('Wave increassed!', LogType.Success);
+        addToLogs('Next Wave!', LogType.SUCCESS);
       }
       else if (part === GamePart.LEVEL) {
         setMoney(player.getMoney());
         setLevel(scene.getLevel());
         setWave(1);
-        addToLogs('Level increassed!', LogType.Success);
+        addToLogs('Next Level!', LogType.SUCCESS);
       } else if (part === GamePart.WORLD) {
         setWave(1);
         setLevel(1);
         setWorld(scene.getWorldName());
         setLife(player.getLife());
         setMoney(player.getMoney());
-        addToLogs('New world appear!', LogType.Success);
+        addToLogs('Next World!', LogType.SUCCESS);
       }
     }, 4000);
 
@@ -241,6 +240,8 @@ const SceneCanvas = () => {
   const changeWorld = (ctx: CanvasRenderingContext2D) => {
     if (scene.getWorld() >= scene.getWorldsLength()) {
       setEndGame(GameResult.WIN);
+      player.setScore(player.getLife() * 100);
+      setScore(player.getScore());
       gameReset();
     } else {
       scene.setWave(1);
@@ -270,7 +271,7 @@ const SceneCanvas = () => {
     const worldData = scene.getCurrentWorldData();
     if (enemy.getWaypointIndex() === worldData.waypoints.length - 1) {
       player.setLife(player.getLife() - 1);
-      addToLogs('Lost life!', LogType.Failure);
+      addToLogs('Lost life!', LogType.FAILURE);
       setLife(player.getLife());
       enemies.splice(index, 1);
       if (player.getLife() <= 0) {

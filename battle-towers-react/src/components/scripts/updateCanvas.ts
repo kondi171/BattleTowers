@@ -1,5 +1,5 @@
 import { Mouse } from "../../types";
-import Enemy from "../classes/Enemy";
+import Enemy from "../classes/enemies/Enemy";
 import PlacementTile from "../classes/PlacementTile";
 import Tower from "../classes/Tower";
 import World from "../classes/Scene";

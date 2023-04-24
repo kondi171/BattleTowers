@@ -1,9 +1,12 @@
 import { StartingPoint } from '../../enums';
-import Enemy from '../classes/Enemy';
+import SoldierOrc from '../classes/enemies/SoldierOrc';
+import Enemy from '../classes/enemies/Enemy';
+import ScoutOrc from '../classes/enemies/ScoutOrc';
+import WarriorOrc from '../classes/enemies/WarriorOrc';
 import Scene from '../classes/Scene';
 
 const spawnEnemies = (ctx: CanvasRenderingContext2D, scene: Scene) => {
-  const numberOfEnemies = 4;
+  const numberOfEnemies = 2;
   const enemies: Enemy[] = [];
   const worldData = scene.getCurrentWorldData();
 
@@ -17,8 +20,10 @@ const spawnEnemies = (ctx: CanvasRenderingContext2D, scene: Scene) => {
     else if (startingPoint === StartingPoint.TOP) yOffset = i * spaceBetween;
     else if (startingPoint === StartingPoint.BOTTOM) yOffset = i * -spaceBetween;
     else if (startingPoint === StartingPoint.RIGHT) xOffset = i * -spaceBetween;
-    const enemy = new Enemy(ctx, { x: worldData.waypoints[0].x - xOffset, y: worldData.waypoints[0].y - yOffset }, worldData.waypoints);
-    enemies.push(enemy);
+    const enemy1 = new SoldierOrc(ctx, { x: worldData.waypoints[0].x - xOffset, y: worldData.waypoints[0].y - yOffset }, worldData.waypoints);
+    const enemy2 = new ScoutOrc(ctx, { x: worldData.waypoints[0].x - xOffset, y: worldData.waypoints[0].y - yOffset }, worldData.waypoints);
+    const enemy3 = new WarriorOrc(ctx, { x: worldData.waypoints[0].x - xOffset, y: worldData.waypoints[0].y - yOffset }, worldData.waypoints);
+    enemies.push(enemy1, enemy2, enemy3);
   }
 
   enemies.splice(0, 1);
