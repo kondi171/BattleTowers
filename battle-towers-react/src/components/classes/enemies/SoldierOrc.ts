@@ -11,6 +11,7 @@ class SoldierOrc extends Enemy {
         this.speed = 4;
         this.healthBarDivider = HealthBarDivider.SOLDIER_ORC;
         this.enemyName = 'Soldier';
+        this.score = 8;
     }
 
     public update() {

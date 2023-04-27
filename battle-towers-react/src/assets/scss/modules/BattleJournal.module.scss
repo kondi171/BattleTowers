@@ -1,0 +1,234 @@
+@import '../variables';
+
+.battleJournal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    transition-duration: .4s;
+    opacity: 0;
+    background-color: rgba($color: #000000, $alpha: .9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.active {
+        transition-duration: .4s;
+        opacity: 1;
+    }
+
+    .modal {
+        position: relative;
+        background-color: $bgColor;
+        height: 80%;
+        width: 60%;
+        border-radius: 4px;
+        border: 2px solid $secondaryColor;
+        box-shadow: 0 0 2px 2px $secondaryColor;
+
+        .close {
+            position: absolute;
+            right: -3rem;
+            top: -4rem;
+            font-size: 6rem;
+            color: $primaryColor;
+            transition-duration: .4s;
+
+            &:hover {
+                transform: rotate(180deg);
+                cursor: pointer;
+                color: $secondaryColor;
+            }
+        }
+
+        .header {
+            font-size: 6rem;
+            text-align: center;
+            font-family: $titleFont;
+            padding: 2rem;
+            background-image: linear-gradient(180deg, $primaryColor 0%, $bgColor 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-stroke: 2px $bgColor;
+            filter: drop-shadow(0 0 5px $secondaryColor);
+            border-bottom: 2px solid $secondaryColor;
+        }
+
+        .overlay {
+            background-color: $bgColor;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .articles {
+            position: absolute;
+            top: 20%;
+            display: flex;
+            // align-items: center;
+            margin-left: -8%;
+            flex-direction: column;
+            color: $bgColor;
+            z-index: -10;
+
+            article {
+                display: flex;
+                align-items: center;
+                width: 25vmin;
+                height: 8vmin;
+                text-align: center;
+                border: 2px solid $primaryColor;
+                padding: 10px;
+                border-radius: 4px;
+                margin: 5% 0;
+                background-color: $primaryColor;
+                transition-duration: .4s;
+
+                &.active {
+                    transform: translateX(-50%);
+                    background-color: $secondaryColor;
+                    color: $fontColor;
+                    transform: translateX(-50%);
+
+                    & img {
+                        filter: invert(98%) sepia(0%) saturate(7405%) hue-rotate(195deg) brightness(120%) contrast(58%);
+                    }
+                }
+
+                h3 {
+                    margin-left: 10%;
+                }
+
+                img {
+                    width: 30%;
+                    height: 80%;
+                    filter: invert(4%) sepia(2%) saturate(3316%) hue-rotate(201deg) brightness(99%) contrast(80%);
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: $secondaryColor;
+                    color: $fontColor;
+                    transform: translateX(-50%);
+
+                    & img {
+                        filter: invert(98%) sepia(0%) saturate(7405%) hue-rotate(195deg) brightness(120%) contrast(58%);
+                    }
+                }
+            }
+        }
+
+        .content {
+            max-height: 65vh;
+            overflow-y: auto;
+
+            h2 {
+                text-align: center;
+                margin: 1rem;
+                color: $fontColor;
+                font-size: 5rem;
+                font-family: $primaryFont;
+            }
+
+            .rulesHeader {
+                text-align: center;
+                margin: 1rem;
+                color: $primaryColor;
+                font-size: 4rem;
+                font-family: $supportFont;
+                margin: 3rem 0;
+            }
+
+            .rulesParagraph {
+                font-size: 3rem;
+                line-height: 200%;
+                color: $fontColor;
+                text-align: justify;
+                padding: 0 6rem;
+                font-family: $primaryFont;
+
+                strong {
+                    color: $primaryColor;
+                }
+
+                .health {
+                    color: $errorColor;
+                }
+
+                .money {
+                    color: $successColor;
+                }
+            }
+
+            .goodLuck {
+                color: rebeccapurple;
+            }
+
+            .enemies {
+                margin-top: 3rem;
+            }
+
+            .cards {
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+
+                .card {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    border: 2px solid $primaryColor;
+                    width: 30%;
+                    padding: 20px;
+                    color: $fontColor;
+                    line-height: 250%;
+                    font-size: 1.5rem;
+                    border-radius: 4px;
+                    background-color: darken($bgColor, 4%);
+
+                    .imgWrapper {
+                        // width: 30%;
+                        height: 15vh;
+                        margin: 1rem;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+
+
+                    .health {
+                        color: $errorColor;
+                    }
+
+                    .money {
+                        color: $successColor;
+                    }
+
+                    .score {
+                        color: $primaryColor;
+                    }
+
+                    .speed {
+                        color: gold;
+                    }
+
+                    .opponent {
+                        span {
+                            display: block;
+                        }
+
+                        color: rebeccapurple;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+
+}

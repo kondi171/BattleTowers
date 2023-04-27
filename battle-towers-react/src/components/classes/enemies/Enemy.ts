@@ -13,6 +13,7 @@ abstract class Enemy extends Sprite {
   protected speed: number;
   protected healthBarDivider: HealthBarDivider;
   protected enemyName: string;
+  protected score: number;
 
   constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position, waypoints: Position[], imageSrc: string) {
     super(ctx, { x: x, y: y }, imageSrc, { max: 7 });
@@ -32,6 +33,7 @@ abstract class Enemy extends Sprite {
     this.direction = null;
     this.healthBarDivider = HealthBarDivider.SOLDIER_ORC;
     this.enemyName = 'Scout';
+    this.score = 0;
   }
 
   private drawEnemy() {
