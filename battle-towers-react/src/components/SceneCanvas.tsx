@@ -253,7 +253,7 @@ const SceneCanvas = () => {
       activeTile = null;
       placementTiles = fillPlacementTiles(ctx, scene);
       player.setLife(player.getLife() + 3);
-      player.setMoney(player.getMoney() + 100);
+      player.setMoney(player.getMoney() + 200);
       gameTransition(GamePart.WORLD);
     }
   }

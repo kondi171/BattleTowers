@@ -1,7 +1,6 @@
 import { Position } from "../../types";
 import Enemy from "./enemies/Enemy";
 import Sprite from "./Sprite";
-import bullet from './../../assets/img/sprites/projectile.png';
 import cannonBullet from './../../assets/img/towers/projectiles/cannon.png';
 import minigunBullet from './../../assets/img/towers/projectiles/minigun.png';
 import missileBullet from './../../assets/img/towers/projectiles/missile.png';
@@ -15,7 +14,7 @@ class Bullet extends Sprite {
     private bulletCanon: HTMLImageElement;
 
     constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position, enemy: Enemy) {
-        super(ctx, { x: x, y: y }, cannonBullet);
+        super(ctx, { x: x, y: y }, missileBullet);
         this.velocity = {
             x: 0,
             y: 0
@@ -24,7 +23,7 @@ class Bullet extends Sprite {
         this.speed = 10;
         this.enemy = enemy;
         this.bulletCanon = new Image();
-        this.bulletCanon.src = cannonBullet;
+        this.bulletCanon.src = missileBullet;
     }
     protected draw(angle: number) {
         this.canvasRenderingContext.save();

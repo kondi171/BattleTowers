@@ -1,17 +1,20 @@
 import { Position } from "../../types";
 import Bullet from "./Bullet";
+import Sprite from "./Sprite";
 import Enemy from "./enemies/Enemy";
+// import cannon from "./../../assets/img/towers/structures/cannon/Cannon1.png";
+// import minigun from "./../../assets/img/towers/structures/minigun/MG1.png";
+import cannon from "./../../assets/img/towers/structures/missile/Missile_Launcher1.png";
+class Tower extends Sprite {
 
-class Tower {
-    private canvasRenderingContext: CanvasRenderingContext2D;
-    private position: Position;
     private size: number;
     private bullets: Bullet[];
     private radius: number;
     private target: Enemy | null;
-    private frames: number;
+    private bulletFrames: number;
 
     constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position) {
+        super(ctx, { x: 0, y: 0 }, cannon)
         this.canvasRenderingContext = ctx;
         this.position = {
             x: x,
@@ -20,8 +23,9 @@ class Tower {
         this.size = 128;
         this.bullets = [];
         this.radius = 250;
-        this.frames = 0;
+        this.bulletFrames = 0;
         this.target = null;
+
     }
 
     private drawBlastField() {
@@ -36,8 +40,17 @@ class Tower {
     }
 
     private drawTower() {
-        this.canvasRenderingContext.fillStyle = 'blue';
-        this.canvasRenderingContext.fillRect(this.position.x, this.position.y, this.size, this.size);
+        if (this.target) {
+            const angle = Math.atan2(
+                this.target.getPosition().y - this.position.y + this.target.getBounding().height / 2,
+                this.target.getPosition().x - this.position.x + this.target.getBounding().width / 2
+            );
+            this.canvasRenderingContext.save();
+            this.canvasRenderingContext.translate(this.position.x + this.size / 2, this.position.y + this.size / 2);
+            this.canvasRenderingContext.rotate(angle);
+            this.canvasRenderingContext.drawImage(this.image, -this.size / 4, -this.size / 4, this.size, this.size / 2);
+            this.canvasRenderingContext.restore();
+        } else this.canvasRenderingContext.drawImage(this.image, this.position.x + this.size / 4, this.position.y + this.size / 4, this.size, this.size / 2);
     }
     protected draw() {
         this.drawTower();
@@ -46,17 +59,22 @@ class Tower {
 
     public update() {
         this.draw();
-        if (this.frames % 100 === 0 && this.target) {
+
+        if (this.bulletFrames % 10 === 0 && this.target) {
+            const angle = Math.atan2(
+                this.target.getPosition().y - this.position.y + this.target.getBounding().height / 2,
+                this.target.getPosition().x - this.position.x + this.target.getBounding().width / 2
+            );
+            const bulletX = this.position.x + this.size / 2 + Math.cos(angle) * (this.size / 2 + 50);
+            const bulletY = this.position.y + this.size / 2 + Math.sin(angle) * (this.size / 2 + 20);
             this.bullets.push(new Bullet(
                 this.canvasRenderingContext,
-                {
-                    x: this.position.x + this.size / 2,
-                    y: this.position.y + this.size / 2
-                },
-                this.target
+                { x: bulletX, y: bulletY },
+                this.target,
             ));
         }
-        this.frames++;
+
+        this.bulletFrames++;
     }
     public getBullets() {
         return this.bullets;
