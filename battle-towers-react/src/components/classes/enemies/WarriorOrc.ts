@@ -1,6 +1,6 @@
 import { Position } from "../../../types";
 import Enemy from "./Enemy";
-import warriorOrc from './../../../assets/img/sprites/enemies/warriorOrc.png';
+import warriorOrc from './../../../assets/img/enemies/warriorOrc.png';
 import { HealthBarDivider } from "../../../enums";
 
 class WarriorOrc extends Enemy {
