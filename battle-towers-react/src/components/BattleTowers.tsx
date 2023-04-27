@@ -2,11 +2,11 @@ import { useEffect, useState, useContext } from 'react';
 import { animated, useSpring } from 'react-spring';
 import shield from './../assets/img/shield.png';
 import { AppContext, AppContextType } from './AppContext';
-import Intro from './states/Intro';
-import Menu from './states/Menu';
-import Game from './states/Game';
+import Intro from './views/Intro';
+import Menu from './views/Menu';
+import Game from './views/Game';
 import styles from './../assets/scss/modules/Logo.module.scss';
-import End from './states/End';
+import End from './views/End';
 import { GameResult } from '../enums';
 
 const BattleTowers = () => {
