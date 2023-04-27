@@ -5,6 +5,7 @@
 /battle-towers-next/node_modules
 /battle-towers-vue/node_modules
 /battle-towers-nuxt/node_modules
+/.history
 /.pnp
 .pnp.js
 
