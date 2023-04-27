@@ -5,8 +5,8 @@
 
   .transitionInfo {
     position: absolute;
-    left: 0%;
-    top: 0%;
+    left: 0;
+    top: 0;
     width: 100%;
     text-align: center;
     color: $fontColor;
@@ -19,6 +19,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 5px;
+    z-index: 2;
 
     h3 {
       margin-bottom: 3rem;
@@ -33,7 +35,6 @@
     border-radius: 5px;
     border: 2px solid $secondaryColor;
     box-shadow: 0 0 4px 2px $secondaryColor;
+    z-index: 1;
   }
-
-
 }

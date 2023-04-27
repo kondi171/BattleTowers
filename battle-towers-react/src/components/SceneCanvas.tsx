@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState, useRef } from 'react';
 import { AppContext, AppContextType } from './AppContext';
 import { Log, Mouse } from '../types';
 import { GamePart, GameResult, LogType } from '../enums';
@@ -12,9 +12,10 @@ import fillPlacementTiles from './scripts/fillPlacementTiles';
 import spawnEnemies from './scripts/spawnEnemies';
 // import { getWave, updateEnemies, updatePlacementTiles, updateTower } from './scripts/updateCanvas';
 import TransitionInfo from './features/TransitionInfo';
-
+import substructure from './../assets/img/towers/structures/Substructure.png';
 
 const SceneCanvas = () => {
+  const towerCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame, endGame, logs } = useContext(AppContext) as AppContextType;
   const [init, setInit] = useState<boolean>(false);
@@ -108,7 +109,6 @@ const SceneCanvas = () => {
     const ctx = canvas!.getContext('2d');
     const image = new Image();
     image.src = scene.getCurrentMap();
-
     if (!ctx) return;
     ctx.drawImage(image, 0, 0);
     updateTower(towers, enemies);
@@ -142,6 +142,7 @@ const SceneCanvas = () => {
       updateBullet(tower, enemies);
     });
   }
+
 
   const updateBullet = (tower: Tower, enemies: Enemy[]) => {
     for (let i = tower.getBullets().length - 1; i >= 0; i--) {
@@ -298,14 +299,11 @@ const SceneCanvas = () => {
     if (init) initialize();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [init]);
-
   return (
     <div className={styles.canvasWrapper}>
       {isInfoVisible && <TransitionInfo info={info} time={time} />}
       <canvas className={styles.sceneCanvas}></canvas>
-
     </div>
-
   );
 }
 
