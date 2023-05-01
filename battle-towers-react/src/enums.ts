@@ -39,3 +39,15 @@ export enum HealthBarDivider {
   SCOUT_ORC = 50,
   WARRIOR_ORC = 200
 }
+
+export enum ContextMenu {
+  NONE,
+  NEW_TOWER,
+  UPGRADE_TOWER,
+}
+
+export enum NewTower {
+  CANNON,
+  MINIGUN,
+  MISSILE
+}

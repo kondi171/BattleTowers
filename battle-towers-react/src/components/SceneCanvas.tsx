@@ -1,10 +1,10 @@
 import { useEffect, useContext, useState, useRef } from 'react';
 import { AppContext, AppContextType } from './AppContext';
 import { Log, Mouse } from '../types';
-import { GamePart, GameResult, LogType } from '../enums';
+import { ContextMenu, GamePart, GameResult, LogType, NewTower } from '../enums';
 import styles from './../assets/scss/modules/SceneCanvas.module.scss';
 import Enemy from './classes/enemies/Enemy';
-import Tower from './classes/Tower';
+import Tower from './classes/towers/Tower';
 import PlacementTile from './classes/PlacementTile';
 import Scene from './classes/Scene';
 import Player from './classes/Player';
@@ -12,22 +12,32 @@ import fillPlacementTiles from './scripts/fillPlacementTiles';
 import spawnEnemies from './scripts/spawnEnemies';
 // import { getWave, updateEnemies, updatePlacementTiles, updateTower } from './scripts/updateCanvas';
 import TransitionInfo from './features/TransitionInfo';
-import substructure from './../assets/img/towers/structures/Substructure.png';
+import Cannon from './classes/towers/Cannon';
+import Minigun from './classes/towers/Minigun';
+import MissileLauncher from './classes/towers/MissileLauncher';
+import NewTowerMenu from './features/gameMenus/NewTowerMenu';
+import UpgradeTowerMenu from './features/gameMenus/UpgradeTowerMenu';
 
-const SceneCanvas = () => {
-  const towerCanvasRef = useRef<HTMLCanvasElement | null>(null);
+
+const SceneCanvasTest = () => {
 
   const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame, endGame, logs } = useContext(AppContext) as AppContextType;
   const [init, setInit] = useState<boolean>(false);
   const [info, setInfo] = useState<string>('');
   const [time, setTime] = useState<number>(3);
+  const [contextMenuPosition, setContextMenuPosition] = useState<Mouse>({ x: 0, y: 0 });
+  const [contextMenu, setContextMenu] = useState<ContextMenu | null>(null);
   const [isInfoVisible, setIsInfoVisible] = useState<boolean>(false);
-
+  const [newTower, setNewTower] = useState<NewTower | null>(null);
+  const [activePlacementTile, setActivePlacementTile] = useState<PlacementTile | null>(null);
+  const [context2D, setContext2D] = useState<CanvasRenderingContext2D | null>(null);
+  const [towers, setTowers] = useState<Tower[]>([]);
+  // const [placementTiles,setPlacementTiles] = useState<PlacementTile[]>([]);
   const canvasBounding = {
     width: 1280,
     height: 768,
   }
-  const towers: Tower[] = [];
+
   const mouse: Mouse = { x: 0, y: 0 };
   let enemies: Enemy[] = [];
   let activeTile: PlacementTile | null = null;
@@ -40,6 +50,7 @@ const SceneCanvas = () => {
     const canvas = document.querySelector('canvas');
     const ctx = canvas!.getContext('2d');
     if (!ctx || !canvas) return;
+    setContext2D(ctx);
     canvas.width = canvasBounding.width;
     canvas.height = canvasBounding.height;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -58,19 +69,42 @@ const SceneCanvas = () => {
     enemies = spawnEnemies(ctx, scene);
   }
 
-  const addTower = () => {
-    const canvas = document.querySelector('canvas');
-    if (!canvas) return;
-    const ctx = canvas?.getContext('2d');
-    if (!ctx) return;
-    if (activeTile && !activeTile.getOccupied()) {
-      if (player.getMoney() >= 50) {
-        towers.push(new Tower(ctx, { x: activeTile.getPosition().x, y: activeTile.getPosition().y }));
-        activeTile.setOccupied(true);
-        player.setMoney(player.getMoney() - 50);
-        setMoney(player.getMoney());
-        addToLogs('Tower has been placed!', LogType.SUCCESS);
-      } else addToLogs('Not enough money!', LogType.FAILURE);
+  const checkPlacement = (activeTile: PlacementTile) => {
+    setActivePlacementTile(activeTile);
+    if (!activeTile.getOccupied()) setContextMenu(ContextMenu.NEW_TOWER);
+    else setContextMenu(ContextMenu.UPGRADE_TOWER);
+  }
+
+  const addNewTower = () => {
+
+    if (activePlacementTile && context2D) {
+      if (newTower === NewTower.CANNON) towers.push(new Cannon(context2D, { x: activePlacementTile.getPosition().x, y: activePlacementTile.getPosition().y }));
+      else if (newTower === NewTower.MINIGUN) towers.push(new Minigun(context2D, { x: activePlacementTile.getPosition().x, y: activePlacementTile.getPosition().y }));
+      else if (newTower === NewTower.MISSILE) towers.push(new MissileLauncher(context2D, { x: activePlacementTile.getPosition().x, y: activePlacementTile.getPosition().y }));
+      setContextMenu(ContextMenu.NONE);
+      setNewTower(null);
+      addToLogs('Tower has been placed!', LogType.SUCCESS);
+      // console.log(towers.length);
+      // activePlacementTile.setOccupied(true);
+    }
+
+
+    // activeTile.setOccupied(true);
+    // player.setMoney(player.getMoney() - 50);
+    // setMoney(player.getMoney());
+    // } else addToLogs('Not enough money!', LogType.FAILURE);
+
+  }
+
+  const upgradeTower = () => { }
+
+  const placementClicked = () => {
+    if (activeTile) {
+      setContextMenuPosition({ x: mouse.x, y: mouse.y });
+      checkPlacement(activeTile);
+    } else {
+      setContextMenuPosition({ x: 0, y: 0 });
+      setContextMenu(ContextMenu.NONE);
     }
   }
 
@@ -142,7 +176,6 @@ const SceneCanvas = () => {
       updateBullet(tower, enemies);
     });
   }
-
 
   const updateBullet = (tower: Tower, enemies: Enemy[]) => {
     for (let i = tower.getBullets().length - 1; i >= 0; i--) {
@@ -221,7 +254,6 @@ const SceneCanvas = () => {
       gameTransition(GamePart.WAVE);
     }
     enemies = spawnEnemies(ctx, scene);
-
   }
 
   const increaseLevel = (ctx: CanvasRenderingContext2D) => {
@@ -283,28 +315,47 @@ const SceneCanvas = () => {
     }
   }
 
-  window.addEventListener('click', addTower);
-  window.addEventListener('mousemove', mouseMove);
 
   useEffect(() => {
     setInit(true);
+
     return () => {
       window.removeEventListener('mousemove', mouseMove);
-      window.removeEventListener('click', addTower);
+      window.removeEventListener('click', placementClicked);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (init) initialize();
+    if (init) {
+
+      window.addEventListener('click', placementClicked);
+      window.addEventListener('mousemove', mouseMove);
+      initialize();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [init]);
+
+  useEffect(() => {
+    if (newTower !== null) addNewTower();
+  }, [newTower]);
+
+  useEffect(() => {
+    // if (contextMenu === ContextMenu.NONE) {
+    // window.addEventListener('mousemove', mouseMove);
+    // setContextMenuPosition({ x: 0, y: 0 });
+    // console.log('elo');
+    // }
+    console.log(contextMenu);
+  }, [contextMenu]);
   return (
     <div className={styles.canvasWrapper}>
       {isInfoVisible && <TransitionInfo info={info} time={time} />}
+      {contextMenu === ContextMenu.NEW_TOWER && <NewTowerMenu contextMenuPosition={contextMenuPosition} setNewTower={setNewTower} />}
+      {contextMenu === ContextMenu.UPGRADE_TOWER && <UpgradeTowerMenu contextMenuPosition={contextMenuPosition} />}
       <canvas className={styles.sceneCanvas}></canvas>
     </div>
   );
 }
 
-export default SceneCanvas;
+export default SceneCanvasTest;
