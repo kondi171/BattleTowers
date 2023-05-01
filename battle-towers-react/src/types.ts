@@ -1,5 +1,10 @@
 import { LogType } from "./enums";
 
+export type Resolution = {
+  width: number,
+  height: number
+};
+
 export type Position = {
   x: number,
   y: number
@@ -39,4 +44,23 @@ export type Frames = {
   current: number,
   elapsed: number,
   hold: number
+}
+
+export type TowerData = {
+  name: string;
+  levels: {
+    level: number;
+    damage: number;
+    money: number;
+    speed: number;
+  }[];
+}
+
+export type TowerStats = {
+  name: string | undefined;
+  level: number | undefined;
+  damage: number | undefined;
+  money: number | undefined;
+  speed: number | undefined;
+  image: string | undefined;
 }
