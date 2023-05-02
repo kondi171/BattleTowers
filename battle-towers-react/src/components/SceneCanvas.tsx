@@ -5,23 +5,24 @@ import { ContextMenu, GamePart, GameResult, LogType, NewTower } from '../enums';
 import styles from './../assets/scss/modules/SceneCanvas.module.scss';
 import Enemy from './classes/enemies/Enemy';
 import Tower from './classes/towers/Tower';
-import PlacementTile from './classes/PlacementTile';
+import Substructure from './classes/Substructure';
 import Scene from './classes/Scene';
 import Player from './classes/Player';
-import fillPlacementTiles from './scripts/fillPlacementTiles';
+import fillSubstructures from './scripts/fillSubstructures';
 import spawnEnemies from './scripts/spawnEnemies';
-// import { getWave, updateEnemies, updatePlacementTiles, updateTower } from './scripts/updateCanvas';
+// import { getWave, updateEnemies, updatesubstructures, updateTower } from './scripts/updateCanvas';
 import TransitionInfo from './features/TransitionInfo';
 import Cannon from './classes/towers/Cannon';
 import Minigun from './classes/towers/Minigun';
-import MissileLauncher from './classes/towers/MissileLauncher';
+import MissileLauncher from './classes/towers/Missile';
 import NewTowerMenu from './features/gameMenus/NewTowerMenu';
 import UpgradeTowerMenu from './features/gameMenus/UpgradeTowerMenu';
+import addToLogs from './scripts/addToLogs';
 
 
 const SceneCanvas = () => {
 
-  const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame, endGame, logs } = useContext(AppContext) as AppContextType;
+  const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame, logs } = useContext(AppContext) as AppContextType;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [context2D, setContext2D] = useState<CanvasRenderingContext2D | null>(null);
@@ -33,10 +34,10 @@ const SceneCanvas = () => {
   const [contextMenu, setContextMenu] = useState<ContextMenu | null>(null);
   const [isInfoVisible, setIsInfoVisible] = useState<boolean>(false);
   const [newTower, setNewTower] = useState<NewTower | null>(null);
-  const [activePlacementTile, setActivePlacementTile] = useState<PlacementTile | null>(null);
+  const [currentSubstructure, setCurrentSubstructure] = useState<Substructure | null>(null);
   const [towers, setTowers] = useState<Tower[]>([]);
   const [scene, setScene] = useState<Scene>(new Scene());
-  const [placementTiles, setPlacementTiles] = useState<PlacementTile[]>([]);
+  const [substructures, setSubstructures] = useState<Substructure[]>([]);
   const [clickedTower, setClickedTower] = useState<Tower | null>(null);
   const [enemies, setEnemies] = useState<Enemy[]>([]);
   const [player, setPlayer] = useState<Player>(new Player());
@@ -48,8 +49,8 @@ const SceneCanvas = () => {
 
   const mouse: Mouse = { x: 0, y: 0 };
   // let enemies: Enemy[] = [];
-  let activeTile: PlacementTile | null = null;
-  // let placementTiles: PlacementTile[] = [];
+  let activeSubstructure: Substructure | null = null;
+  // let substructures: PlacementTile[] = [];
   // let scene: Scene;
   // let player: Player;
   let animationID: number;
@@ -66,51 +67,49 @@ const SceneCanvas = () => {
     setWave(scene!.getWave());
     setLevel(scene!.getLevel());
     setWorld(scene!.getWorldName());
-    setPlacementTiles(fillPlacementTiles(context2D!, scene!));
+    setSubstructures(fillSubstructures(context2D!, scene!));
     setEnemies(spawnEnemies(context2D!, scene!));
   }
 
-  const checkPlacement = (activeTile: PlacementTile) => {
-    setActivePlacementTile(activeTile);
-    if (!activeTile.getOccupied()) setContextMenu(ContextMenu.NEW_TOWER);
+  const checkPlacement = (activeSubstructure: Substructure) => {
+    setCurrentSubstructure(activeSubstructure);
+    if (!activeSubstructure.getOccupied()) setContextMenu(ContextMenu.NEW_TOWER);
     else {
-      const tower = towers.filter((tower) => tower.getPosition().x === activeTile.getPosition().x && tower.getPosition().y === activeTile.getPosition().y);
+      const tower = towers.filter((tower) => tower.getPosition().x === activeSubstructure.getPosition().x && tower.getPosition().y === activeSubstructure.getPosition().y);
       setClickedTower(tower[0]);
       setContextMenu(ContextMenu.UPGRADE_TOWER);
     }
   }
 
   const addNewTower = () => {
-    if (activePlacementTile && context2D) {
-      if (newTower === NewTower.CANNON) towers.push(new Cannon(context2D, { x: activePlacementTile.getPosition().x, y: activePlacementTile.getPosition().y }));
-      else if (newTower === NewTower.MINIGUN) towers.push(new Minigun(context2D, { x: activePlacementTile.getPosition().x, y: activePlacementTile.getPosition().y }));
-      else if (newTower === NewTower.MISSILE) towers.push(new MissileLauncher(context2D, { x: activePlacementTile.getPosition().x, y: activePlacementTile.getPosition().y }));
-      setContextMenu(ContextMenu.NONE);
-      setNewTower(null);
-      addToLogs('Tower has been placed!', LogType.SUCCESS);
-      activePlacementTile.setOccupied(true);
-      setActivePlacementTile(null);
+    let tower: Tower | null = null;
+    if (currentSubstructure && context2D) {
+      if (newTower === NewTower.CANNON) tower = new Cannon(context2D, { x: currentSubstructure.getPosition().x, y: currentSubstructure.getPosition().y });
+      else if (newTower === NewTower.MINIGUN) tower = new Minigun(context2D, { x: currentSubstructure.getPosition().x, y: currentSubstructure.getPosition().y });
+      else if (newTower === NewTower.MISSILE) tower = new MissileLauncher(context2D, { x: currentSubstructure.getPosition().x, y: currentSubstructure.getPosition().y });
+      if (tower) {
+        if (tower?.getMoney() < player.getMoney()) {
+          player.setMoney(player.getMoney() - tower!.getMoney());
+          setMoney(player.getMoney());
+          towers.push(tower!);
+          setContextMenu(ContextMenu.NONE);
+          setNewTower(null);
+          addToLogs(logs, `${tower?.getName()} has been placed!`, LogType.SUCCESS);
+          currentSubstructure.setOccupied(true);
+          setCurrentSubstructure(null);
+        } else addToLogs(logs, 'Not enough money!', LogType.FAILURE);
+      }
     }
-    // player.setMoney(player.getMoney() - 50);
-    // setMoney(player.getMoney());
-    // } else addToLogs('Not enough money!', LogType.FAILURE);
-
   }
 
   const placementClicked = () => {
-    if (activeTile) {
+    if (activeSubstructure) {
       setContextMenuPosition({ x: mouse.x, y: mouse.y });
-      checkPlacement(activeTile);
+      checkPlacement(activeSubstructure);
     } else {
       setContextMenuPosition({ x: 0, y: 0 });
       setContextMenu(ContextMenu.NONE);
     }
-  }
-
-  const addToLogs = (content: string, type: LogType) => {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString([], { hour12: false });
-    logs.push({ content: content, type: type, time: timeString })
   }
 
   const mouseMove = (event: MouseEvent) => {
@@ -118,16 +117,16 @@ const SceneCanvas = () => {
     const canvasLeftOffset = canvasRef.current!.getBoundingClientRect().left;
     mouse.x = event.clientX - canvasLeftOffset;
     mouse.y = event.clientY - canvasTopOffset;
-    activeTile = null;
-    for (let i = 0; i < placementTiles.length; i++) {
-      const tile = placementTiles[i];
+    activeSubstructure = null;
+    for (let i = 0; i < substructures.length; i++) {
+      const tile = substructures[i];
       if (
         mouse.x > tile.getPosition().x &&
         mouse.x < tile.getPosition().x + tile.getSize() &&
         mouse.y > tile.getPosition().y &&
         mouse.y < tile.getPosition().y + tile.getSize()
       ) {
-        activeTile = tile;
+        activeSubstructure = tile;
         break;
       }
     }
@@ -140,7 +139,7 @@ const SceneCanvas = () => {
     context2D!.drawImage(image, 0, 0);
     updateTower(towers, enemies);
     updateEnemies(enemies);
-    updatePlacementTiles(placementTiles, mouse);
+    updateSubstructures(substructures, mouse);
   }
 
   const updateEnemies = (enemies: Enemy[]) => {
@@ -151,8 +150,8 @@ const SceneCanvas = () => {
     }
   }
 
-  const updatePlacementTiles = (placementTiles: PlacementTile[], mouse: Mouse) => {
-    placementTiles.forEach(tile => tile.update(mouse));
+  const updateSubstructures = (substructures: Substructure[], mouse: Mouse) => {
+    substructures.forEach(substructure => substructure.update(mouse));
   }
 
   const updateTower = (towers: Tower[], enemies: Enemy[]) => {
@@ -178,18 +177,20 @@ const SceneCanvas = () => {
       const yDifference = (bullet.getEnemy().getPosition().y + bullet.getEnemy().getBounding().height / 2) - bullet.getPosition().y;
       const distance = Math.hypot(xDifference, yDifference);
       if (distance < bullet.getEnemy().getBounding().radius) {
-        bullet.getEnemy().decreaseHealth(20);
+        bullet.getEnemy().decreaseHealth(tower.getDamage());
         tower.getBullets().splice(i, 1);
         if (bullet.getEnemy().getHealth() <= 0) {
           const enemyIndex = enemies.findIndex((enemy) => {
             return bullet.getEnemy() === enemy;
           });
           if (enemyIndex > -1) {
+            const targetedEnemy = enemies[enemyIndex];
             enemies.splice(enemyIndex, 1);
-            // player.setMoney(player.getMoney() + 20);
-            // player.setScore(player.getScore() + 8);
-            // setScore(player.getScore());
-            // setMoney(player.getMoney());
+            addToLogs(logs, `${targetedEnemy.getName()} has been eliminated!`, LogType.SUCCESS);
+            player.setMoney(player.getMoney() + targetedEnemy.getMoney());
+            player.setScore(player.getScore() + targetedEnemy.getScore());
+            setScore(player.getScore());
+            setMoney(player.getMoney());
           }
         }
         if (enemies.length === 0) increaseWave();
@@ -198,6 +199,7 @@ const SceneCanvas = () => {
   }
 
   const gameTransition = (part: GamePart) => {
+    // console.log(enemies.length);
     if (player.getLife() <= 0) return;
     cancelAnimationFrame(animationID);
     setInfo(part);
@@ -207,19 +209,19 @@ const SceneCanvas = () => {
       animationID = requestAnimationFrame(animate);
       if (part === GamePart.WAVE) {
         setWave(scene!.getWave());
-        addToLogs('Next Wave!', LogType.SUCCESS);
+        addToLogs(logs, 'Next Wave!', LogType.SUCCESS);
       } else if (part === GamePart.LEVEL) {
         setMoney(player.getMoney());
         setLevel(scene!.getLevel());
         setWave(1);
-        addToLogs('Next Level!', LogType.SUCCESS);
+        addToLogs(logs, 'Next Level!', LogType.SUCCESS);
       } else if (part === GamePart.WORLD) {
         setWave(1);
         setLevel(1);
         setWorld(scene!.getWorldName());
         setLife(player.getLife());
         setMoney(player.getMoney());
-        addToLogs('Next World!', LogType.SUCCESS);
+        addToLogs(logs, 'Next World!', LogType.SUCCESS);
       }
     }, 4000);
 
@@ -243,7 +245,7 @@ const SceneCanvas = () => {
     if (scene!.getWave() >= 3) increaseLevel(ctx);
     else {
       scene!.setWave(scene!.getWave() + 1);
-      gameTransition(GamePart.WAVE);
+
     }
     setEnemies(spawnEnemies(context2D!, scene!));
   }
@@ -253,8 +255,8 @@ const SceneCanvas = () => {
     else {
       scene!.setLevel(scene!.getLevel() + 1);
       setTowers([]);
-      activeTile = null;
-      setPlacementTiles(fillPlacementTiles(context2D!, scene!))
+      activeSubstructure = null;
+      setSubstructures(fillSubstructures(context2D!, scene!))
       scene!.setWave(1);
       player.setMoney(player.getMoney() + 100);
       gameTransition(GamePart.LEVEL);
@@ -272,8 +274,8 @@ const SceneCanvas = () => {
       scene!.setLevel(1);
       scene!.setWorld(scene!.getWorld() + 1);
       towers.splice(0, towers.length);
-      activeTile = null;
-      setPlacementTiles(fillPlacementTiles(context2D!, scene!))
+      activeSubstructure = null;
+      setSubstructures(fillSubstructures(context2D!, scene!))
       player.setLife(player.getLife() + 3);
       player.setMoney(player.getMoney() + 200);
       gameTransition(GamePart.WORLD);
@@ -294,7 +296,7 @@ const SceneCanvas = () => {
     const worldData = scene!.getCurrentWorldData();
     if (enemy.getWaypointIndex() === worldData.waypoints.length - 1) {
       player.setLife(player.getLife() - 1);
-      addToLogs('Lost life!', LogType.FAILURE);
+      addToLogs(logs, 'Lost life!', LogType.FAILURE);
       setLife(player.getLife());
       enemies.splice(index, 1);
       if (player.getLife() <= 0) {
@@ -325,19 +327,20 @@ const SceneCanvas = () => {
   }, [init]);
 
   useEffect(() => {
-    if (init && placementTiles.length !== 0) {
+    if (init && substructures.length !== 0) {
       const image = new Image();
       image.src = scene!.getCurrentMap();
       image.onload = () => { animate(); }
       window.addEventListener('click', placementClicked);
       window.addEventListener('mousemove', mouseMove);
     }
-  }, [init, placementTiles]);
+  }, [init, substructures]);
 
   useEffect(() => {
     if (newTower !== null) addNewTower();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newTower]);
+
 
 
   return (
@@ -347,9 +350,10 @@ const SceneCanvas = () => {
       {contextMenu === ContextMenu.UPGRADE_TOWER &&
         <UpgradeTowerMenu
           contextMenuPosition={contextMenuPosition}
-          activeTile={activePlacementTile}
+          currentSubstructure={currentSubstructure}
           towers={towers}
           currentTower={clickedTower}
+          player={player}
         />
       }
       <canvas ref={canvasRef} className={styles.sceneCanvas}></canvas>
