@@ -3,9 +3,6 @@ import Bullet from "../Bullet";
 import Sprite from "../Sprite";
 import Enemy from "../enemies/Enemy";
 
-// import minigun from "./../../../assets/img/towers/structures/minigun/MG1.png";
-
-
 class Tower extends Sprite {
 
     private size: number;
@@ -15,6 +12,8 @@ class Tower extends Sprite {
     private bulletFrames: number;
     private towerData: TowerData;
     private towerImages: string[];
+    protected explosionImg: string;
+    protected maxExplosionFrames: number;
     protected bulletImage: HTMLImageElement;
     protected name: string;
     protected damage: number;
@@ -43,6 +42,8 @@ class Tower extends Sprite {
         this.bulletImage.src = bulletImg;
         this.towerData = towerData;
         this.towerImages = towerImages;
+        this.explosionImg = '';
+        this.maxExplosionFrames = 0;
     }
 
     private drawBlastField() {
@@ -152,6 +153,12 @@ class Tower extends Sprite {
             image: this.towerImages[this.level]
         }
         return currentLevel;
+    }
+    public getMaxExplosionFrames() {
+        return this.maxExplosionFrames;
+    }
+    public getExplosionImg() {
+        return this.explosionImg;
     }
 }
 

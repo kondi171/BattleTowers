@@ -20,6 +20,9 @@ import mouseMove from './scripts/mouseMove';
 import TransitionInfo from './features/TransitionInfo';
 import NewTowerMenu from './features/gameMenus/NewTowerMenu';
 import UpgradeTowerMenu from './features/gameMenus/UpgradeTowerMenu';
+import Sprite from './classes/Sprite';
+import cannonExplosion from './../assets/img/towers/explosions/cannon_explosion.png';
+import Explosion from './classes/Explosion';
 
 const numberOfEnemies = 6;
 
@@ -47,6 +50,7 @@ const SceneCanvas = () => {
 
   const [towers, setTowers] = useState<Tower[]>([]);
   const [enemies, setEnemies] = useState<Enemy[]>([]);
+  const [explosions, setExplosions] = useState<Explosion[]>([]);
 
   const [substructures, setSubstructures] = useState<Substructure[]>([]);
   const [currentSubstructure, setCurrentSubstructure] = useState<Substructure | null>(null);
@@ -106,6 +110,7 @@ const SceneCanvas = () => {
   }
 
   const animate = () => {
+    // console.log(explosions.length);
     animationRef.current = requestAnimationFrame(animate);
     const image = new Image();
     image.src = scene!.getCurrentMap();
@@ -113,6 +118,7 @@ const SceneCanvas = () => {
     updateTower();
     updateEnemies();
     updateSubstructures();
+    updateExplosions();
   }
 
   const updateEnemies = () => {
@@ -155,6 +161,12 @@ const SceneCanvas = () => {
       const distance = Math.hypot(xDifference, yDifference);
       if (distance < bullet.getEnemy().getBounding().radius) {
         bullet.getEnemy().decreaseHealth(tower.getDamage());
+        explosions.push(new Explosion(
+          context2D!,
+          { x: bullet.getEnemy().getPosition().x, y: bullet.getEnemy().getPosition().y },
+          tower.getExplosionImg(),
+          { max: tower.getMaxExplosionFrames() })
+        );
         tower.getBullets().splice(i, 1);
         if (bullet.getEnemy().getHealth() <= 0) {
           const enemyIndex = enemies.findIndex((enemy) => {
@@ -174,6 +186,13 @@ const SceneCanvas = () => {
       }
     }
   }
+  const updateExplosions = () => {
+    for (let i = explosions.length - 1; i >= 0; i--) {
+      const explosion = explosions[i];
+      explosion.update();
+      if (explosion.getFrames().current >= explosion.getFrames().max - 1) explosions.splice(i, 1);
+    }
+  }
 
   const gameTransition = (part: GamePart) => {
     if (player!.getLife() <= 0) return;
@@ -181,6 +200,7 @@ const SceneCanvas = () => {
     setIsInfoVisible(true);
     setTimeout(() => {
       setIsInfoVisible(false);
+      console.log('animate1');
       animate();
       if (part === GamePart.WAVE) {
         setWave(scene!.getWave());
@@ -305,7 +325,7 @@ const SceneCanvas = () => {
     if (isInitialized) {
       const image = new Image();
       image.src = scene!.getCurrentMap();
-      image.onload = () => { animate(); }
+      image.onload = () => { animate(); console.log('animate2'); }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInitialized]);
