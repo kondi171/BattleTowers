@@ -1,8 +1,8 @@
 import { StartingPoint } from '../../enums';
 
-import desertData from '../worlds/desert.json';
-import forestData from '../worlds/forest.json';
-import underworldData from '../worlds/underworld.json';
+import desertData from '../resources/worlds/desert.json';
+import forestData from '../resources/worlds/forest.json';
+import underworldData from '../resources/worlds/underworld.json';
 
 import desertLevel1 from './../../assets/img/worlds/desert/level1.png';
 import desertLevel2 from './../../assets/img/worlds/desert/level2.png';
