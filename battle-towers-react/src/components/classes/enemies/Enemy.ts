@@ -12,8 +12,9 @@ abstract class Enemy extends Sprite {
   protected health: number;
   protected speed: number;
   protected healthBarDivider: HealthBarDivider;
-  protected enemyName: string;
+  protected name: string;
   protected score: number;
+  protected money: number;
 
   constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position, waypoints: Position[], imageSrc: string) {
     super(ctx, { x: x, y: y }, imageSrc, { max: 7 });
@@ -32,8 +33,9 @@ abstract class Enemy extends Sprite {
     this.speed = 2;
     this.direction = null;
     this.healthBarDivider = HealthBarDivider.SOLDIER_ORC;
-    this.enemyName = 'Scout';
+    this.name = '';
     this.score = 0;
+    this.money = 0;
   }
 
   private drawEnemy() {
@@ -82,7 +84,7 @@ abstract class Enemy extends Sprite {
     this.frames.elapsed++;
     if (this.frames.elapsed % this.frames.hold === 0) {
       this.frames.current++;
-      if (this.frames.current >= this.frames.max - 1) this.frames.current = 0;
+      if (this.frames.current >= this.frames.max) this.frames.current = 0;
     }
   }
 
@@ -126,7 +128,7 @@ abstract class Enemy extends Sprite {
     this.canvasRenderingContext.font = 'bold 18px sans-serif';
     this.canvasRenderingContext.textAlign = 'center';
     this.canvasRenderingContext.fillText(
-      this.enemyName,
+      this.name,
       this.position.x + this.bounding.width / 2,
       this.position.y + 100
     );
@@ -162,7 +164,6 @@ abstract class Enemy extends Sprite {
     const angle = Math.atan2(yDistance, xDistance);
     this.velocity.x = Math.cos(angle) * this.speed;
     this.velocity.y = Math.sin(angle) * this.speed;
-
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
@@ -176,9 +177,12 @@ abstract class Enemy extends Sprite {
   public getPosition() { return this.position; }
   public getBounding() { return this.bounding; }
   public getWaypointIndex() { return this.waypointIndex; }
-  public getHealth() { return this.health; }
   public decreaseHealth(health: number) { this.health -= health; }
+  public getName() { return this.name };
+  public getHealth() { return this.health; }
+  public getMoney() { return this.money; }
   public getSpeed() { return this.speed; }
+  public getScore() { return this.score; }
 }
 
 export default Enemy;

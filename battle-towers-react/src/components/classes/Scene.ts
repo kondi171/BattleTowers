@@ -22,19 +22,19 @@ class Scene {
       name: "Desert",
       maps: [desertLevel1, desertLevel2, desertLevel3],
       data: desertData,
-      startingPoint: [StartingPoint.LEFT, StartingPoint.LEFT, StartingPoint.TOP]
+      startingPoint: [StartingPoint.LEFT, StartingPoint.LEFT, StartingPoint.TOP],
     },
     {
       name: "Forest",
       maps: [forestLevel1, forestLevel2, forestLevel3],
       data: forestData,
-      startingPoint: [StartingPoint.TOP, StartingPoint.LEFT, StartingPoint.BOTTOM]
+      startingPoint: [StartingPoint.TOP, StartingPoint.LEFT, StartingPoint.BOTTOM],
     },
     {
       name: "Underworld",
       maps: [underworldLevel1, underworldLevel2, underworldLevel3],
       data: underworldData,
-      startingPoint: [StartingPoint.RIGHT, StartingPoint.BOTTOM, StartingPoint.RIGHT]
+      startingPoint: [StartingPoint.RIGHT, StartingPoint.BOTTOM, StartingPoint.RIGHT],
     }
   ];
 

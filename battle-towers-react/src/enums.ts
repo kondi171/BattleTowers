@@ -1,8 +1,13 @@
+export enum CanvasBounding {
+  WIDTH = 1280,
+  HEIGHT = 768,
+}
+
 export enum GameResult {
   UNPLAYED,
   WIN,
   DEFEAT
-};
+}
 
 export enum StartingPoint {
   LEFT,
@@ -14,7 +19,8 @@ export enum StartingPoint {
 export enum GamePart {
   WAVE = 'wave',
   LEVEL = 'level',
-  WORLD = 'world'
+  WORLD = 'world',
+  START = 'start'
 }
 
 export enum LogType {

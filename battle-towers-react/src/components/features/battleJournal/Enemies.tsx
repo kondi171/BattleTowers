@@ -1,16 +1,22 @@
 import styles from './../../../assets/scss/modules/BattleJournal.module.scss';
+
 import soldierOrc from './../../../assets/img/journal/enemies/soldierOrc.png';
 import scoutOrc from './../../../assets/img/journal/enemies/scoutOrc.png';
 import warriorOrc from './../../../assets/img/journal/enemies/warriorOrc.png';
+
+import soldierData from './../../resources/enemies/soldier.json';
+import scoutData from './../../resources/enemies/scout.json';
+import warriorData from './../../resources/enemies/warrior.json';
+
 import EnemyCard from './EnemyCard';
 
 const Enemies = () => {
 
     return (
         <div className={`${styles.cards} ${styles.enemies}`}>
-            <EnemyCard name={'Soldier'} img={soldierOrc} health={100} money={20} speed={4} score={8} opponent='Cannon' />
-            <EnemyCard name={'Scout'} img={scoutOrc} health={50} money={40} speed={6} score={12} opponent='Minigun' />
-            <EnemyCard name={'Warrior'} img={warriorOrc} health={200} money={60} speed={2} score={16} opponent='Missile' />
+            <EnemyCard name={soldierData.name} img={soldierOrc} health={soldierData.health} money={soldierData.money} speed={soldierData.speed} score={soldierData.score} opponent='Cannon' />
+            <EnemyCard name={scoutData.name} img={scoutOrc} health={scoutData.health} money={scoutData.money} speed={scoutData.speed} score={scoutData.score} opponent='Minigun' />
+            <EnemyCard name={warriorData.name} img={warriorOrc} health={warriorData.health} money={warriorData.money} speed={warriorData.speed} score={warriorData.score} opponent='Missile' />
         </div>
     );
 }

@@ -8,10 +8,12 @@ import Game from './views/Game';
 import styles from './../assets/scss/modules/Logo.module.scss';
 import End from './views/End';
 import { GameResult } from '../enums';
+import useSound from 'use-sound';
+
 
 const BattleTowers = () => {
   const [changeState, setChangeState] = useState<boolean>(false);
-  const { isGameStart, endGame } = useContext(AppContext) as AppContextType;
+  const { isGameStart, endGame, playMenu } = useContext(AppContext) as AppContextType;
 
   const stateAnimation = useSpring({
     from: {
@@ -23,15 +25,13 @@ const BattleTowers = () => {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      setChangeState(true);
-    }, 8000);
+    playMenu();
   }, []);
 
   return (
     <animated.div className="wrapper" style={stateAnimation}>
       <div className="game">
-        {/* {!isGameStart ?
+        {!isGameStart ?
           <>
             <header className={styles.logo}>
               <div className={styles.imageWrapper}>
@@ -39,10 +39,11 @@ const BattleTowers = () => {
               </div>
               <h1>Battle Towers</h1>
             </header>
-            {!changeState ? <Intro /> : <Menu />} </> :
+            {!changeState ? <Intro setChangeState={setChangeState} /> : <Menu />}
+          </> :
           <>{endGame === GameResult.UNPLAYED && <Game />}</>
-        } */}
-        <Game />
+        }
+        {/* <Game /> */}
         {endGame !== GameResult.UNPLAYED && <End gameResult={endGame} />}
       </div>
 

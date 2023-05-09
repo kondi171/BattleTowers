@@ -9,7 +9,6 @@ const spawnEnemies = (ctx: CanvasRenderingContext2D, scene: Scene) => {
   const numberOfEnemies = 2;
   const enemies: Enemy[] = [];
   const worldData = scene.getCurrentWorldData();
-
   const startingPoint = scene.getCurrentStartingPoint();
   const spaceBetween = 200;
   for (let i = 1; i <= numberOfEnemies + 1; i++) {
@@ -24,9 +23,12 @@ const spawnEnemies = (ctx: CanvasRenderingContext2D, scene: Scene) => {
     const enemy2 = new ScoutOrc(ctx, { x: worldData.waypoints[0].x - xOffset, y: worldData.waypoints[0].y - yOffset }, worldData.waypoints);
     const enemy3 = new WarriorOrc(ctx, { x: worldData.waypoints[0].x - xOffset, y: worldData.waypoints[0].y - yOffset }, worldData.waypoints);
     enemies.push(enemy1, enemy2, enemy3);
+    // enemies.push(enemy2);
   }
 
-  enemies.splice(0, 1);
+  // remove firsts enemies of each type - bug fix
+  enemies.splice(0, 3);
+  // console.log(enemies.length);
   return enemies;
 }
 

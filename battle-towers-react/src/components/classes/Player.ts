@@ -4,7 +4,7 @@ class Player {
   private score: number;
 
   constructor() {
-    this.life = 200;
+    this.life = 2;
     this.money = 10000;
     this.score = 0;
   }

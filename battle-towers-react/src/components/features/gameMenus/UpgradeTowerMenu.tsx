@@ -1,5 +1,6 @@
 import styles from './../../../assets/scss/modules/SceneCanvas.module.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
+import useSound from 'use-sound';
 import { Mouse, Position, TowerStats } from '../../../types';
 import Tower from '../../classes/towers/Tower';
 import Substructure from '../../classes/Substructure';
@@ -7,6 +8,7 @@ import Player from '../../classes/Player';
 import { AppContext, AppContextType } from '../../AppContext';
 import { CanvasBounding, ContextMenu, LogType } from '../../../enums';
 import addToLogs from '../../scripts/addToLogs';
+import towerPlace from './../../../assets/audio/effects/towerPlace.wav';
 
 interface UpgradeTowerMenuProps {
   contextMenuPosition: Mouse;
@@ -18,6 +20,9 @@ interface UpgradeTowerMenuProps {
 }
 
 const UpgradeTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstructure, towers, currentTower, player }: UpgradeTowerMenuProps) => {
+
+  const [playTowerPlace] = useSound(towerPlace);
+
   const { logs, setMoney } = useContext(AppContext) as AppContextType;
 
   const menuRef = useRef<HTMLDivElement>(null);
@@ -32,6 +37,7 @@ const UpgradeTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstruc
       if (player.getMoney() < nextTower?.money) addToLogs(logs, 'Not enough money!', LogType.FAILURE);
       else {
         activeTower.upgradeTower();
+        playTowerPlace();
         player.setMoney(player.getMoney() - nextTower?.money);
         setMoney(player.getMoney());
         addToLogs(logs, `${activeTower.getName()} Tower has been upgraded to level ${activeTower.getCurrentLevelInfo().level}`, LogType.SUCCESS);

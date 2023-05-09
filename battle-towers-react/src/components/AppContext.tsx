@@ -1,8 +1,13 @@
 import { useState, createContext } from "react";
-import { GameResult, LogType } from "../enums";
+import { GameResult } from "../enums";
 import { Log } from "../types";
+import useSound from "use-sound";
+import gameOverSoundtrack from './../assets/audio/tracks/gameOverSoundtrack.wav';
+import winSoundtrack from './../assets/audio/tracks/winSoundtrack.mp3';
+import menuSoundtrack from './../assets/audio/tracks/menuSoundtrack.mp3';
+import { PlayFunction } from "use-sound/dist/types";
 
-export interface AppContextType {
+export type AppContextType = {
   isGameStart: boolean,
   setIsGameStart: (statement: boolean) => void,
   endGame: GameResult,
@@ -21,15 +26,35 @@ export interface AppContextType {
   setScore: (score: number) => void,
   logs: Log[],
   setLogs: (log: Log[]) => void,
+  playMenu: PlayFunction,
+  stopMenu: (id?: string | undefined) => void,
+  playGameOver: PlayFunction,
+  stopGameOver: (id?: string | undefined) => void
+  playWin: PlayFunction,
+  stopWin: (id?: string | undefined) => void
 }
-type AppProviderProps = {
+interface AppProviderProps {
   children: JSX.Element,
 }
 
 export const AppContext = createContext<AppContextType | null>(null);
 
 const AppProvider = ({ children }: AppProviderProps) => {
-
+  const [playMenu, { stop: stopMenu }] = useSound(menuSoundtrack, {
+    volume: 0.5,
+    interrupt: true,
+    loop: true,
+  });
+  const [playGameOver, { stop: stopGameOver }] = useSound(gameOverSoundtrack, {
+    volume: 0.5,
+    interrupt: true,
+    loop: true,
+  });
+  const [playWin, { stop: stopWin }] = useSound(winSoundtrack, {
+    volume: 0.5,
+    interrupt: true,
+    loop: true,
+  });
   const [isGameStart, setIsGameStart] = useState<boolean>(false);
   const [endGame, setEndGame] = useState<GameResult>(GameResult.UNPLAYED);
   const [wave, setWave] = useState<number>(1);
@@ -60,6 +85,12 @@ const AppProvider = ({ children }: AppProviderProps) => {
         setScore,
         logs,
         setLogs,
+        playMenu,
+        stopMenu,
+        playGameOver,
+        stopGameOver,
+        playWin,
+        stopWin,
       }}>
       {children}
     </AppContext.Provider>
