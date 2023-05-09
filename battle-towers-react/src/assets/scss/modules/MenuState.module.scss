@@ -1,7 +1,14 @@
 @import '../variables';
 
+.btn {
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+
 .menuState {
     position: fixed;
+
 
     .resolutionSuccess,
     .resolutionError,
@@ -65,19 +72,26 @@
         justify-content: center;
 
         span {
+            order: 1;
             opacity: 0;
             transition-duration: .4s;
             font-size: 2rem;
             margin-right: 1rem;
+            transform: translateY(-200px);
         }
 
-        i:hover {
-            cursor: pointer;
-            color: $secondaryColor;
-            transition-duration: .4s;
+        i {
+            order: 2;
 
-            span {
-                opacity: 1;
+            &:hover {
+                cursor: pointer;
+                color: $secondaryColor;
+                transition-duration: .4s;
+
+                &+span {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
         }
     }

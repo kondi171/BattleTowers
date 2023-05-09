@@ -5,11 +5,13 @@ import Button from '../features/Button';
 import styles from './../../assets/scss/modules/EndState.module.scss';
 import { useContext, useState, useEffect } from 'react';
 
-type EndProps = {
+interface EndProps {
     gameResult: GameResult
 }
 
 const End = ({ gameResult }: EndProps) => {
+    const { playGameOver, stopGameOver, playWin, stopWin, playMenu } = useContext(AppContext) as AppContextType;
+
     const stateAnimation = useSpring({
         from: { opacity: 0 },
         to: { opacity: 1 },
@@ -17,11 +19,23 @@ const End = ({ gameResult }: EndProps) => {
     });
     const { score, setEndGame, setIsGameStart } = useContext(AppContext) as AppContextType;
     const [isNewBest, setIsNewBest] = useState<boolean>(false);
-    const handleRestart = () => { setEndGame(GameResult.UNPLAYED); }
+    const handleRestart = () => {
+        setEndGame(GameResult.UNPLAYED);
+        stopWin();
+        stopGameOver();
+    }
     const handleBackToMenu = () => {
         setIsGameStart(false);
         setEndGame(GameResult.UNPLAYED);
+        stopWin();
+        stopGameOver();
+        playMenu();
     }
+
+    useEffect(() => {
+        if (gameResult === GameResult.WIN) playWin();
+        else if (gameResult === GameResult.DEFEAT) playGameOver();
+    }, [gameResult]);
 
     useEffect(() => {
         if (score > Number(localStorage.getItem("score"))) {
@@ -44,8 +58,11 @@ const End = ({ gameResult }: EndProps) => {
                     <h3>Do you want to play again?</h3>
                 </>
             }
-            <Button name="Restart" click={handleRestart} />
-            <Button name="Back to Menu" click={handleBackToMenu} />
+            <div className={styles.btns}>
+                <Button name="Restart" click={handleRestart} />
+                <Button name="Back to Menu" click={handleBackToMenu} />
+            </div>
+
         </animated.section>
     );
 }

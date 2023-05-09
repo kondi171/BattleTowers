@@ -1,37 +1,85 @@
 @import './../variables';
 
 .introState {
-    position: fixed;
-    bottom: 20%;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: 70vw;
-    font-size: 3.3rem;
-    text-align: center;
-    line-height: 150%;
-    color: $fontColor;
-    transition-duration: .4s;
 
-    span {
+    .introButton {
+        position: fixed;
+        bottom: 7%;
+        left: 25%;
+        width: 20%;
+        right: 25%;
+        margin: auto;
+        padding: 1rem 0;
+        font-size: 2rem;
+        background-color: transparent;
+        border: 2px solid $primaryColor;
         color: $primaryColor;
+        border-radius: 5px;
+        font-family: $primaryFont;
+        transition-duration: .4s;
 
-        &:last-of-type {
-            font-size: 4rem;
-            animation: cursor infinite .4s ease-in-out;
+        opacity: 0;
+
+        &.visible {
+            opacity: 1;
+            // background-color: red;
         }
 
-        @keyframes cursor {
-            0% {
-                opacity: 1;
+
+        .fadeOut {
+            transition-duration: .4s;
+            opacity: 0;
+        }
+
+        .fadeIn {
+            transition-duration: .4s;
+            opacity: 1;
+        }
+
+        &:hover {
+            cursor: pointer;
+            color: $secondaryColor;
+            border-color: $secondaryColor;
+            box-shadow: 0 0 5px 5px $secondaryColor,
+                inset 0 0 5px 5px $secondaryColor;
+        }
+    }
+
+    .attention {
+        position: fixed;
+        bottom: 20%;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        width: 70vw;
+        font-size: 3.3rem;
+        text-align: center;
+        line-height: 150%;
+        color: $fontColor;
+        transition-duration: .4s;
+
+
+
+        span {
+            color: $primaryColor;
+
+            &:last-of-type {
+                font-size: 4rem;
+                animation: cursor infinite .4s ease-in-out;
             }
 
-            50% {
-                opacity: 0;
-            }
+            @keyframes cursor {
+                0% {
+                    opacity: 1;
+                }
 
-            100% {
-                opacity: 1;
+                50% {
+                    opacity: 0;
+                }
+
+                100% {
+                    opacity: 1;
+                }
             }
         }
     }

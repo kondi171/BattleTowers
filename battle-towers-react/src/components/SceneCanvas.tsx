@@ -1,5 +1,6 @@
 import { useEffect, useContext, useState, useRef } from 'react';
 import { AppContext, AppContextType } from './AppContext';
+import useSound from 'use-sound';
 
 import { Mouse } from '../types';
 import { ContextMenu, GamePart, GameResult, LogType, CanvasBounding } from '../enums';
@@ -11,6 +12,7 @@ import Tower from './classes/towers/Tower';
 import Substructure from './classes/Substructure';
 import Scene from './classes/Scene';
 import Player from './classes/Player';
+import Explosion from './classes/Explosion';
 
 import fillSubstructures from './scripts/fillSubstructures';
 import spawnEnemies from './scripts/spawnEnemies';
@@ -20,13 +22,26 @@ import mouseMove from './scripts/mouseMove';
 import TransitionInfo from './features/TransitionInfo';
 import NewTowerMenu from './features/gameMenus/NewTowerMenu';
 import UpgradeTowerMenu from './features/gameMenus/UpgradeTowerMenu';
-import Sprite from './classes/Sprite';
-import cannonExplosion from './../assets/img/towers/explosions/cannon_explosion.png';
-import Explosion from './classes/Explosion';
+
+import lostLife from './../assets/audio/effects/lostLife.wav';
+import enemyDead from './../assets/audio/effects/enemyDead.wav';
+import enemyHit from './../assets/audio/effects/enemyHit.wav';
+import nextGamePart from './../assets/audio/effects/nextGamePart.wav';
+
+import desertSoundtrack from './../assets/audio/tracks/world1Soundtrack.mp3';
+import forestSoundtrack from './../assets/audio/tracks/world2Soundtrack.mp3';
+import underworldSoundtrack from './../assets/audio/tracks/world3Soundtrack.wav';
+import Loading from './views/Loading';
 
 const numberOfEnemies = 6;
 
 const SceneCanvas = () => {
+
+  const [playLostLife] = useSound(lostLife);
+  const [playEnemyDead] = useSound(enemyDead);
+  const [playEnemyHit] = useSound(enemyHit);
+  const [playNextGamePart] = useSound(nextGamePart);
+
 
   const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame, logs, setLogs } = useContext(AppContext) as AppContextType;
 
@@ -37,6 +52,7 @@ const SceneCanvas = () => {
 
   const [initCanvas, setInitCanvas] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const [info, setInfo] = useState('');
   const [time, setTime] = useState(3);
@@ -59,6 +75,24 @@ const SceneCanvas = () => {
   const [player, setPlayer] = useState<Player | null>(null);
 
   const [gamePart, setGamePart] = useState<GamePart | null>(null);
+  const [start, setStart] = useState(false);
+
+  const [playDesert, { stop: stopDesert }] = useSound(desertSoundtrack, {
+    volume: 0.5,
+    interrupt: true,
+    loop: true,
+  });
+  const [playForest, { stop: stopForest }] = useSound(forestSoundtrack, {
+    volume: 0.5,
+    interrupt: true,
+    loop: true,
+  });
+  const [playUnderworld, { stop: stopUnderworld }] = useSound(underworldSoundtrack, {
+    volume: 0.5,
+    interrupt: true,
+    loop: true,
+  });
+
 
   let activeSubstructure: Substructure | null = null;
 
@@ -74,6 +108,7 @@ const SceneCanvas = () => {
     setWorld(scene!.getWorldName());
     setSubstructures(fillSubstructures(context2D!, scene!));
     setEnemies(spawnEnemies(context2D!, scene!));
+    setExplosions([]);
     setIsInitialized(true);
   }
 
@@ -110,7 +145,6 @@ const SceneCanvas = () => {
   }
 
   const animate = () => {
-    // console.log(explosions.length);
     animationRef.current = requestAnimationFrame(animate);
     const image = new Image();
     image.src = scene!.getCurrentMap();
@@ -168,6 +202,7 @@ const SceneCanvas = () => {
           { max: tower.getMaxExplosionFrames() })
         );
         tower.getBullets().splice(i, 1);
+        playEnemyHit();
         if (bullet.getEnemy().getHealth() <= 0) {
           const enemyIndex = enemies.findIndex((enemy) => {
             return bullet.getEnemy() === enemy;
@@ -175,6 +210,7 @@ const SceneCanvas = () => {
           if (enemyIndex > -1) {
             const targetedEnemy = enemies[enemyIndex];
             enemies.splice(enemyIndex, 1);
+            playEnemyDead();
             addToLogs(logs, `${targetedEnemy.getName()} has been eliminated!`, LogType.SUCCESS);
             player!.setMoney(player!.getMoney() + targetedEnemy.getMoney());
             player!.setScore(player!.getScore() + targetedEnemy.getScore());
@@ -195,45 +231,65 @@ const SceneCanvas = () => {
   }
 
   const gameTransition = (part: GamePart) => {
-    if (player!.getLife() <= 0) return;
-    setInfo(part);
-    setIsInfoVisible(true);
     setTimeout(() => {
+      setIsLoaded(true);
+    }, 2000);
+    playNextGamePart();
+    setIsInfoVisible(true);
+    setInfo(part);
+    if (part === GamePart.START && start) {
+      if (scene!.getWorldName() === 'Desert') playDesert();
+      if (scene!.getWorldName() === 'Forest') playForest();
+      if (scene!.getWorldName() === 'Underworld') playUnderworld();
       setIsInfoVisible(false);
-      console.log('animate1');
       animate();
-      if (part === GamePart.WAVE) {
-        setWave(scene!.getWave());
-        addToLogs(logs, 'Next Wave!', LogType.SUCCESS);
-      } else if (part === GamePart.LEVEL) {
-        setMoney(player!.getMoney());
-        setLevel(scene!.getLevel());
-        setWave(1);
-        addToLogs(logs, 'Next Level!', LogType.SUCCESS);
-      } else if (part === GamePart.WORLD) {
-        setWave(1);
-        setLevel(1);
-        setWorld(scene!.getWorldName());
-        setLife(player!.getLife());
-        setMoney(player!.getMoney());
-        addToLogs(logs, 'Next World!', LogType.SUCCESS);
-      }
-    }, 4000);
+    } else if ((part === GamePart.WAVE || part === GamePart.LEVEL) && start) {
+      if (player!.getLife() <= 0) return;
+      setTimeout(() => {
+        setIsInfoVisible(false);
+        animate();
+        if (part === GamePart.WAVE) {
+          setWave(scene!.getWave());
+          addToLogs(logs, 'Next Wave!', LogType.SUCCESS);
+        } else if (part === GamePart.LEVEL) {
+          setMoney(player!.getMoney());
+          setLevel(scene!.getLevel());
+          setWave(1);
+          addToLogs(logs, 'Next Level!', LogType.SUCCESS);
+        }
+      }, 4000);
 
-    let index = 3;
-    const interval = setInterval(() => {
-      if (index === 0) {
-        clearInterval(interval);
-        setTime(3);
-      } else {
-        index--;
-        setTime(index);
-      }
-    }, 1000);
+      let index = 3;
+      const interval = setInterval(() => {
+        if (index === 0) {
+          clearInterval(interval);
+          setTime(3);
+        } else {
+          index--;
+          setTime(index);
+        }
+      }, 1000);
+    } else if (part === GamePart.WORLD) {
+      stopDesert();
+      stopForest();
+      stopUnderworld();
+      if (scene!.getWorldName() === 'Desert') playDesert();
+      if (scene!.getWorldName() === 'Forest') playForest();
+      if (scene!.getWorldName() === 'Underworld') playUnderworld();
+      setWave(1);
+      setLevel(1);
+      setWorld(scene!.getWorldName());
+      setLife(player!.getLife());
+      setMoney(player!.getMoney());
+      addToLogs(logs, 'Next World!', LogType.SUCCESS);
+    }
     setGamePart(null);
   }
 
   const gameReset = () => {
+    stopDesert();
+    stopForest();
+    stopUnderworld();
     cancelAnimationFrame(animationRef.current);
     scene!.setWave(1);
     scene!.setLevel(1);
@@ -252,6 +308,7 @@ const SceneCanvas = () => {
       addToLogs(logs, 'Lost life!', LogType.FAILURE);
       setLife(player!.getLife());
       enemies.splice(index, 1);
+      playLostLife();
       if (player!.getLife() <= 0) {
         setEndGame(GameResult.DEFEAT);
         gameReset();
@@ -281,6 +338,7 @@ const SceneCanvas = () => {
       setSubstructures(fillSubstructures(context2D!, scene!))
       scene!.setWave(1);
       player!.setMoney(player!.getMoney() + 100);
+      setContextMenu(null);
     }
   }
 
@@ -291,13 +349,13 @@ const SceneCanvas = () => {
       setScore(player!.getScore());
       gameReset();
     } else {
-      setGamePart(GamePart.WORLD);
       scene!.setWave(1);
       scene!.setLevel(1);
       scene!.setWorld(scene!.getWorld() + 1);
       towers.splice(0, towers.length);
       setTowers([]);
       activeSubstructure = null;
+      setStart(false);
       setSubstructures(fillSubstructures(context2D!, scene!));
       setEnemies(spawnEnemies(context2D!, scene!));
       player!.setLife(player!.getLife() + 3);
@@ -325,7 +383,7 @@ const SceneCanvas = () => {
     if (isInitialized) {
       const image = new Image();
       image.src = scene!.getCurrentMap();
-      image.onload = () => { animate(); console.log('animate2'); }
+      image.onload = () => { gameTransition(GamePart.START); }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInitialized]);
@@ -346,9 +404,24 @@ const SceneCanvas = () => {
   //   }
   // }, [mousePosition]);
 
+  useEffect(() => {
+    if (isInitialized) {
+      if (start) gameTransition(GamePart.START);
+      else gameTransition(GamePart.WORLD);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [start]);
+
   return (
     <div className={styles.canvasWrapper}>
-      {isInfoVisible && <TransitionInfo info={info} time={time} />}
+      {isInfoVisible &&
+        <TransitionInfo
+          info={info}
+          time={time}
+          start={start}
+          setStart={setStart}
+        />
+      }
       {contextMenu === ContextMenu.NEW_TOWER &&
         <NewTowerMenu
           contextMenuPosition={contextMenuPosition}
@@ -371,6 +444,8 @@ const SceneCanvas = () => {
         />
       }
       <canvas ref={canvasRef} className={styles.sceneCanvas} onClick={placementClicked} onMouseMove={(event) => mouseMove({ event, setMousePosition, canvasRef })}></canvas>
+      {!isLoaded && <Loading />}
+      {/* <Loading /> */}
     </div>
   );
 }

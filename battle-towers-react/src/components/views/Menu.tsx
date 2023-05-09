@@ -6,26 +6,30 @@ import { AppContext } from '../AppContext';
 import { AppContextType } from '../AppContext';
 import react from './../../assets/img/react.png';
 import BattleJournal from '../features/battleJournal/BattleJournal';
-type resolution = {
-  width: number,
-  height: number
-};
-
-// battle journal span appear when hover na journal fix: battle journal span appear only if icon is hovered
-// add transition to modal and modal overlay when they appear and disappear
+import { Resolution } from '../../types';
+import useSound from 'use-sound';
+import hoverElement from './../../assets/audio/effects/towerPlace.wav';
+import confirmElement from './../../assets/audio/effects/confirmMenu.wav';
 
 const Menu = () => {
-  const [resolution, setResolution] = useState<resolution>({ width: 0, height: 0 })
+
+  const { playMenu, stopMenu } = useContext(AppContext) as AppContextType;
+
+  const [playConfirm] = useSound(confirmElement)
+  const [playHover] = useSound(hoverElement);
+
+  const [resolution, setResolution] = useState<Resolution>({ width: 0, height: 0 })
   const [resolutionIsOk, setResolutionIsOk] = useState<boolean>(false);
   const [isHelpOpen, setIsHelpOpen] = useState<boolean>(false);
   const { isGameStart, setIsGameStart } = useContext(AppContext) as AppContextType;
+  const [init, setInit] = useState(false);
 
   const stateAppearAnimation = useSpring({
     from: {
-      opacity: 0
+      opacity: 0,
     },
     to: {
-      opacity: 1
+      opacity: 1,
     }
   });
 
@@ -40,25 +44,35 @@ const Menu = () => {
     else setResolutionIsOk(true);
   }
 
-  const handleStartGame = () => setIsGameStart(!isGameStart);
-  const handleHelpOpen = () => setIsHelpOpen(!isHelpOpen);
+  const handleStartGame = () => {
+    stopMenu();
+    setIsGameStart(!isGameStart);
+  }
+  const handleHelpOpen = () => {
+    playConfirm();
+    setIsHelpOpen(!isHelpOpen);
+    setInit(true);
+  }
 
   useEffect(() => {
     checkResolution();
+    playMenu();
     window.addEventListener('resize', checkResolution);
   }, []);
 
   return (
     <animated.div style={stateAppearAnimation}>
-      <Button name="Play" click={handleStartGame} />
+      <div className={styles.btn}>
+        <Button name="Play" click={handleStartGame} />
+      </div>
       <animated.div className={styles.menuState} style={stateAppearAnimation}>
         <div className={styles.powered}>
           <span>Powered by React</span>
           <img src={react} alt='React logo' />
         </div>
-        <div onClick={handleHelpOpen} className={styles.journal}>
+        <div className={styles.journal}>
+          <i onClick={handleHelpOpen} onMouseEnter={() => playHover()} className="fa fa-book" aria-hidden="true"></i>
           <span>Battle Journal</span>
-          <i className="fa fa-book" aria-hidden="true"></i>
         </div>
         <div className={resolutionIsOk ? `${styles.resolutionSuccess}` : `${styles.resolutionError}`}>Your resolution: {resolution.width} x {resolution.height}
           {resolutionIsOk ?
@@ -68,7 +82,7 @@ const Menu = () => {
         </div>
         <div className={styles.score}>Best score: {localStorage.getItem('score') === '0' ? 0 : localStorage.getItem('score')}</div>
       </animated.div>
-      {isHelpOpen && <BattleJournal isHelpOpen={isHelpOpen} setIsHelpOpen={setIsHelpOpen} />}
+      {init && <BattleJournal isHelpOpen={isHelpOpen} setIsHelpOpen={setIsHelpOpen} />}
     </animated.div>
   );
 }
