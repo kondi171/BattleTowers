@@ -1,5 +1,5 @@
 import styles from './../../../assets/scss/modules/BattleJournal.module.scss';
-
+import substructure from './../../../assets/img/towers/substructure.png';
 const Rules = () => {
     return (
         <>
@@ -10,9 +10,13 @@ const Rules = () => {
             <h2 className={styles.rulesHeader}>Resources</h2>
             <p className={styles.rulesParagraph}>You start the game with <strong className={styles.health}>10 lives</strong> and <strong className={styles.money}>100 bills</strong>. For each survived world your bills are set to <strong className={styles.money}>100 bills</strong>, <strong className={styles.money}>200 bills</strong> or <strong className={styles.money}>300 bills</strong> according to current world. For each survived level to your starting bills will be added <strong className={styles.money}>20 bills</strong> extra for building or upgrading towers. If you survive world you get <strong className={styles.health}>3 lives</strong> extra!</p>
             <h2 className={styles.rulesHeader}>Placing Towers</h2>
-            <p className={styles.rulesParagraph}>You can place the towers only on specific placement</p>
+            <p className={styles.rulesParagraph}>
+                <span>You can place the towers only on specific placement</span>
+                <img src={substructure} alt="Substructure of tower" />
+                <span>If the substructure is hovered over, it will be highlighted</span>
+            </p>
             <h2 className={styles.rulesHeader}>Tactical Mode</h2>
-            <p className={styles.rulesParagraph}>press space to activate the tactical mode</p>
+            <p className={styles.rulesParagraph}>Click on <strong><i className="fa fa-pause-circle-o" aria-hidden="true"></i></strong> visible on bottom right corner while playing to activate tactical mode. When tactical mode is active, time freezes, but you can place towers in a more thoughtful way. </p>
             <h2 className={styles.goodLuck}>Have fun and good luck!</h2>
         </>
     );
