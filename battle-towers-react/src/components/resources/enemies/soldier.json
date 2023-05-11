@@ -1,7 +1,7 @@
 {
   "name": "Soldier",
   "health": 100,
-  "money": 20,
+  "money": 5,
   "speed": 4,
   "score": 8
 }

@@ -17,7 +17,7 @@ const EnemyCard = ({ name, img, health, money, speed, score, opponent }: EnemyCa
       </div>
       <p className={styles.health}>Health: {health}</p>
       <p className={styles.money}>Money: {money}</p>
-      <p className={styles.speed}>Speed: {speed}</p>
+      <p className={styles.speed}>Speed: {speed} FPS</p>
       <p className={styles.score}>Score: {score}</p>
       <p className={styles.opponent}>
         <span>Best tower</span>

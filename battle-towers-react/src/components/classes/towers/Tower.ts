@@ -77,8 +77,8 @@ class Tower extends Sprite {
 
     public update() {
         this.draw();
-        // if (this.bulletFrames % 80 / this.speed === 0 && this.target) 
-        if (this.bulletFrames % 10 === 0 && this.target) {
+        const speed = Number((100 / this.speed).toFixed());
+        if (this.bulletFrames % speed === 0 && this.target) {
             const angle = Math.atan2(
                 this.target.getPosition().y - this.position.y + this.target.getBounding().height / 2,
                 this.target.getPosition().x - this.position.x + this.target.getBounding().width / 2
@@ -92,7 +92,6 @@ class Tower extends Sprite {
                 this.bulletImage.src
             ));
         }
-
         this.bulletFrames++;
     }
 

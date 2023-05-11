@@ -3,6 +3,19 @@
 .canvasWrapper {
   position: relative;
 
+  .tacticalMode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 1rem;
+    color: $primaryColor;
+    font-size: 2rem;
+    background-color: $bgColor;
+    padding: 1rem;
+    opacity: .7;
+    border-radius: 4px;
+  }
+
   .transitionInfo {
     position: absolute;
     left: 0;

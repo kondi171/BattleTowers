@@ -279,6 +279,23 @@
       0,
       0,
       0
+    ],
+    "enemies": [
+      {
+        "soldier": 3,
+        "scout": 0,
+        "warrior": 2
+      },
+      {
+        "soldier": 5,
+        "scout": 0,
+        "warrior": 3
+      },
+      {
+        "soldier": 3,
+        "scout": 4,
+        "warrior": 6
+      }
     ]
   },
   {
@@ -565,6 +582,23 @@
       0,
       0,
       0
+    ],
+    "enemies": [
+      {
+        "soldier": 3,
+        "scout": 3,
+        "warrior": 3
+      },
+      {
+        "soldier": 6,
+        "scout": 6,
+        "warrior": 3
+      },
+      {
+        "soldier": 6,
+        "scout": 6,
+        "warrior": 6
+      }
     ]
   },
   {
@@ -859,6 +893,23 @@
       0,
       0,
       0
+    ],
+    "enemies": [
+      {
+        "soldier": 7,
+        "scout": 0,
+        "warrior": 4
+      },
+      {
+        "soldier": 4,
+        "scout": 8,
+        "warrior": 5
+      },
+      {
+        "soldier": 5,
+        "scout": 12,
+        "warrior": 5
+      }
     ]
   }
 ]
