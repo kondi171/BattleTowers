@@ -1,7 +1,6 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 import styles from './../../assets/scss/modules/IntroState.module.scss';
-import { AppContext, AppContextType } from '../AppContext';
 
 interface IntroProps {
   setChangeState: (accept: boolean) => void;
@@ -27,10 +26,12 @@ const Intro = ({ setChangeState }: IntroProps) => {
 
   const handleAccept = () => {
     const span = infoRef.current;
-    if (span) {
+    const btn = btnRef.current;
+    if (span && btn) {
       span.classList.add(styles.fadeOut);
       setTimeout(() => {
         setButtonInfo('Have a nice play :)');
+        btn.classList.add(styles.fadeIn);
         span.classList.add(styles.fadeIn);
       }, 400);
     }

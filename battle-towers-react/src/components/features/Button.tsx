@@ -2,7 +2,6 @@ import useSound from 'use-sound';
 import styles from './../../assets/scss/modules/Button.module.scss';
 import confirmMenu from './../../assets/audio/effects/confirmMenu.wav';
 import hoverMenu from './../../assets/audio/effects/towerPlace.wav';
-import { useEffect, useRef } from 'react';
 
 interface ButtonProps {
   name: string,
@@ -26,7 +25,6 @@ const Button = ({ name, click }: ButtonProps) => {
         <span id={styles.rightArrow} className={styles.arrow}></span>
         <span id={styles.leftArrow} className={styles.arrow}></span>
       </button>
-
     </div>
   );
 }

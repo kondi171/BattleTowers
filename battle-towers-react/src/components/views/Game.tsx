@@ -1,9 +1,8 @@
 import styles from './../../assets/scss/modules/GameState.module.scss';
 import logo from './../../assets/scss/modules/Logo.module.scss';
-import SceneCanvas from '../SceneCanvas';
+import Playground from '../Playground';
 import shield from './../../assets/img/shield.png';
 import { useEffect, useState, useContext } from 'react';
-import Loading from './Loading';
 import { animated, useSpring } from 'react-spring';
 import { AppContext, AppContextType } from '../AppContext';
 import Scroll from './Scroll';
@@ -13,6 +12,7 @@ const GameState = () => {
 
   const { wave, level, world, life, money, score } = useContext(AppContext) as AppContextType;
   const [isScroll, setIsScroll] = useState<boolean>(true);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const stateAnimation = useSpring({
     from: { opacity: 0 },
@@ -20,6 +20,11 @@ const GameState = () => {
     leave: { opacity: 0 },
     config: { duration: 400 },
     delay: 2000
+  });
+  const graphicalInterfaceAnimation = useSpring({
+    opacity: isLoaded ? 1 : 0,
+    config: { duration: 400 },
+    delay: 100
   });
 
   useEffect(() => {
@@ -33,9 +38,9 @@ const GameState = () => {
       {isScroll ? <Scroll /> :
         <animated.main className={styles.gameState} style={stateAnimation}>
           <section className={styles.playground}>
-            <SceneCanvas />
+            <Playground isLoaded={isLoaded} setIsLoaded={setIsLoaded} />
           </section>
-          <section className={styles.graphicalInterface}>
+          <animated.section className={styles.graphicalInterface} style={graphicalInterfaceAnimation}>
             <header className={`${logo.logo} ${logo.logoMinimized}`}>
               <div className={logo.imageWrapper}>
                 <img src={shield} alt="Shield - element of Battle Towers logo" />
@@ -64,7 +69,7 @@ const GameState = () => {
               </div>
               <Logs />
             </div>
-          </section>
+          </animated.section>
         </animated.main>
       }
     </>

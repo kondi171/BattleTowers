@@ -8,8 +8,6 @@ import Game from './views/Game';
 import styles from './../assets/scss/modules/Logo.module.scss';
 import End from './views/End';
 import { GameResult } from '../enums';
-import useSound from 'use-sound';
-
 
 const BattleTowers = () => {
   const [changeState, setChangeState] = useState<boolean>(false);
@@ -26,6 +24,7 @@ const BattleTowers = () => {
 
   useEffect(() => {
     playMenu();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -43,10 +42,8 @@ const BattleTowers = () => {
           </> :
           <>{endGame === GameResult.UNPLAYED && <Game />}</>
         }
-        {/* <Game /> */}
         {endGame !== GameResult.UNPLAYED && <End gameResult={endGame} />}
       </div>
-
     </animated.div>
   );
 }

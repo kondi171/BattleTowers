@@ -1,8 +1,6 @@
 import { Position } from "../../types";
 import Enemy from "./enemies/Enemy";
 import Sprite from "./Sprite";
-import minigunBullet from './../../assets/img/towers/projectiles/minigun.png';
-import missileBullet from './../../assets/img/towers/projectiles/missile.png';
 
 class Bullet extends Sprite {
 

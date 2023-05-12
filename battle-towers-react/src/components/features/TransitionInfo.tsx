@@ -1,8 +1,5 @@
-import useSound from 'use-sound';
 import { GamePart } from '../../enums';
-import styles from './../../assets/scss/modules/SceneCanvas.module.scss';
-import world1Soundtrack from './../../assets/audio/tracks/world1Soundtrack.mp3';
-
+import styles from './../../assets/scss/modules/Playground.module.scss';
 
 interface TransitionInfoProps {
   info: string;

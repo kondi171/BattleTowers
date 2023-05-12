@@ -58,6 +58,10 @@ const Menu = () => {
     checkResolution();
     playMenu();
     window.addEventListener('resize', checkResolution);
+    return () => {
+      window.removeEventListener('resize', checkResolution);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

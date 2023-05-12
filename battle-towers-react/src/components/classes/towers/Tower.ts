@@ -103,36 +103,17 @@ class Tower extends Sprite {
         this.image.src = this.towerImages[this.level - 1];
     }
 
-    public getBullets() {
-        return this.bullets;
-    }
-    public getBullet(index: number) {
-        return this.bullets[index];
-    }
-    public getSize() {
-        return this.size;
-    }
-    public getPosition() {
-        return this.position;
-    }
-    public getRadius() {
-        return this.radius;
-    }
-    public setTarget(enemy: Enemy | null) {
-        this.target = enemy;
-    }
-    public getDamage() {
-        return this.damage;
-    }
-    public getMoney() {
-        return this.money;
-    }
-    public getSpeed() {
-        return this.speed;
-    }
-    public getName() {
-        return this.name;
-    }
+    public getBullets() { return this.bullets; }
+    public getBullet(index: number) { return this.bullets[index]; }
+    public getSize() { return this.size; }
+    public getPosition() { return this.position; }
+    public getRadius() { return this.radius; }
+    public setTarget(enemy: Enemy | null) { this.target = enemy; }
+    public getDamage() { return this.damage; }
+    public getMoney() { return this.money; }
+    public getSpeed() { return this.speed; }
+    public getName() { return this.name; }
+    public getLevel() { return this.level; }
     public getCurrentLevelInfo() {
         const currentLevel = {
             level: this.level,
@@ -153,12 +134,8 @@ class Tower extends Sprite {
         }
         return currentLevel;
     }
-    public getMaxExplosionFrames() {
-        return this.maxExplosionFrames;
-    }
-    public getExplosionImg() {
-        return this.explosionImg;
-    }
+    public getMaxExplosionFrames() { return this.maxExplosionFrames; }
+    public getExplosionImg() { return this.explosionImg; }
 }
 
 export default Tower;

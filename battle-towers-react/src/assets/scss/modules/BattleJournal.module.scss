@@ -68,7 +68,6 @@
             position: absolute;
             top: 20%;
             display: flex;
-            // align-items: center;
             margin-left: -8%;
             flex-direction: column;
             color: $bgColor;
@@ -149,6 +148,18 @@
                 text-align: justify;
                 padding: 0 6rem;
                 font-family: $primaryFont;
+                text-align: center;
+
+                span {
+                    display: block;
+                    text-align: center;
+                }
+
+                img {
+                    margin-top: 10px;
+                    width: 20%;
+                    height: 20%;
+                }
 
                 strong {
                     color: $primaryColor;
@@ -191,7 +202,6 @@
                     background-color: darken($bgColor, 4%);
 
                     .imgWrapper {
-                        // width: 30%;
                         height: 15vh;
                         margin: 1rem;
 
@@ -200,7 +210,6 @@
                             height: 100%;
                         }
                     }
-
 
                     .health {
                         color: $errorColor;
@@ -230,5 +239,4 @@
             }
         }
     }
-
 }

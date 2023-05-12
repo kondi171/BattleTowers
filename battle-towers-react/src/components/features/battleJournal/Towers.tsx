@@ -38,7 +38,6 @@ const Towers = () => {
         <TowerCard name={'Minigun'} img={minigunTower3} damage={minigunData.levels[2].damage} money={minigunData.levels[2].money} speed={minigunData.levels[2].speed} opponent={'Scout'} />
         <TowerCard name={'Missile'} img={missileTower3} damage={missileData.levels[2].damage} money={missileData.levels[2].money} speed={missileData.levels[2].speed} opponent={'Warrior'} />
       </div >
-
     </>
   );
 }

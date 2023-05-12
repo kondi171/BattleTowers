@@ -9,7 +9,6 @@ class Substructure {
   private occupied: boolean;
   private size: number = 128;
   private eventVisible: boolean;
-  private mouse: Mouse;
 
   constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position) {
     this.canvasRenderingContext = ctx;
@@ -21,7 +20,6 @@ class Substructure {
     this.borderColor = `rgba(${0}, ${206}, ${0}, ${0})`;
     this.occupied = false;
     this.eventVisible = true;
-    this.mouse = { x: 0, y: 0 };
   }
 
   private draw() {
@@ -36,20 +34,17 @@ class Substructure {
 
   public update(mouse: Mouse) {
     this.draw();
-
+    if (mouse.x === 0 || mouse.y === 0) return;
     const distance = Math.sqrt(Math.pow(mouse.x - (this.position.x + this.radius), 2) + Math.pow(mouse.y - (this.position.y + this.radius), 2));
-
     if (distance <= this.radius) {
-      // const alpha = 0.5 - distance / (2 * this.radius);
-      // console.log(mouse);
       this.fieldColor = `rgba(${0}, ${206}, ${0}, ${0.3})`;
       this.borderColor = `rgba(${0}, ${206}, ${0}, ${0.6})`;
     } else {
-      this.fieldColor = `rgba(${0}, ${206}, ${0}, ${0})`;
-      this.borderColor = `rgba(${0}, ${206}, ${0}, ${0})`;
+      this.fieldColor = `rgba(${255}, ${255}, ${255}, ${0})`;
+      this.borderColor = `rgba(${255}, ${255}, ${255}, ${0})`;
     }
-
   }
+
   public getPosition() { return this.position; }
   public getRadius() { return this.radius; }
   public getOccupied() { return this.occupied; }
@@ -57,7 +52,6 @@ class Substructure {
   public getSize() { return this.size; }
   public getEventVisible() { return this.eventVisible; }
   public setEventVisible(eventVisible: boolean) { this.eventVisible = eventVisible; }
-  public setMouse(mouse: Mouse) { this.mouse = mouse };
 }
 
 export default Substructure;

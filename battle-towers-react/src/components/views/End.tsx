@@ -35,6 +35,7 @@ const End = ({ gameResult }: EndProps) => {
     useEffect(() => {
         if (gameResult === GameResult.WIN) playWin();
         else if (gameResult === GameResult.DEFEAT) playGameOver();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameResult]);
 
     useEffect(() => {

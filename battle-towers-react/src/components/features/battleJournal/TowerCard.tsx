@@ -10,19 +10,21 @@ interface TowerCardProps {
 }
 
 const Card = ({ name, img, damage, money, speed, opponent }: TowerCardProps) => {
-  return (<div className={styles.card}>
-    <h3>{name} Tower</h3>
-    <div className={styles.imgWrapper}>
-      <img src={img} alt={`${name} Tower`} />
+  return (
+    <div className={styles.card}>
+      <h3>{name} Tower</h3>
+      <div className={styles.imgWrapper}>
+        <img src={img} alt={`${name} Tower`} />
+      </div>
+      <p className={styles.health}>Damage: {damage}</p>
+      <p className={styles.money}>Money: {money}</p>
+      <p className={styles.speed}>Speed: {speed} FPS </p>
+      <p className={styles.opponent}>
+        <span>Best target</span>
+        <span>{opponent} Orc</span>
+      </p>
     </div>
-    <p className={styles.health}>Damage: {damage}</p>
-    <p className={styles.money}>Money: {money}</p>
-    <p className={styles.speed}>Speed: {speed} FPS </p>
-    <p className={styles.opponent}>
-      <span>Best target</span>
-      <span>{opponent} Orc</span>
-    </p>
-  </div>);
+  );
 }
 
 export default Card;

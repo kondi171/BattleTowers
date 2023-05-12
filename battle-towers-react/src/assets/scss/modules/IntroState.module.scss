@@ -8,40 +8,40 @@
         left: 25%;
         width: 20%;
         right: 25%;
-        margin: auto;
-        padding: 1rem 0;
-        font-size: 2rem;
-        background-color: transparent;
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+        height: 5vh;
+        border-radius: 4px;
         border: 2px solid $primaryColor;
+        background-color: transparent;
         color: $primaryColor;
-        border-radius: 5px;
-        font-family: $primaryFont;
+        font-size: 2rem;
+        font-weight: bold;
         transition-duration: .4s;
-
+        outline: 2px solid $secondaryColor;
         opacity: 0;
 
         &.visible {
             opacity: 1;
-            // background-color: red;
         }
-
 
         .fadeOut {
             transition-duration: .4s;
             opacity: 0;
         }
 
-        .fadeIn {
-            transition-duration: .4s;
-            opacity: 1;
-        }
-
+        .fadeIn,
+        &.fadeIn,
         &:hover {
             cursor: pointer;
-            color: $secondaryColor;
-            border-color: $secondaryColor;
-            box-shadow: 0 0 5px 5px $secondaryColor,
-                inset 0 0 5px 5px $secondaryColor;
+            transition-duration: .4s;
+            opacity: 1;
+            border-color: $primaryColor;
+            background-color: $secondaryColor;
+            color: $bgColor;
+            outline-offset: 4px;
+            outline-color: $primaryColor;
         }
     }
 
@@ -57,8 +57,6 @@
         line-height: 150%;
         color: $fontColor;
         transition-duration: .4s;
-
-
 
         span {
             color: $primaryColor;

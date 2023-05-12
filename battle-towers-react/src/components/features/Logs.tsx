@@ -12,16 +12,13 @@ const Logs = () => {
         const { type, content, time } = log;
         return (
           <div className={styles.text} key={index}>
-            {type === LogType.FAILURE ?
-              <div className={styles.row}>
+            <div className={styles.row}>
+              {type === LogType.SUCCESS ?
+                <span className={styles.success}>{content}</span> :
                 <span className={styles.failure}>{content}</span>
-                <span className={styles.time}>{time}</span>
-              </div> :
-              <div className={styles.row}>
-                <span className={styles.success}>{content}</span>
-                <span className={styles.time}>{time}</span>
-              </div>
-            }
+              }
+              <span className={styles.time}>{time}</span>
+            </div>
           </div>)
       })}
     </section>

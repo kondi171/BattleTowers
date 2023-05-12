@@ -1,8 +1,8 @@
 import { Position } from "../../../types";
 import Tower from "./Tower";
-import minigun1 from "./../../../assets/img/towers/structures/minigun/MG1.png";
-import minigun2 from "./../../../assets/img/towers/structures/minigun/MG2.png";
-import minigun3 from "./../../../assets/img/towers/structures/minigun/MG3.png";
+import minigun1 from "./../../../assets/img/towers/structures/minigun/mg1.png";
+import minigun2 from "./../../../assets/img/towers/structures/minigun/mg2.png";
+import minigun3 from "./../../../assets/img/towers/structures/minigun/mg3.png";
 
 import minigunBullet from './../../../assets/img/towers/projectiles/minigun.png';
 import minigunData from '../../resources/towers/minigun.json';

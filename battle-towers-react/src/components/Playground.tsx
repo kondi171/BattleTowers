@@ -64,7 +64,6 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
   const [contextMenu, setContextMenu] = useState<ContextMenu | null>(null);
   const [clickedTower, setClickedTower] = useState<Tower | null>(null);
   const [mousePosition, setMousePosition] = useState<Mouse>({ x: 0, y: 0 });
-  const [mousePositionChanged, setMousePositionChanged] = useState(false);
   const [tacticalMode, setTacticalMode] = useState(false);
 
   const [towers, setTowers] = useState<Tower[]>([]);
@@ -103,7 +102,6 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
   });
 
   let activeSubstructure: Substructure | null = null;
-  let mouse: Mouse = { x: 0, y: 0 };
 
   const initialize = () => {
     canvasRef.current!.width = CanvasBounding.WIDTH;
@@ -160,18 +158,19 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
     context2D!.drawImage(image, 0, 0);
     updateTowers();
     updateEnemies();
-    updateSubstructures();
+    updateSubstructures({ x: 0, y: 0 });
     updateExplosions();
-    // console.log(mouse);
   }
+
   const refreshAssets = () => {
     const image = new Image();
     image.src = scene!.getCurrentMap();
     context2D!.drawImage(image, 0, 0);
     updateTowers();
     updateEnemies();
-    updateSubstructures();
+    updateSubstructures({ x: 0, y: 0 });
     updateExplosions();
+
   }
 
   const updateEnemies = () => {
@@ -182,13 +181,7 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
     }
   }
 
-  const updateSubstructures = () => {
-    // console.log(mouse);
-    // const image = new Image();
-    // image.src = scene!.getCurrentMap();
-    // context2D!.drawImage(image, 0, 0);
-    substructures.forEach(substructure => substructure.update(mouse));
-  }
+  const updateSubstructures = (mouse: Mouse) => { substructures.forEach(substructure => substructure.update(mouse)); }
 
   const updateTowers = () => {
     towers.forEach(tower => {
@@ -301,6 +294,7 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
       setLife(player!.getLife());
       setMoney(player!.getMoney());
       addToLogs(logs, 'Next World!', LogType.SUCCESS);
+      cancelAnimationFrame(animationRef.current);
     }
     setGamePart(null);
   }
@@ -364,7 +358,7 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
   const changeWorld = () => {
     if (scene!.getWorld() >= scene!.getWorldsLength()) {
       setEndGame(GameResult.WIN);
-      player!.setScore(player!.getLife() * 100);
+      player!.setScore(player!.getScore() + player!.getLife() * 100);
       setScore(player!.getScore());
       gameReset();
     } else {
@@ -383,33 +377,11 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
     }
   }
 
-  const handleTacticalMode = (e: React.MouseEvent) => {
+  const handleTacticalMode = () => {
     if (tacticalMode) animate();
     else cancelAnimationFrame(animationRef.current);
     setTacticalMode(!tacticalMode);
-    // refreshAssets();
-    // towers.forEach(tower => tower.upgradeTower());
-  }
-
-  const hoverSubstructure = (event: MouseEvent) => {
-    // console.log(substructures);
-    // console.log(mouse);
-    const canvasTopOffset = canvasRef.current!.getBoundingClientRect().top;
-    const canvasLeftOffset = canvasRef.current!.getBoundingClientRect().left;
-    mouse.x = event.clientX - canvasLeftOffset;
-    mouse.y = event.clientY - canvasTopOffset;
-    // for (let i = 0; i < substructures.length; i++) {
-    //   const tile = substructures[i]
-    //   if (
-    //     x > tile.getPosition().x &&
-    //     x < tile.getPosition().x + tile.getSize() &&
-    //     y > tile.getPosition().y &&
-    //     y < tile.getPosition().y + tile.getSize()
-    //   ) {
-    //     tile.update({ x, y });
-    //     break
-    //   }
-    // }
+    refreshAssets();
   }
 
   useEffect(() => {
@@ -423,11 +395,6 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
     setScene(new Scene());
     setPlayer(new Player());
     if (initCanvas) initialize();
-    window.addEventListener('mousemove', hoverSubstructure);
-
-    return () => {
-      window.removeEventListener('mousemove', hoverSubstructure);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initCanvas]);
 
@@ -441,28 +408,20 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
   }, [isInitialized]);
 
   useEffect(() => {
-    if (initCanvas && gamePart) {
-      cancelAnimationFrame(animationRef.current);
-      gameTransition(gamePart);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gamePart]);
-
-  // useEffect(() => {
-  //   if (isInitialized) {
-  //     cancelAnimationFrame(animationRef.current);
-  //     animate();
-
-  //   }
-  // }, [mousePosition]);
-
-  useEffect(() => {
     if (isInitialized) {
       if (start) gameTransition(GamePart.START);
       else gameTransition(GamePart.WORLD);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [start]);
+
+  useEffect(() => {
+    if (initCanvas && gamePart) {
+      cancelAnimationFrame(animationRef.current);
+      gameTransition(gamePart);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gamePart]);
 
   useEffect(() => {
     if (isInitialized && tacticalMode) refreshAssets();
@@ -506,7 +465,7 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
             refreshAssets={refreshAssets}
           />
         }
-        <canvas ref={canvasRef} className={styles.sceneCanvas} onClick={placementClicked} onMouseMove={(event) => mouseMove({ event, setMousePosition, canvasRef })} ></canvas>
+        <canvas ref={canvasRef} className={styles.sceneCanvas} onClick={placementClicked} onMouseMove={(event) => mouseMove({ event, canvasRef, tacticalMode, setMousePosition, updateSubstructures })} ></canvas>
       </animated.div>
       {!isLoaded && <Loading />}
     </div>

@@ -1,8 +1,8 @@
 import { Position } from "../../../types";
 import Tower from "./Tower";
-import missile1 from "./../../../assets/img/towers/structures/missile/Missile_Launcher1.png";
-import missile2 from "./../../../assets/img/towers/structures/missile/Missile_Launcher2.png";
-import missile3 from "./../../../assets/img/towers/structures/missile/Missile_Launcher3.png";
+import missile1 from "./../../../assets/img/towers/structures/missile/missile1.png";
+import missile2 from "./../../../assets/img/towers/structures/missile/missile2.png";
+import missile3 from "./../../../assets/img/towers/structures/missile/missile3.png";
 
 import missileBullet from './../../../assets/img/towers/projectiles/missile.png';
 import missileData from '../../resources/towers/missile.json';

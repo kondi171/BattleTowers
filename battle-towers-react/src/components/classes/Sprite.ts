@@ -23,9 +23,7 @@ abstract class Sprite {
     }
     protected abstract draw(angle?: number): void;
     public abstract update(speed?: number, health?: number): void;
-    public getFrames() {
-        return this.frames;
-    }
+    public getFrames() { return this.frames; }
 }
 
 export default Sprite;

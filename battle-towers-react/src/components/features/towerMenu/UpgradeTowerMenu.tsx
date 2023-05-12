@@ -1,4 +1,4 @@
-import styles from './../../../assets/scss/modules/SceneCanvas.module.scss';
+import styles from './../../../assets/scss/modules/Playground.module.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
 import useSound from 'use-sound';
 import { Mouse, Position, TowerStats } from '../../../types';
@@ -17,9 +17,10 @@ interface UpgradeTowerMenuProps {
   towers: Tower[];
   currentTower: Tower | null;
   player: Player;
+  refreshAssets: () => void;
 }
 
-const UpgradeTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstructure, towers, currentTower, player }: UpgradeTowerMenuProps) => {
+const UpgradeTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstructure, towers, currentTower, player, refreshAssets }: UpgradeTowerMenuProps) => {
 
   const [playTowerPlace] = useSound(towerPlace);
 
@@ -29,12 +30,20 @@ const UpgradeTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstruc
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [presentTower, setPresentTower] = useState<TowerStats | null>(null);
   const [nextTower, setNextTower] = useState<TowerStats | null>(null);
+  const [isMoneyChanged, setIsMoneyChanged] = useState(false);
+  const [towerValue, setTowerValue] = useState(0);
 
   const upgradeTower = () => {
-    const clickedTower = towers.filter((tower) => tower.getPosition().x === currentSubstructure?.getPosition().x && tower.getPosition().y === currentSubstructure?.getPosition().y);
+    const clickedTower = towers.filter(tower => tower.getPosition().x === currentSubstructure?.getPosition().x && tower.getPosition().y === currentSubstructure?.getPosition().y);
     const activeTower = clickedTower[0];
     if (typeof nextTower?.money !== 'undefined') {
-      if (player.getMoney() < nextTower?.money) addToLogs(logs, 'Not enough money!', LogType.FAILURE);
+      setTowerValue(nextTower?.money);
+      if (player.getMoney() < nextTower?.money) {
+        player.setMoney(player.getMoney() - nextTower?.money);
+        setMoney(player.getMoney());
+        setIsMoneyChanged(true);
+        addToLogs(logs, 'Not enough money!', LogType.FAILURE);
+      }
       else {
         activeTower.upgradeTower();
         playTowerPlace();
@@ -42,6 +51,7 @@ const UpgradeTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstruc
         setMoney(player.getMoney());
         addToLogs(logs, `${activeTower.getName()} Tower has been upgraded to level ${activeTower.getCurrentLevelInfo().level}`, LogType.SUCCESS);
         setContextMenu(ContextMenu.NONE);
+        refreshAssets();
       }
     }
   }
@@ -83,6 +93,15 @@ const UpgradeTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstruc
     setPosition(newPosition);
   }, [contextMenuPosition]);
 
+  useEffect(() => {
+    if (isMoneyChanged) {
+      player.setMoney(player.getMoney() + towerValue);
+      setMoney(player.getMoney());
+      setIsMoneyChanged(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMoneyChanged]);
+
   return (
     <>
       {presentTower?.level !== 3 ?
@@ -111,7 +130,9 @@ const UpgradeTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstruc
               <p className={styles.speed}>Speed: {nextTower?.speed} FPS</p>
             </div>
           </div>
-          <button onClick={upgradeTower}>Upgrade</button>
+          {nextTower && <>{player.getMoney() >= nextTower.money! ? <button onClick={upgradeTower}>Upgrade</button> :
+            <button className={styles.error} onClick={upgradeTower}>Not enough money!</button>}</>
+          }
         </div> :
         <div ref={menuRef} className={styles.maxLevel} style={{ left: `${position.x.toFixed()}px`, top: `${position.y.toFixed()}px` }}>
           <h2>{presentTower?.name} Tower Level {presentTower?.level}</h2>
