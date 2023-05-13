@@ -1,9 +1,9 @@
-// import { useSpring, animated } from 'react-spring';
+import { useSpring, animated } from 'react-spring';
 import { GameResult } from '../../../enums';
 import { AppContext, AppContextType } from '../AppContext';
 import styles from './../../assets/scss/modules/EndState.module.scss';
 import { useContext, useState, useEffect } from 'react';
-// import Button from '@/components/features/Button';
+import Button from '../features/Button';
 
 interface EndProps {
     gameResult: GameResult
@@ -12,11 +12,11 @@ interface EndProps {
 const End = ({ gameResult }: EndProps) => {
     // const { playGameOver, stopGameOver, playWin, stopWin, playMenu } = useContext(AppContext) as AppContextType;
 
-    // const stateAnimation = useSpring({
-    //     from: { opacity: 0 },
-    //     to: { opacity: 1 },
-    //     config: { duration: 400 },
-    // });
+    const stateAnimation = useSpring({
+        from: { opacity: 0 },
+        to: { opacity: 1 },
+        config: { duration: 400 },
+    });
     const { score, setEndGame, setIsGameStart } = useContext(AppContext) as AppContextType;
     const [isNewBest, setIsNewBest] = useState<boolean>(false);
     const handleRestart = () => {
@@ -46,8 +46,7 @@ const End = ({ gameResult }: EndProps) => {
     }, [score]);
 
     return (
-        // <animated.section className={styles.endState} style={stateAnimation}>
-        <section className={styles.endState}>
+        <animated.section className={styles.endState} style={stateAnimation}>
             {gameResult === GameResult.WIN ?
                 <>
                     <h2>Congratulations!</h2>
@@ -61,11 +60,10 @@ const End = ({ gameResult }: EndProps) => {
                 </>
             }
             <div className={styles.btns}>
-                {/* <Button name="Restart" click={handleRestart} /> */}
-                {/* <Button name="Back to Menu" click={handleBackToMenu} /> */}
+                <Button name="Restart" click={handleRestart} />
+                <Button name="Back to Menu" click={handleBackToMenu} />
             </div>
-
-        </section>
+        </animated.section>
     );
 }
 

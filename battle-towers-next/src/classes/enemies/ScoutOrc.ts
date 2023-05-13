@@ -5,10 +5,8 @@ import scoutData from './../../resources/enemies/scout.json';
 import { HealthBarDivider } from "../../../enums";
 
 class ScoutOrc extends Enemy {
-
     constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position, waypoints: Position[]) {
-        super(ctx, { x, y }, waypoints, 'elo');
-        // super(ctx, { x, y }, waypoints, scoutOrc);
+        super(ctx, { x, y }, waypoints, scoutOrc.src);
         this.name = scoutData.name;
         this.health = scoutData.health;
         this.money = scoutData.money;

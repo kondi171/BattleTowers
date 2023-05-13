@@ -25,9 +25,12 @@
         align-items: center;
         left: 2vw;
 
-        i {
+        .icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding-left: 1vw;
-            font-size: 3rem;
+            font-size: 2rem;
         }
     }
 
@@ -56,6 +59,9 @@
             margin-left: 20px;
             width: 10%;
             height: 10%;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 4px;
         }
     }
 
@@ -79,7 +85,7 @@
             transform: translateY(-200px);
         }
 
-        i {
+        .icon {
             order: 2;
 
             &:hover {

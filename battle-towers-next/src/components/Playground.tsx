@@ -25,10 +25,10 @@ import fillSubstructures from '@/scripts/fillSubstructures';
 import spawnEnemies from '@/scripts/spawnEnemies';
 import addToLogs from '@/scripts/addToLogs';
 import mouseMove from '@/scripts/mouseMove';
-// import { animated, useSpring } from 'react-spring';
-// import TransitionInfo from '@/components/features/TransitionInfo';
-// import NewTowerMenu from '@/components/features/towerMenu/NewTowerMenu';
-// import UpgradeTowerMenu from '@/components/features/towerMenu/UpgradeTowerMenu';
+import { animated, useSpring } from 'react-spring';
+import TransitionInfo from './features/TransitionInfo';
+import NewTowerMenu from './features/towerMenu/NewTowerMenu';
+import UpgradeTowerMenu from './features/towerMenu/UpgradeTowerMenu';
 
 interface PlaygroundProps {
   isLoaded: boolean;
@@ -91,11 +91,11 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
   //   loop: true,
   // });
 
-  // const stateAnimation = useSpring({
-  //   opacity: isLoaded ? 1 : 0,
-  //   config: { duration: 400 },
-  //   delay: 200
-  // });
+  const stateAnimation = useSpring({
+    opacity: isLoaded ? 1 : 0,
+    config: { duration: 400 },
+    delay: 200
+  });
 
   let activeSubstructure: Substructure | null = null;
 
@@ -113,6 +113,9 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
     setEnemies(spawnEnemies(context2D!, scene!));
     setExplosions([]);
     setIsInitialized(true);
+    const image = new Image();
+    image.src = scene!.getCurrentMap();
+    context2D!.drawImage(image, 0, 0);
   }
 
   const checkSubstructure = (activeSubstructure: Substructure) => {
@@ -134,7 +137,7 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
         mousePosition.y > tile.getPosition().y &&
         mousePosition.y < tile.getPosition().y + tile.getSize()
       ) {
-        activeSubstructure = tile
+        activeSubstructure = tile;
         break;
       }
     }
@@ -150,23 +153,23 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
   const animate = () => {
     animationRef.current = requestAnimationFrame(animate);
     const image = new Image();
-    // image.src = scene!.getCurrentMap();
+    image.src = scene!.getCurrentMap();
     context2D!.drawImage(image, 0, 0);
     updateTowers();
     updateEnemies();
     updateSubstructures({ x: 0, y: 0 });
     updateExplosions();
+    console.log('animate');
   }
 
   const refreshAssets = () => {
     const image = new Image();
-    // image.src = scene!.getCurrentMap();
+    image.src = scene!.getCurrentMap();
     context2D!.drawImage(image, 0, 0);
     updateTowers();
     updateEnemies();
     updateSubstructures({ x: 0, y: 0 });
     updateExplosions();
-
   }
 
   const updateEnemies = () => {
@@ -397,7 +400,7 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
   useEffect(() => {
     if (isInitialized) {
       const image = new Image();
-      // image.src = scene!.getCurrentMap();
+      image.src = scene!.getCurrentMap();
       image.onload = () => { gameTransition(GamePart.START); }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -429,10 +432,9 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
       <div className={styles.tacticalModeBtn}>
         <i onClick={handleTacticalMode} className="fa fa-pause-circle-o" aria-hidden="true"></i>
       </div>
-      {/* <animated.div style={stateAnimation}> */}
-      <div>
+      <animated.div style={stateAnimation}>
         {tacticalMode && <span className={styles.tacticalMode}>Tactical Mode is Active</span>}
-        {/* {isInfoVisible &&
+        {isInfoVisible &&
           <TransitionInfo
             info={info}
             time={time}
@@ -461,11 +463,11 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
             player={player!}
             refreshAssets={refreshAssets}
           />
-        } */}
+        }
         <canvas ref={canvasRef} className={styles.sceneCanvas} onClick={placementClicked} onMouseMove={(event) => mouseMove({ event, canvasRef, tacticalMode, setMousePosition, updateSubstructures })} ></canvas>
-      </div>
+      </animated.div>
       {!isLoaded && <Loading />}
-    </div>
+    </div >
   );
 }
 

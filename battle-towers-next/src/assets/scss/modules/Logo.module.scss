@@ -30,6 +30,7 @@
 
         img {
             width: 65%;
+            height: 10%;
             filter: drop-shadow(0 0 5px $primaryColor);
         }
     }
@@ -57,5 +58,10 @@
     h1 {
         text-align: center;
         font-size: 3vw;
+    }
+
+    .imageWrapper img {
+        width: 45%;
+        height: 70%;
     }
 }

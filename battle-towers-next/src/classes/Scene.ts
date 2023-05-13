@@ -49,7 +49,7 @@ class Scene {
   }
 
   public getCurrentWorldData() { return this.worlds[this.world - 1].data[this.level - 1]; }
-  public getCurrentMap() { return this.worlds[this.world - 1].maps[this.level - 1]; }
+  public getCurrentMap() { return this.worlds[this.world - 1].maps[this.level - 1].src; }
   public getMaps() { return this.worlds[this.world - 1].maps; }
   public getCurrentStartingPoint() { return this.worlds[this.world - 1]?.startingPoint[this.level - 1]; }
   public getWave() { return this.wave; }

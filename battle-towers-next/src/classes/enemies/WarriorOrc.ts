@@ -7,8 +7,7 @@ import { HealthBarDivider } from "../../../enums";
 class WarriorOrc extends Enemy {
 
     constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position, waypoints: Position[]) {
-        super(ctx, { x, y }, waypoints, 'elo');
-        // super(ctx, { x, y }, waypoints, warriorOrc);
+        super(ctx, { x, y }, waypoints, warriorOrc.src);
         this.name = warriorData.name;
         this.health = warriorData.health;
         this.money = warriorData.money;

@@ -3,11 +3,13 @@ import logo from './../../assets/scss/modules/Logo.module.scss';
 import Playground from '../Playground';
 import shield from './../../assets/img/shield.png';
 import { useEffect, useState, useContext } from 'react';
-// import { animated, useSpring } from 'react-spring';
+import { animated, useSpring } from 'react-spring';
 import { AppContext, AppContextType } from '../AppContext';
 import Scroll from './Scroll';
 import Image from 'next/image';
-// import Logs from '../features/Logs';
+import Logs from '../features/Logs';
+import { faHeart, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const GameState = () => {
 
@@ -15,18 +17,18 @@ const GameState = () => {
   const [isScroll, setIsScroll] = useState<boolean>(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // const stateAnimation = useSpring({
-  //   from: { opacity: 0 },
-  //   to: { opacity: 1 },
-  //   leave: { opacity: 0 },
-  //   config: { duration: 400 },
-  //   delay: 2000
-  // });
-  // const graphicalInterfaceAnimation = useSpring({
-  //   opacity: isLoaded ? 1 : 0,
-  //   config: { duration: 400 },
-  //   delay: 100
-  // });
+  const stateAnimation = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: { duration: 400 },
+    delay: 2000
+  });
+  const graphicalInterfaceAnimation = useSpring({
+    opacity: isLoaded ? 1 : 0,
+    config: { duration: 400 },
+    delay: 100
+  });
 
   useEffect(() => {
     setTimeout(() => {
@@ -37,13 +39,11 @@ const GameState = () => {
   return (
     <>
       {isScroll ? <Scroll /> :
-        // <animated.main className={styles.gameState} style={stateAnimation}>
-        <main className={styles.gameState}>
+        <animated.main className={styles.gameState} style={stateAnimation}>
           <section className={styles.playground}>
             <Playground isLoaded={isLoaded} setIsLoaded={setIsLoaded} />
           </section>
-          {/* <animated.section className={styles.graphicalInterface} style={graphicalInterfaceAnimation}> */}
-          <section className={styles.graphicalInterface}>
+          <animated.section className={styles.graphicalInterface} style={graphicalInterfaceAnimation}>
             <header className={`${logo.logo} ${logo.logoMinimized}`}>
               <div className={logo.imageWrapper}>
                 <Image src={shield} alt="Shield - element of Battle Towers logo" />
@@ -60,20 +60,26 @@ const GameState = () => {
             </div>
             <div className={styles.levelInfo}>
               <div className={styles.life}>
-                <i className="fa fa-heart" aria-hidden="true"></i>
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  aria-hidden={true}
+                />
                 <span>{life}</span>
               </div>
               <div className={styles.money}>
-                <i className="fa fa-money" aria-hidden="true"></i>
+                <FontAwesomeIcon
+                  icon={faMoneyBill}
+                  aria-hidden={true}
+                />
                 <span>{money}</span>
               </div>
               <div className={styles.score}>
                 <h3>Score: <span>{score}</span></h3>
               </div>
-              {/* <Logs /> */}
+              <Logs />
             </div>
-          </section>
-        </main>
+          </animated.section>
+        </animated.main>
       }
     </>
   );
