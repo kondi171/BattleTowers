@@ -14,8 +14,7 @@ import { AppContext, AppContextType } from './AppContext';
 
 const BattleTowers = () => {
   const [changeState, setChangeState] = useState<boolean>(false);
-  // const { isGameStart, endGame, playMenu } = useContext(AppContext) as AppContextType;
-  const { isGameStart, endGame } = useContext(AppContext) as AppContextType;
+  const { isGameStart, endGame, playMenu } = useContext(AppContext) as AppContextType;
 
   const stateAnimation = useSpring({
     from: {
@@ -27,14 +26,14 @@ const BattleTowers = () => {
   });
 
   useEffect(() => {
-    // playMenu();
+    playMenu();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <animated.div className="wrapper" style={stateAnimation}>
       <div className="game">
-        {/* {!isGameStart ?
+        {!isGameStart ?
           <>
             <header className={styles.logo}>
               <div className={styles.imageWrapper}>
@@ -45,8 +44,8 @@ const BattleTowers = () => {
             {!changeState ? <Intro setChangeState={setChangeState} /> : <Menu />}
           </> :
           <>{endGame === GameResult.UNPLAYED && <Game />}</>
-        } */}
-        <Game />
+        }
+        {/* <Game /> */}
         {endGame !== GameResult.UNPLAYED && <End gameResult={endGame} />}
       </div>
     </animated.div>

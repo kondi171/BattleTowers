@@ -24,5 +24,8 @@
     "sass": "^1.62.1",
     "typescript": "5.0.4",
     "use-sound": "^4.0.1"
+  },
+  "devDependencies": {
+    "file-loader": "^6.2.0"
   }
 }

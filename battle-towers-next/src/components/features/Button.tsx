@@ -1,7 +1,9 @@
 import useSound from 'use-sound';
 import styles from './../../assets/scss/modules/Button.module.scss';
-// import confirmMenu from './../../assets/audio/effects/confirmMenu.wav';
-// import hoverMenu from './../../assets/audio/effects/towerPlace.wav';
+// @ts-ignore
+import confirmMenu from './../../assets/audio/effects/confirmMenu.wav';
+// @ts-ignore
+import hoverMenu from './../../assets/audio/effects/towerPlace.wav';
 
 interface ButtonProps {
   name: string,
@@ -9,12 +11,11 @@ interface ButtonProps {
 }
 
 const Button = ({ name, click }: ButtonProps) => {
-  // const [playConfirm] = useSound(confirmMenu);
-  // const [playHover, { stop }] = useSound(hoverMenu);
+  const [playConfirm] = useSound(confirmMenu);
+  const [playHover, { stop }] = useSound(hoverMenu);
 
   return (
-    // <div onClick={() => playConfirm()} onMouseEnter={() => playHover()} onMouseLeave={() => stop()} className={styles.btnWrapper}>
-    <div className={styles.btnWrapper}>
+    <div onClick={() => playConfirm()} onMouseEnter={() => playHover()} onMouseLeave={() => stop()} className={styles.btnWrapper}>
       <button className={styles.button} onClick={click}>
         {name}
         <div id={styles.clip}>

@@ -8,7 +8,8 @@ import Player from '../../../classes/Player';
 import { AppContext, AppContextType } from '../../AppContext';
 import { CanvasBounding, ContextMenu, LogType } from '../../../../enums';
 import addToLogs from '../../../scripts/addToLogs';
-// import towerPlace from './../../../assets/audio/effects/towerPlace.wav';
+// @ts-ignore
+import towerPlace from './../../../assets/audio/effects/towerPlace.wav';
 
 interface UpgradeTowerMenuProps {
   contextMenuPosition: Mouse;
@@ -22,7 +23,7 @@ interface UpgradeTowerMenuProps {
 
 const UpgradeTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstructure, towers, currentTower, player, refreshAssets }: UpgradeTowerMenuProps) => {
 
-  // const [playTowerPlace] = useSound(towerPlace);
+  const [playTowerPlace] = useSound(towerPlace);
 
   const { logs, setMoney } = useContext(AppContext) as AppContextType;
 
@@ -46,7 +47,7 @@ const UpgradeTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstruc
       }
       else {
         activeTower.upgradeTower();
-        // playTowerPlace();
+        playTowerPlace();
         player.setMoney(player.getMoney() - nextTower?.money);
         setMoney(player.getMoney());
         addToLogs(logs, `${activeTower.getName()} Tower has been upgraded to level ${activeTower.getCurrentLevelInfo().level}`, LogType.SUCCESS);

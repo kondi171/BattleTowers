@@ -10,7 +10,7 @@ interface EndProps {
 }
 
 const End = ({ gameResult }: EndProps) => {
-    // const { playGameOver, stopGameOver, playWin, stopWin, playMenu } = useContext(AppContext) as AppContextType;
+    const { playGameOver, stopGameOver, playWin, stopWin, playMenu } = useContext(AppContext) as AppContextType;
 
     const stateAnimation = useSpring({
         from: { opacity: 0 },
@@ -21,20 +21,20 @@ const End = ({ gameResult }: EndProps) => {
     const [isNewBest, setIsNewBest] = useState<boolean>(false);
     const handleRestart = () => {
         setEndGame(GameResult.UNPLAYED);
-        // stopWin();
-        // stopGameOver();
+        stopWin();
+        stopGameOver();
     }
     const handleBackToMenu = () => {
         setIsGameStart(false);
         setEndGame(GameResult.UNPLAYED);
-        // stopWin();
-        // stopGameOver();
-        // playMenu();
+        stopWin();
+        stopGameOver();
+        playMenu();
     }
 
     useEffect(() => {
-        // if (gameResult === GameResult.WIN) playWin();
-        // else if (gameResult === GameResult.DEFEAT) playGameOver();
+        if (gameResult === GameResult.WIN) playWin();
+        else if (gameResult === GameResult.DEFEAT) playGameOver();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameResult]);
 

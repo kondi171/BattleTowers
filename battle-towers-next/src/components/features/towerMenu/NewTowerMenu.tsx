@@ -24,8 +24,8 @@ import addToLogs from '../../../scripts/addToLogs';
 import { CanvasBounding, ContextMenu, LogType, NewTower } from '../../../../enums';
 import { Position } from '../../../../types';
 import Image from 'next/image';
-
-// import towerPlace from './../../../assets/audio/effects/towerPlace.wav';
+// @ts-ignore
+import towerPlace from './../../../assets/audio/effects/towerPlace.wav';
 
 interface NewTowerMenuProps {
   contextMenuPosition: {
@@ -42,7 +42,7 @@ interface NewTowerMenuProps {
 
 const NewTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstructure, setCurrentSubstructure, context2D, towers, player }: NewTowerMenuProps) => {
 
-  // const [playTowerPlace] = useSound(towerPlace);
+  const [playTowerPlace] = useSound(towerPlace);
   const { logs, setMoney } = useContext(AppContext) as AppContextType;
 
   const menuRef = useRef<HTMLDivElement>(null);
@@ -62,7 +62,7 @@ const NewTowerMenu = ({ contextMenuPosition, setContextMenu, currentSubstructure
           setMoney(player.getMoney());
           towers.push(tower!);
           setContextMenu(ContextMenu.NONE);
-          // playTowerPlace();
+          playTowerPlace();
           addToLogs(logs, `${tower?.getName()} has been placed!`, LogType.SUCCESS);
           currentSubstructure.setOccupied(true);
           setCurrentSubstructure(null);

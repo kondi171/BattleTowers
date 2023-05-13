@@ -3,11 +3,14 @@ import { animated, useSpring } from 'react-spring';
 import styles from './../../assets/scss/modules/MenuState.module.scss';
 import { AppContext } from '../AppContext';
 import { AppContextType } from '../AppContext';
-import next from './../../assets/img/next.svg';
+// import next from './../../assets/img/next.svg';
+import next from './../../assets/img/next.png';
 
 import useSound from 'use-sound';
-// import hoverElement from './../../assets/audio/effects/towerPlace.wav';
-// import confirmElement from './../../assets/audio/effects/confirmMenu.wav';
+// @ts-ignore
+import hoverElement from './../../assets/audio/effects/towerPlace.wav';
+// @ts-ignore
+import confirmElement from './../../assets/audio/effects/confirmMenu.wav';
 import { Resolution } from '../../../types';
 import Image from 'next/image';
 import Button from '../features/Button';
@@ -17,11 +20,10 @@ import { faBook, faCheckCircle, faTimes, faTimesCircle } from '@fortawesome/free
 
 const Menu = () => {
 
-  // const { playMenu, stopMenu } = useContext(AppContext) as AppContextType;
-  const { isGameStart, setIsGameStart } = useContext(AppContext) as AppContextType;
+  const { isGameStart, setIsGameStart, playMenu, stopMenu } = useContext(AppContext) as AppContextType;
 
-  // const [playConfirm] = useSound(confirmElement)
-  // const [playHover] = useSound(hoverElement);
+  const [playConfirm] = useSound(confirmElement)
+  const [playHover] = useSound(hoverElement);
 
   const [resolution, setResolution] = useState<Resolution>({ width: 0, height: 0 })
   const [resolutionIsOk, setResolutionIsOk] = useState<boolean>(false);
@@ -49,19 +51,19 @@ const Menu = () => {
   }
 
   const handleStartGame = () => {
-    // stopMenu();
+    stopMenu();
     setIsGameStart(!isGameStart);
   }
 
   const handleHelpOpen = () => {
-    // playConfirm();
+    playConfirm();
     setIsHelpOpen(!isHelpOpen);
     setInit(true);
   }
 
   useEffect(() => {
     checkResolution();
-    // playMenu();
+    playMenu();
     window.addEventListener('resize', checkResolution);
     return () => {
       window.removeEventListener('resize', checkResolution);
@@ -74,15 +76,13 @@ const Menu = () => {
       <div className={styles.btn}>
         <Button name="Play" click={handleStartGame} />
       </div>
-      {/* <animated.div className={styles.menuState} style={stateAppearAnimation}> */}
-      <div className={styles.menuState}>
+      <animated.div className={styles.menuState} style={stateAppearAnimation}>
         <div className={styles.powered}>
           <span>Powered by Next</span>
           <Image src={next} alt='Next logo' />
         </div>
         <div className={styles.journal}>
-          {/* <i onClick={handleHelpOpen} onMouseEnter={() => playHover()} className="fa fa-book" aria-hidden="true"></i> */}
-          <div onClick={handleHelpOpen} className={styles.icon}>
+          <div onClick={handleHelpOpen} onMouseEnter={() => playHover()} className={styles.icon}>
             <FontAwesomeIcon
               icon={faBook}
               aria-hidden={true}
@@ -106,7 +106,7 @@ const Menu = () => {
           </div>
         </div>
         <div className={styles.score}>Best score: {localStorage.getItem('score') === '0' ? 0 : localStorage.getItem('score')}</div>
-      </div>
+      </animated.div>
       {init && <BattleJournal isHelpOpen={isHelpOpen} setIsHelpOpen={setIsHelpOpen} />}
     </animated.div>
   );

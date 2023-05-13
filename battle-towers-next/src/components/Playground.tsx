@@ -3,15 +3,20 @@ import { AppContext, AppContextType } from './AppContext';
 import useSound from 'use-sound';
 
 import styles from './../assets/scss/modules/Playground.module.scss';
-
-// import lostLife from './../assets/audio/effects/lostLife.wav';
-// import enemyDead from './../assets/audio/effects/enemyDead.wav';
-// import enemyHit from './../assets/audio/effects/enemyHit.wav';
-// import nextGamePart from './../assets/audio/effects/nextGamePart.wav';
-
-// import desertSoundtrack from './../assets/audio/tracks/world1Soundtrack.mp3';
-// import forestSoundtrack from './../assets/audio/tracks/world2Soundtrack.mp3';
-// import underworldSoundtrack from './../assets/audio/tracks/world3Soundtrack.wav';
+// @ts-ignore
+import lostLife from './../assets/audio/effects/lostLife.wav';
+// @ts-ignore
+import enemyDead from './../assets/audio/effects/enemyDead.wav';
+// @ts-ignore
+import enemyHit from './../assets/audio/effects/enemyHit.wav';
+// @ts-ignore
+import nextGamePart from './../assets/audio/effects/nextGamePart.wav';
+// @ts-ignore
+import desertSoundtrack from './../assets/audio/tracks/world1Soundtrack.mp3';
+// @ts-ignore
+import forestSoundtrack from './../assets/audio/tracks/world2Soundtrack.mp3';
+// @ts-ignore
+import underworldSoundtrack from './../assets/audio/tracks/world3Soundtrack.wav';
 import Loading from './views/Loading';
 import { Mouse } from '../../types';
 import { CanvasBounding, ContextMenu, GamePart, GameResult, LogType } from '../../enums';
@@ -37,10 +42,10 @@ interface PlaygroundProps {
 
 const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
 
-  // const [playLostLife] = useSound(lostLife);
-  // const [playEnemyDead] = useSound(enemyDead);
-  // const [playEnemyHit] = useSound(enemyHit);
-  // const [playNextGamePart] = useSound(nextGamePart);
+  const [playLostLife] = useSound(lostLife);
+  const [playEnemyDead] = useSound(enemyDead);
+  const [playEnemyHit] = useSound(enemyHit);
+  const [playNextGamePart] = useSound(nextGamePart);
 
   const { setWave, setLevel, setWorld, setLife, setMoney, setScore, setEndGame, logs, setLogs } = useContext(AppContext) as AppContextType;
 
@@ -75,21 +80,21 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
   const [gamePart, setGamePart] = useState<GamePart | null>(null);
   const [start, setStart] = useState(false);
 
-  // const [playDesert, { stop: stopDesert }] = useSound(desertSoundtrack, {
-  //   volume: 0.5,
-  //   interrupt: true,
-  //   loop: true,
-  // });
-  // const [playForest, { stop: stopForest }] = useSound(forestSoundtrack, {
-  //   volume: 0.5,
-  //   interrupt: true,
-  //   loop: true,
-  // });
-  // const [playUnderworld, { stop: stopUnderworld }] = useSound(underworldSoundtrack, {
-  //   volume: 0.5,
-  //   interrupt: true,
-  //   loop: true,
-  // });
+  const [playDesert, { stop: stopDesert }] = useSound(desertSoundtrack, {
+    volume: 0.5,
+    interrupt: true,
+    loop: true,
+  });
+  const [playForest, { stop: stopForest }] = useSound(forestSoundtrack, {
+    volume: 0.5,
+    interrupt: true,
+    loop: true,
+  });
+  const [playUnderworld, { stop: stopUnderworld }] = useSound(underworldSoundtrack, {
+    volume: 0.5,
+    interrupt: true,
+    loop: true,
+  });
 
   const stateAnimation = useSpring({
     opacity: isLoaded ? 1 : 0,
@@ -115,6 +120,7 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
     setIsInitialized(true);
     const image = new Image();
     image.src = scene!.getCurrentMap();
+    console.log(image.src);
     context2D!.drawImage(image, 0, 0);
   }
 
@@ -159,7 +165,7 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
     updateEnemies();
     updateSubstructures({ x: 0, y: 0 });
     updateExplosions();
-    console.log('animate');
+    // console.log('animate');
   }
 
   const refreshAssets = () => {
@@ -213,7 +219,7 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
           { max: tower.getMaxExplosionFrames() })
         );
         tower.getBullets().splice(i, 1);
-        // playEnemyHit();
+        playEnemyHit();
         if (bullet.getEnemy().getHealth() <= 0) {
           const enemyIndex = enemies.findIndex((enemy) => {
             return bullet.getEnemy() === enemy;
@@ -221,7 +227,7 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
           if (enemyIndex > -1) {
             const targetedEnemy = enemies[enemyIndex];
             enemies.splice(enemyIndex, 1);
-            // playEnemyDead();
+            playEnemyDead();
             addToLogs(logs, `${targetedEnemy.getName()} has been eliminated!`, LogType.SUCCESS);
             player!.setMoney(player!.getMoney() + targetedEnemy.getMoney());
             player!.setScore(player!.getScore() + targetedEnemy.getScore());
@@ -245,13 +251,13 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
     setTimeout(() => {
       setIsLoaded(true);
     }, 2000);
-    // playNextGamePart();
+    playNextGamePart();
     setIsInfoVisible(true);
     setInfo(part);
     if (part === GamePart.START && start) {
-      // if (scene!.getWorldName() === 'Desert') playDesert();
-      // if (scene!.getWorldName() === 'Forest') playForest();
-      // if (scene!.getWorldName() === 'Underworld') playUnderworld();
+      if (scene!.getWorldName() === 'Desert') playDesert();
+      if (scene!.getWorldName() === 'Forest') playForest();
+      if (scene!.getWorldName() === 'Underworld') playUnderworld();
       setIsInfoVisible(false);
       animate();
     } else if ((part === GamePart.WAVE || part === GamePart.LEVEL) && start) {
@@ -281,12 +287,12 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
         }
       }, 1000);
     } else if (part === GamePart.WORLD) {
-      // stopDesert();
-      // stopForest();
-      // stopUnderworld();
-      // if (scene!.getWorldName() === 'Desert') playDesert();
-      // if (scene!.getWorldName() === 'Forest') playForest();
-      // if (scene!.getWorldName() === 'Underworld') playUnderworld();
+      stopDesert();
+      stopForest();
+      stopUnderworld();
+      if (scene!.getWorldName() === 'Desert') playDesert();
+      if (scene!.getWorldName() === 'Forest') playForest();
+      if (scene!.getWorldName() === 'Underworld') playUnderworld();
       setWave(1);
       setLevel(1);
       setWorld(scene!.getWorldName());
@@ -299,9 +305,9 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
   }
 
   const gameReset = () => {
-    // stopDesert();
-    // stopForest();
-    // stopUnderworld();
+    stopDesert();
+    stopForest();
+    stopUnderworld();
     cancelAnimationFrame(animationRef.current);
     scene!.setWave(1);
     scene!.setLevel(1);
@@ -320,7 +326,7 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
       addToLogs(logs, 'Lost life!', LogType.FAILURE);
       setLife(player!.getLife());
       enemies.splice(index, 1);
-      // playLostLife();
+      playLostLife();
       if (player!.getLife() <= 0) {
         setEndGame(GameResult.DEFEAT);
         gameReset();

@@ -7,9 +7,10 @@ import Rules from './Rules';
 import Enemies from './Enemies';
 import Towers from './Towers';
 import { animated, useSpring } from 'react-spring';
-
-// import hoverElement from './../../../assets/audio/effects/towerPlace.wav';
-// import confirmElement from './../../../assets/audio/effects/confirmMenu.wav';
+// @ts-ignore
+import hoverElement from './../../../assets/audio/effects/towerPlace.wav';
+// @ts-ignore
+import confirmElement from './../../../assets/audio/effects/confirmMenu.wav';
 import useSound from 'use-sound';
 import { BattleJournalPage } from '../../../../enums';
 import Image from 'next/image';
@@ -23,8 +24,8 @@ interface BattleJournalProps {
 
 const BattleJournal: React.FC<BattleJournalProps> = ({ isHelpOpen, setIsHelpOpen }) => {
 
-    // const [playConfirm] = useSound(confirmElement)
-    // const [playHover] = useSound(hoverElement);
+    const [playConfirm] = useSound(confirmElement)
+    const [playHover] = useSound(hoverElement);
 
     const stateAppearAnimation = useSpring({
         from: {
@@ -48,18 +49,18 @@ const BattleJournal: React.FC<BattleJournalProps> = ({ isHelpOpen, setIsHelpOpen
         const target = e.target as HTMLDivElement;
         target.closest('article')?.classList.add(styles.active);
         setActiveArticle(page);
-        // playConfirm();
+        playConfirm();
     }
 
     const handleClose = () => {
         setIsHelpOpen(!isHelpOpen);
-        // playConfirm();
+        playConfirm();
     }
 
     const handlePlayHover = (e: React.MouseEvent) => {
         const article = e.target as HTMLDivElement;
         if (!article.classList.contains(styles.active)) {
-            // playHover();
+            playHover();
         }
     }
 
@@ -91,8 +92,7 @@ const BattleJournal: React.FC<BattleJournalProps> = ({ isHelpOpen, setIsHelpOpen
                     {activeArticle === BattleJournalPage.ENEMIES && <Enemies />}
                     {activeArticle === BattleJournalPage.TOWERS && <Towers />}
                 </div>
-                {/* <i className={`${styles.close} fa fa-times`} onMouseEnter={() => playHover()} onClick={handleClose} /> */}
-                <div onClick={handleClose} className={styles.close}>
+                <div onMouseEnter={() => playHover()} onClick={handleClose} className={styles.close}>
                     <FontAwesomeIcon
                         icon={faTimes}
                         aria-hidden={true}
