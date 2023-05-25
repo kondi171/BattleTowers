@@ -1,14 +1,14 @@
-import cannonTower1 from './../../../assets/img/journal/towers/Cannon.png';
-import minigunTower1 from './../../../assets/img/journal/towers/MG.png';
-import missileTower1 from './../../../assets/img/journal/towers/Missile_Launcher.png';
+import cannonTower1 from './../../../assets/img/journal/towers/cannon1.png';
+import minigunTower1 from './../../../assets/img/journal/towers/mg1.png';
+import missileTower1 from './../../../assets/img/journal/towers/missile1.png';
 
-import cannonTower2 from './../../../assets/img/journal/towers/Cannon2.png';
-import minigunTower2 from './../../../assets/img/journal/towers/MG2.png';
-import missileTower2 from './../../../assets/img/journal/towers/Missile_Launcher2.png';
+import cannonTower2 from './../../../assets/img/journal/towers/cannon2.png';
+import minigunTower2 from './../../../assets/img/journal/towers/mg2.png';
+import missileTower2 from './../../../assets/img/journal/towers/missile2.png';
 
-import cannonTower3 from './../../../assets/img/journal/towers/Cannon3.png';
-import minigunTower3 from './../../../assets/img/journal/towers/MG3.png';
-import missileTower3 from './../../../assets/img/journal/towers/Missile_Launcher3.png';
+import cannonTower3 from './../../../assets/img/journal/towers/cannon3.png';
+import minigunTower3 from './../../../assets/img/journal/towers/mg3.png';
+import missileTower3 from './../../../assets/img/journal/towers/missile3.png';
 
 import cannonData from './../../resources/towers/cannon.json';
 import minigunData from './../../resources/towers/minigun.json';
