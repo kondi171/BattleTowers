@@ -120,7 +120,6 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
     setIsInitialized(true);
     const image = new Image();
     image.src = scene!.getCurrentMap();
-    console.log(image.src);
     context2D!.drawImage(image, 0, 0);
   }
 
@@ -156,17 +155,23 @@ const Playground = ({ isLoaded, setIsLoaded }: PlaygroundProps) => {
     }
   }
 
-  const animate = () => {
+  const animate = async () => {
     animationRef.current = requestAnimationFrame(animate);
+
     const image = new Image();
     image.src = scene!.getCurrentMap();
+
+    // Wait for the image to load
+    await new Promise((resolve) => {
+      image.onload = resolve;
+    });
+
     context2D!.drawImage(image, 0, 0);
     updateTowers();
     updateEnemies();
     updateSubstructures({ x: 0, y: 0 });
     updateExplosions();
-    // console.log('animate');
-  }
+  };
 
   const refreshAssets = () => {
     const image = new Image();
