@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import BattleTowersVue from './BattleTowers.vue';
+
 </script>
 
 <template>
-  <h1>Hello Vue!</h1>
+  <BattleTowersVue />
 </template>
 
 <style scoped></style>
