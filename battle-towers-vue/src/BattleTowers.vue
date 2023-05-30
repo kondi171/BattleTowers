@@ -17,7 +17,7 @@
             </template>
             <template v-else>
                 <template v-if="endGame === GameResult.UNPLAYED">
-                    elo
+                    <Game />
                 </template>
             </template>
             <template v-if="endGame !== GameResult.UNPLAYED">

@@ -10,7 +10,7 @@
 </template>
   
 <script lang="ts">
-import { ref, onMounted, Ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 interface IntroProps {
     setChangeState: (accept: boolean) => void;
@@ -19,7 +19,7 @@ interface IntroProps {
 export default {
     props: {
         setChangeState: {
-            type: Function as () => IntroProps['setChangeState'],
+            type: Function as unknown as () => IntroProps['setChangeState'],
             required: true,
         },
     },
