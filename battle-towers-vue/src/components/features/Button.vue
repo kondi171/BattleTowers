@@ -15,18 +15,17 @@
 </template>
   
 <script lang="ts">
-import { defineProps } from 'vue';
 
 export default {
     props: {
+        click: {
+            type: Function as () => void,
+            required: true,
+        },
         name: {
             type: String,
             required: true,
-        },
-        click: {
-            type: Function,
-            required: true,
-        },
+        }
     },
 };
 </script>

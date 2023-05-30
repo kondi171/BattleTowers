@@ -17,7 +17,7 @@
             </template>
             <template v-else>
                 <template v-if="endGame === GameResult.UNPLAYED">
-                    <Game />
+                    elo
                 </template>
             </template>
             <template v-if="endGame !== GameResult.UNPLAYED">
@@ -35,7 +35,8 @@ import Intro from './components/views/Intro.vue';
 import Menu from './components/views/Menu.vue';
 import Game from './components/views/Game.vue';
 import End from './components/views/End.vue';
-import { GameResult } from './../enums';
+import { GameResult } from './typescript/enums';
+import { useAppStore } from './stores/app';
 
 export default {
     components: {
@@ -45,18 +46,18 @@ export default {
         End,
     },
     setup() {
+        const appStore = useAppStore();
+        const endGame = computed(() => appStore.endGame);
+        const isGameStart = computed(() => appStore.isGameStart);
         const changeState = ref(false);
-        //   const { isGameStart, endGame, playMenu } = useContext(AppContext) as AppContextType;
-        const isGameStart = false;
-        const endGame = GameResult.UNPLAYED;
         const setChangeState = (accept: boolean) => {
             changeState.value = accept;
         };
 
         return {
             changeState,
-            isGameStart,
             endGame,
+            isGameStart,
             setChangeState,
             GameResult,
         };

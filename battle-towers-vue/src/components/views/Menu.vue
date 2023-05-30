@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="fade">
         <div class="btn">
-            <Button name="Play" @click="handleStartGame" />
+            <Button :click="handleStartGame" name="Play" />
         </div>
         <div class="menuState">
             <div class="powered">
-                <span>Powered by React</span>
-                <img src="@/assets/img/react.png" alt="React logo" />
+                <span>Powered by Vue</span>
+                <img src="@/assets/img/vue.png" alt="React logo" />
             </div>
             <div class="journal">
                 <i @click="handleHelpOpen" class="fa fa-book" aria-hidden="true"></i>
@@ -25,25 +25,24 @@
 </template>
   
 <script lang="ts">
-// import { ref, onMounted, onUnmounted, computed, useContext } from 'vue';
+
 import { ref, onMounted, onUnmounted } from 'vue';
 import Button from '../features/Button.vue';
-import BattleJournal from '../features/BattleJournal.vue';
-//   import { AppContext } from '../AppContext';
-//   import { AppContextType } from '../AppContext';
-import { Resolution } from '../../types';
+import BattleJournal from '../features/battleJournal/BattleJournal.vue';
+import { useAppStore } from '@/stores/app';
+import type { Resolution } from '@/typescript/types';
 
 export default {
+
     components: {
         Button,
         BattleJournal,
     },
     setup() {
+        const appStore = useAppStore();
         const resolution = ref<Resolution>({ width: 0, height: 0 });
         const resolutionIsOk = ref(false);
         const isHelpOpen = ref(false);
-        //   const { isGameStart, setIsGameStart } = useContext(AppContext) as AppContextType;
-        let isGameStart = false;
         const init = ref(false);
 
         const checkResolution = () => {
@@ -58,8 +57,8 @@ export default {
         };
 
         const handleStartGame = () => {
-            // setIsGameStart(!isGameStart);
-            isGameStart = !isGameStart;
+            appStore.setIsGameStart(!appStore.isGameStart);
+            console.log(appStore.isGameStart);
         };
 
         const handleHelpOpen = () => {
@@ -95,98 +94,113 @@ export default {
 <style lang="scss" scoped>
 @import './../../assets/scss/variables';
 
-.btn {
-    position: fixed;
-    left: 0;
-    right: 0;
-}
+.fade {
+    opacity: 0;
+    animation: fadeIn .4s ease-out forwards;
 
-.menuState {
-    position: fixed;
-
-    .resolutionSuccess,
-    .resolutionError,
-    .score {
-        color: $primaryColor;
+    .btn {
         position: fixed;
-        bottom: 2vh;
-        font-size: 2rem;
+        left: 0;
+        right: 0;
     }
 
-    .resolutionSuccess,
-    .resolutionError {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        left: 2vw;
-
-        i {
-            padding-left: 1vw;
-            font-size: 3rem;
-        }
-    }
-
-    .resolutionError {
-        color: $errorColor;
-    }
-
-    .resolutionSuccess {
-        color: $successColor;
-    }
-
-    .score {
-        right: 2vw;
-    }
-
-    .powered {
+    .menuState {
         position: fixed;
-        top: 2rem;
-        left: 2rem;
-        color: $fontColor;
-        font-size: 2rem;
-        display: flex;
-        align-items: center;
 
-        img {
-            margin-left: 20px;
-            width: 10%;
-            height: 10%;
-        }
-    }
-
-    .journal {
-        color: $primaryColor;
-        position: fixed;
-        right: 2rem;
-        top: 2rem;
-        font-size: 6rem;
-        transition-duration: .4s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        span {
-            order: 1;
-            opacity: 0;
-            transition-duration: .4s;
+        .resolutionSuccess,
+        .resolutionError,
+        .score {
+            color: $primaryColor;
+            position: fixed;
+            bottom: 2vh;
             font-size: 2rem;
-            margin-right: 1rem;
-            transform: translateY(-200px);
         }
 
-        i {
-            order: 2;
+        .resolutionSuccess,
+        .resolutionError {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            left: 2vw;
 
-            &:hover {
-                cursor: pointer;
-                color: $secondaryColor;
+            i {
+                padding-left: 1vw;
+                font-size: 3rem;
+            }
+        }
+
+        .resolutionError {
+            color: $errorColor;
+        }
+
+        .resolutionSuccess {
+            color: $successColor;
+        }
+
+        .score {
+            right: 2vw;
+        }
+
+        .powered {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            color: $fontColor;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+
+            img {
+                margin-left: 20px;
+                width: 5%;
+                height: 5%;
+            }
+        }
+
+        .journal {
+            color: $primaryColor;
+            position: fixed;
+            right: 2rem;
+            top: 2rem;
+            font-size: 6rem;
+            transition-duration: .4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            span {
+                order: 1;
+                opacity: 0;
                 transition-duration: .4s;
+                font-size: 2rem;
+                margin-right: 1rem;
+                transform: translateY(-200px);
+            }
 
-                &+span {
-                    opacity: 1;
-                    transform: translateY(0);
+            i {
+                order: 2;
+
+                &:hover {
+                    cursor: pointer;
+                    color: $secondaryColor;
+                    transition-duration: .4s;
+
+                    &+span {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
                 }
             }
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
         }
     }
 }
