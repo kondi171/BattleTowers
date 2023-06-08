@@ -1,7 +1,7 @@
 <template>
     <div class="fade">
         <div class="btn">
-            <Button :click="handleStartGame" name="Play" />
+            <Button :click="handleStartGame" @mouseenter="playHoverEffect" name="Play" />
         </div>
         <div class="menuState">
             <div class="powered">
@@ -30,7 +30,12 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import Button from '../features/Button.vue';
 import BattleJournal from '../features/battleJournal/BattleJournal.vue';
 import { useAppStore } from '@/stores/app';
+import { useSoundsStore } from '@/stores/sounds';
 import type { Resolution } from '@/typescript/types';
+import playConfirm from './../../assets/audio/effects/confirmMenu.wav';
+import playHover from './../../assets/audio/effects/towerPlace.wav';
+import { PlayFunction } from '@/typescript/enums';
+import menuSoundtrack from './../../assets/audio/tracks/menuSoundtrack.mp3';
 
 export default {
 
@@ -40,10 +45,12 @@ export default {
     },
     setup() {
         const appStore = useAppStore();
+        const soundStore = useSoundsStore();
         const resolution = ref<Resolution>({ width: 0, height: 0 });
         const resolutionIsOk = ref(false);
         const isHelpOpen = ref(false);
         const init = ref(false);
+        const menuAudio = new Audio(menuSoundtrack);
 
         const checkResolution = () => {
             const width = window.innerWidth;
@@ -58,14 +65,17 @@ export default {
 
         const handleStartGame = () => {
             appStore.setIsGameStart(!appStore.isGameStart);
+            const audio = new Audio(playConfirm);
+            audio.play();
+            menuAudio.pause();
         };
-
-        const handleHelpOpen = () => {
-            isHelpOpen.value = !isHelpOpen.value;
-            init.value = true;
-        };
-
+        const playHoverEffect = () => {
+            const audio = new Audio(playHover);
+            audio.play();
+        }
         onMounted(() => {
+            // soundStore.menuSountrack(PlayFunction.PLAY);
+            menuAudio.play();
             checkResolution();
             window.addEventListener('resize', checkResolution);
         });
@@ -80,6 +90,7 @@ export default {
             resolutionIsOk,
             isHelpOpen,
             handleStartGame,
+            playHoverEffect,
             init,
             localStorage,
         };

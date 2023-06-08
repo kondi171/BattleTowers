@@ -1,5 +1,5 @@
 <template>
-    <section :class="[isHelpOpen ? 'battleJournal active' : 'battleJournal']">
+    <section :class="[appStore.isHelpOpen ? 'battleJournal active' : 'battleJournal']">
         <div class="modal">
             <h3 class="header">Battle Journal</h3>
             <div class="articles">

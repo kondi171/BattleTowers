@@ -57,3 +57,8 @@ export enum NewTower {
   MINIGUN,
   MISSILE
 }
+
+export enum PlayFunction {
+  PLAY,
+  PAUSE,
+}

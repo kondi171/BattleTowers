@@ -1,11 +1,13 @@
 import './assets/scss/main.scss';
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import App from './App.vue';
+import VueAudio from 'vue-audio';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import App from './App.vue'
+const app = createApp(App);
 
-const app = createApp(App)
+app.use(createPinia());
 
-app.use(createPinia())
+app.component('VueAudio', VueAudio);
 
-app.mount('#app')
+app.mount('#app');
