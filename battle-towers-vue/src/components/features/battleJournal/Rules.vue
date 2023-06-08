@@ -40,7 +40,7 @@
     </div>
 </template>
   
-<script>
+<script lang="ts">
 export default {
     name: 'Rules',
 };
@@ -97,4 +97,5 @@ export default {
 
 .enemies {
     margin-top: 3rem;
-}</style>
+}
+</style>

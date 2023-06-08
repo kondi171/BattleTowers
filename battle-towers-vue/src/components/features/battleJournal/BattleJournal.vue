@@ -1,97 +1,87 @@
 <template>
-    <section class="battleJournal active">
+    <section :class="[isHelpOpen ? 'battleJournal active' : 'battleJournal']">
         <div class="modal">
             <h3 class="header">Battle Journal</h3>
             <div class="articles">
-                <article :class="['active', activeArticle === BattleJournalPage.RULES ? 'active' : '']"
+                <article :class="[activeArticle === BattleJournalPage.RULES ? 'active' : '']"
                     @click="handleActive(BattleJournalPage.RULES)">
-                    <img src="@/assets/img/journal/contents/rules.png" alt="Rules icon" />
+                    <img :src="rules" alt="Rules icon" />
                     <h3>Rules</h3>
                 </article>
                 <article :class="[activeArticle === BattleJournalPage.ENEMIES ? 'active' : '']"
                     @click="handleActive(BattleJournalPage.ENEMIES)">
-                    <img src="@/assets/img/journal/contents/enemies.png" alt="Enemies icon" />
+                    <img :src="enemies" alt="Enemies icon" />
                     <h3>Enemies</h3>
                 </article>
                 <article :class="[activeArticle === BattleJournalPage.TOWERS ? 'active' : '']"
                     @click="handleActive(BattleJournalPage.TOWERS)">
-                    <img src="@/assets/img/journal/contents/towers.png" alt="Towers icon" />
+                    <img :src="towers" alt="Towers icon" />
                     <h3>Towers</h3>
                 </article>
             </div>
             <div class="content">
                 <Rules v-if="activeArticle === BattleJournalPage.RULES" />
-                <!-- <Rules /> -->
                 <Enemies v-if="activeArticle === BattleJournalPage.ENEMIES" />
                 <Towers v-if="activeArticle === BattleJournalPage.TOWERS" />
             </div>
-            <i class="close fa fa-times" @click="handleClose" />
+            <i class="close fa fa-times" @click="appStore.setIsHelpOpen(false)" />
         </div>
     </section>
 </template>
   
 <script lang="ts">
-import { defineProps, ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
+import enemies from './../../../assets/img/journal/contents/enemies.png';
+import towers from './../../../assets/img/journal/contents/towers.png';
+import rules from './../../../assets/img/journal/contents/rules.png';
+import { BattleJournalPage } from '@/typescript/enums';
 import Rules from './Rules.vue';
 import Enemies from './Enemies.vue';
 import Towers from './Towers.vue';
-import { BattleJournalPage } from '../../../typescript/enums';
-
-interface BattleJournalProps {
-    isHelpOpen: boolean;
-    setIsHelpOpen: (isOpen: boolean) => void;
-}
+import { useAppStore } from '@/stores/app';
 
 export default {
-    data() {
-        return {
-            activeArticle: BattleJournalPage.RULES
-        };
+    name: 'BattleJournal',
+    components: {
+        Rules,
+        Enemies,
+        Towers
     },
-    props: {
-        isHelpOpen: {
-            type: Boolean,
-            required: true,
-        },
-        setIsHelpOpen: {
-            type: Function,
-            required: true,
-        },
-    },
-    setup(props: BattleJournalProps) {
-
+    setup(props) {
+        const appStore = useAppStore();
+        const activeArticle = ref(BattleJournalPage.RULES);
+        // const BattleJournalPage = BattleJournalPage;
         const handleActive = (page: BattleJournalPage) => {
+            console.log(activeArticle.value);
             const articles = document.querySelectorAll('article');
             articles.forEach((article) => {
                 article.classList.remove('active');
             });
-            const target = event.target as HTMLDivElement;
-            target.closest('article')?.classList.add('active');
-            activeArticle = page;
-        };
-
-        const handleClose = () => {
-            console.log(activeArticle);
-            props.setIsHelpOpen(false);
+            // articles[0].classList.add('active')
+            if (!event) return;
+            else {
+                const target = event.target;
+                if (!target) return;
+                target.closest('article')?.classList.add('active');
+                activeArticle.value = page;
+            }
         };
 
         onMounted(() => {
-            const modal = document.querySelector('.battleJournal');
+            const modal = document.querySelector('battleJournal');
             if (modal) modal.classList.add('active');
         });
 
-        // return {
-        //     BattleJournalPage,
-        //     // activeArticle,
-        //     // handleActive,
-        //     handleClose,
-        // };
-    },
-    components: {
-        Rules,
-        Enemies,
-        Towers,
-    },
+        return {
+            appStore,
+            BattleJournalPage,
+            activeArticle,
+            rules,
+            enemies,
+            towers,
+            handleActive,
+        };
+    }
 };
 </script>
   
@@ -107,7 +97,7 @@ export default {
     width: 100vw;
     height: 100vh;
     transition-duration: .4s;
-    opacity: 0;
+    // opacity: 1;
     background-color: rgba($color: #000000, $alpha: .9);
     display: flex;
     justify-content: center;

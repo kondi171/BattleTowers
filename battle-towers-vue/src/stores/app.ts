@@ -5,6 +5,7 @@ import { GameResult } from '@/typescript/enums';
 export const useAppStore = defineStore('app', () => {
   const isGameStart = ref(false);
   const endGame = ref(GameResult.UNPLAYED);
+  const isHelpOpen = ref(false);
 
   const setIsGameStart = (statement: boolean) => {
     isGameStart.value = statement;
@@ -14,5 +15,9 @@ export const useAppStore = defineStore('app', () => {
     endGame.value = statement;
   }
 
-  return { isGameStart, endGame, setIsGameStart, setEndGame }
+  const setIsHelpOpen = (statement: boolean) => {
+    isHelpOpen.value = statement;
+  }
+
+  return { isGameStart, endGame, setIsGameStart, setEndGame, isHelpOpen, setIsHelpOpen }
 });

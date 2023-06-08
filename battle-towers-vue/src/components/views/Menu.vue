@@ -9,7 +9,7 @@
                 <img src="@/assets/img/vue.png" alt="React logo" />
             </div>
             <div class="journal">
-                <i @click="handleHelpOpen" class="fa fa-book" aria-hidden="true"></i>
+                <i @click="appStore.setIsHelpOpen(true)" class="fa fa-book" aria-hidden="true"></i>
                 <span>Battle Journal</span>
             </div>
             <div :class="[resolutionIsOk ? 'resolutionSuccess' : 'resolutionError']">
@@ -20,7 +20,7 @@
             <div class="score">Best score: {{ localStorage.getItem('score') === '0' ? 0 : localStorage.getItem('score') }}
             </div>
         </div>
-        <BattleJournal v-if="init" :isHelpOpen="isHelpOpen" @setIsHelpOpen="setIsHelpOpen" />
+        <BattleJournal v-if="appStore.isHelpOpen" />
     </div>
 </template>
   
@@ -58,7 +58,6 @@ export default {
 
         const handleStartGame = () => {
             appStore.setIsGameStart(!appStore.isGameStart);
-            console.log(appStore.isGameStart);
         };
 
         const handleHelpOpen = () => {
@@ -76,14 +75,11 @@ export default {
         });
 
         return {
+            appStore,
             resolution,
             resolutionIsOk,
             isHelpOpen,
-            setIsHelpOpen: (value: boolean) => {
-                isHelpOpen.value = value;
-            },
             handleStartGame,
-            handleHelpOpen,
             init,
             localStorage,
         };
