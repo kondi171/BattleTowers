@@ -41,11 +41,10 @@
 </template>
   
 <script lang="ts">
-import { ref, reactive, } from 'vue';
-import type { Position } from '@/typescript/types';
+import { ref, watch, onMounted } from 'vue';
 import { ContextMenu, LogType, NewTower, CanvasBounding } from '@/typescript/enums';
 import addToLogs from '@/scripts/addToLogs';
-import Player from '@/classes/Player';
+
 import towerPlace from '@/assets/audio/effects/towerPlace.wav';
 import cannonData from './../../../resources/towers/cannon.json';
 import minigunData from './../../../resources/towers/minigun.json';
@@ -53,6 +52,7 @@ import missileData from './../../../resources/towers/missile.json';
 import Cannon from '@/classes/towers/Cannon';
 import Minigun from '@/classes/towers/Minigun';
 import Missile from '@/classes/towers/Missile';
+import { useGameStore } from '@/stores/game';
 
 export default {
     props: {
@@ -60,16 +60,8 @@ export default {
             type: Object,
             required: true
         },
-        setContextMenu: {
-            type: Function,
-            required: true
-        },
         currentSubstructure: {
             type: Object,
-            required: true
-        },
-        setCurrentSubstructure: {
-            type: Function,
             required: true
         },
         context2D: {
@@ -86,33 +78,38 @@ export default {
         }
     },
     setup(props) {
-        const menuRef = ref(null);
-        const position = reactive({ x: 0, y: 0 });
+        const gameStore = useGameStore();
+        const { setMoney, logs } = gameStore;
+        const menuRef = ref<HTMLDivElement | null>(null);
+        const position = ref({ x: 0, y: 0 });
         const isMoneyChanged = ref(false);
         const towerValue = ref(0);
+        const towerPlaceEffect = new Audio(towerPlace);
 
-        const placeTower = (newTower) => {
+        const placeTower = (newTower: NewTower) => {
             let tower = null;
             if (props.currentSubstructure && props.context2D) {
-                if (newTower === NewTower.CANNON) tower = new Cannon(props.context2D, { x: props.currentSubstructure.getPosition().x, y: props.currentSubstructure.getPosition().y });
-                else if (newTower === NewTower.MINIGUN) tower = new Minigun(props.context2D, { x: props.currentSubstructure.getPosition().x, y: props.currentSubstructure.getPosition().y });
-                else if (newTower === NewTower.MISSILE) tower = new Missile(props.context2D, { x: props.currentSubstructure.getPosition().x, y: props.currentSubstructure.getPosition().y });
+                if (newTower === NewTower.CANNON) tower = new Cannon(props.context2D! as CanvasRenderingContext2D, { x: props.currentSubstructure.getPosition().x, y: props.currentSubstructure.getPosition().y });
+                else if (newTower === NewTower.MINIGUN) tower = new Minigun(props.context2D! as CanvasRenderingContext2D, { x: props.currentSubstructure.getPosition().x, y: props.currentSubstructure.getPosition().y });
+                else if (newTower === NewTower.MISSILE) tower = new Missile(props.context2D! as CanvasRenderingContext2D, { x: props.currentSubstructure.getPosition().x, y: props.currentSubstructure.getPosition().y });
                 if (tower) {
                     if (tower.getMoney() <= props.player.getMoney()) {
                         props.player.setMoney(props.player.getMoney() - tower.getMoney());
-                        props.setMoney(props.player.getMoney());
+                        props.player.setMoney(props.player.getMoney());
+                        setMoney(props.player.setMoney(props.player.getMoney()));
                         props.towers.push(tower);
-                        props.setContextMenu(ContextMenu.NONE);
-                        playTowerPlace();
-                        addToLogs(props.logs, `${tower.getName()} has been placed!`, LogType.SUCCESS);
+                        props.contextMenuPosition.value = ContextMenu.NONE;
+                        towerPlaceEffect.play();
+                        addToLogs(logs, `${tower.getName()} has been placed!`, LogType.SUCCESS);
                         props.currentSubstructure.setOccupied(true);
-                        props.setCurrentSubstructure(null);
+                        props.currentSubstructure.value = null;
                     } else {
                         props.player.setMoney(props.player.getMoney() - tower.getMoney());
-                        setIsMoneyChanged(true);
-                        setTowerValue(tower.getMoney());
-                        props.setMoney(props.player.getMoney());
-                        addToLogs(props.logs, `Not Enough money`, LogType.FAILURE);
+                        isMoneyChanged.value = true;
+                        towerValue.value = tower.getMoney();
+                        props.player.setMoney(props.player.getMoney());
+                        setMoney(props.player.setMoney(props.player.getMoney()));
+                        addToLogs(logs, `Not Enough money`, LogType.FAILURE);
                     }
                 }
             }
@@ -121,27 +118,28 @@ export default {
         watch(isMoneyChanged, (newValue) => {
             if (newValue) {
                 props.player.setMoney(props.player.getMoney() + towerValue.value);
-                props.setMoney(props.player.getMoney());
-                setIsMoneyChanged(false);
+                props.player.setMoney(props.player.getMoney());
+                setMoney(props.player.setMoney(props.player.getMoney()));
+                isMoneyChanged.value = false;
             }
         });
 
-        useEffect(() => {
-            const menuBounding = {
-                width: menuRef.value.clientWidth,
-                height: menuRef.value.clientHeight
-            };
-            const totalWidth = menuBounding.width + props.contextMenuPosition.x;
-            const totalHeight = menuBounding.height + props.contextMenuPosition.y;
-            let newPosition = { x: props.contextMenuPosition.x, y: props.contextMenuPosition.y };
-            if (totalWidth > CanvasBounding.WIDTH) {
-                newPosition.x = props.contextMenuPosition.x - (totalWidth - CanvasBounding.WIDTH);
-            }
-            if (totalHeight > CanvasBounding.HEIGHT) {
-                newPosition.y = props.contextMenuPosition.y - (totalHeight - CanvasBounding.HEIGHT) - 50;
-            }
-            setPosition(newPosition);
-        }, [props.contextMenuPosition]);
+        // onMounted(() => {
+        //     const menuBounding = {
+        //         width: menuRef.value!.clientWidth,
+        //         height: menuRef.value!.clientHeight
+        //     };
+        //     const totalWidth = menuBounding.width + newPosition.x;
+        //     const totalHeight = menuBounding.height + newPosition.y;
+        //     let updatedPosition = { x: newPosition.x, y: newPosition.y };
+        //     if (totalWidth > CanvasBounding.WIDTH) {
+        //         updatedPosition.x = newPosition.x - (totalWidth - CanvasBounding.WIDTH);
+        //     }
+        //     if (totalHeight > CanvasBounding.HEIGHT) {
+        //         updatedPosition.y = newPosition.y - (totalHeight - CanvasBounding.HEIGHT) - 50;
+        //     }
+        //     position.value = updatedPosition;
+        // });
 
         return {
             menuRef,
@@ -151,10 +149,8 @@ export default {
             minigunData,
             missileData,
             isMoneyChanged,
-            setIsMoneyChanged,
             towerValue,
-            setTowerValue,
-            playTowerPlace,
+            NewTower,
         };
     }
 };
