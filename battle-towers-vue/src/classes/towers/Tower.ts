@@ -1,4 +1,4 @@
-import { Position, TowerData } from "../../../types";
+import type { Position, TowerData } from "@/typescript/types";
 import Bullet from "../Bullet";
 import Sprite from "../Sprite";
 import Enemy from "../enemies/Enemy";
@@ -108,7 +108,7 @@ class Tower extends Sprite {
     public getSize() { return this.size; }
     public getPosition() { return this.position; }
     public getRadius() { return this.radius; }
-    public setTarget(enemy: Enemy | null) { this.target = enemy; }
+    public setTarget(enemy: any) { this.target = enemy; }
     public getDamage() { return this.damage; }
     public getMoney() { return this.money; }
     public getSpeed() { return this.speed; }

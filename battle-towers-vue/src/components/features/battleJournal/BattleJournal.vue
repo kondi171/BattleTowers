@@ -50,14 +50,11 @@ export default {
     setup(props) {
         const appStore = useAppStore();
         const activeArticle = ref(BattleJournalPage.RULES);
-        // const BattleJournalPage = BattleJournalPage;
         const handleActive = (page: BattleJournalPage) => {
-            console.log(activeArticle.value);
             const articles = document.querySelectorAll('article');
             articles.forEach((article) => {
                 article.classList.remove('active');
             });
-            // articles[0].classList.add('active')
             if (!event) return;
             else {
                 const target = event.target;

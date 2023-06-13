@@ -1,12 +1,12 @@
-import { Position } from "../../../types";
+import type { Position } from "@/typescript/types";
 import Tower from "./Tower";
-import missile1 from "./../../../assets/img/towers/structures/missile/missile1.png";
-import missile2 from "./../../../assets/img/towers/structures/missile/missile2.png";
-import missile3 from "./../../../assets/img/towers/structures/missile/missile3.png";
+import missile1 from "@/assets/img/towers/structures/missile/missile1.png";
+import missile2 from "@/assets/img/towers/structures/missile/missile2.png";
+import missile3 from "@/assets/img/towers/structures/missile/missile3.png";
 
-import missileBullet from './../../../assets/img/towers/projectiles/missile.png';
-import missileData from '../../resources/towers/missile.json';
-import missileExplosion from './../../../assets/img/towers/explosions/missile_explosion.png';
+import missileBullet from '@/assets/img/towers/projectiles/missile.png';
+import missileData from '@/resources/towers/missile.json';
+import missileExplosion from '@/assets/img/towers/explosions/missile_explosion.png';
 
 class Missile extends Tower {
   constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position) {

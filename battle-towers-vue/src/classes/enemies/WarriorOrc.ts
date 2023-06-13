@@ -1,8 +1,8 @@
-import { Position } from "../../../types";
+import type { Position } from "@/typescript/types";
 import Enemy from "./Enemy";
-import warriorOrc from './../../../assets/img/enemies/warriorOrc.png';
+import warriorOrc from '@/assets/img/enemies/warriorOrc.png';
 import warriorData from './../../resources/enemies/warrior.json';
-import { HealthBarDivider } from "../../../enums";
+import { HealthBarDivider } from "@/typescript/enums";
 
 class WarriorOrc extends Enemy {
 

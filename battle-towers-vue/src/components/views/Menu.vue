@@ -45,7 +45,6 @@ export default {
     },
     setup() {
         const appStore = useAppStore();
-        const soundStore = useSoundsStore();
         const resolution = ref<Resolution>({ width: 0, height: 0 });
         const resolutionIsOk = ref(false);
         const isHelpOpen = ref(false);

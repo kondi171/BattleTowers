@@ -1,20 +1,20 @@
-import { StartingPoint } from '../../enums';
+import { StartingPoint } from '@/typescript/enums';
 
-import desertData from '../resources/worlds/desert.json';
-import forestData from '../resources/worlds/forest.json';
-import underworldData from '../resources/worlds/underworld.json';
+import desertData from '@/resources/worlds/desert.json';
+import forestData from '@/resources/worlds/forest.json';
+import underworldData from '@/resources/worlds/underworld.json';
 
-import desertLevel1 from './../../assets/img/worlds/desert/level1.png';
-import desertLevel2 from './../../assets/img/worlds/desert/level2.png';
-import desertLevel3 from './../../assets/img/worlds/desert/level3.png';
+import desertLevel1 from '@/assets/img/worlds/desert/level1.png';
+import desertLevel2 from '@/assets/img/worlds/desert/level2.png';
+import desertLevel3 from '@/assets/img/worlds/desert/level3.png';
 
-import forestLevel1 from './../../assets/img/worlds/forest/level1.png';
-import forestLevel2 from './../../assets/img/worlds/forest/level2.png';
-import forestLevel3 from './../../assets/img/worlds/forest/level3.png';
+import forestLevel1 from '@/assets/img/worlds/forest/level1.png';
+import forestLevel2 from '@/assets/img/worlds/forest/level2.png';
+import forestLevel3 from '@/assets/img/worlds/forest/level3.png';
 
-import underworldLevel1 from './../../assets/img/worlds/underworld/level1.png';
-import underworldLevel2 from './../../assets/img/worlds/underworld/level2.png';
-import underworldLevel3 from './../../assets/img/worlds/underworld/level3.png';
+import underworldLevel1 from '@/assets/img/worlds/underworld/level1.png';
+import underworldLevel2 from '@/assets/img/worlds/underworld/level2.png';
+import underworldLevel3 from '@/assets/img/worlds/underworld/level3.png';
 
 class Scene {
   private worlds = [
