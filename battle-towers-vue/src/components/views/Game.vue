@@ -4,7 +4,7 @@
     </div>
     <main v-else class="gameState">
         <section class="playground">
-            <Playground isLoaded="isLoaded" setIsLoaded="setIsLoaded" />
+            <Playground />
         </section>
         <section class="graphicalInterface">
             <header class="logo logoMinimized">
@@ -63,7 +63,6 @@ export default defineComponent({
         const money = computed(() => gameStore.money);
         const score = computed(() => gameStore.score);
         const isScroll = ref(true);
-        const isLoaded = ref(false);
 
         onMounted(() => {
             setTimeout(() => {
@@ -79,8 +78,6 @@ export default defineComponent({
             money,
             score,
             isScroll,
-            isLoaded,
-
         };
     }
 });

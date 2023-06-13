@@ -1,9 +1,5 @@
 <script lang="ts">
-import { ref, watch, reactive, computed, onMounted } from 'vue';
-// import { useRoute } from 'vue-router';
-// import { useStore } from 'vuex';
-// import { useSound } from 'vue-use-sound';
-
+import { ref, watch, reactive, onMounted } from 'vue';
 
 import Enemy from '@/classes/enemies/Enemy';
 import Tower from '@/classes/towers/Tower';
@@ -15,13 +11,12 @@ import Explosion from '@/classes/Explosion';
 import fillSubstructures from '@/scripts/fillSubstructures';
 import spawnEnemies from '@/scripts/spawnEnemies';
 import addToLogs from '@/scripts/addToLogs';
-import mouseMove from '@/scripts/mouseMove';
 
 import TransitionInfo from '@/components/features/TransitionInfo.vue';
 import NewTowerMenu from '@/components/features/towerMenu/NewTowerMenu.vue';
-// import UpgradeTowerMenu from '@/components/features/towerMenu/UpgradeTowerMenu.vue';
+import UpgradeTowerMenu from '@/components/features/towerMenu/UpgradeTowerMenu.vue';
 
-// import Loading from '@/components/views/Loading';
+import Loading from '@/components/views/Loading.vue';
 
 import { useGameStore } from '@/stores/game';
 import { useAppStore } from '@/stores/app';
@@ -34,14 +29,31 @@ import nextGamePart from './../assets/audio/effects/nextGamePart.wav';
 import desertSoundtrack from './../assets/audio/tracks/world1Soundtrack.mp3';
 import forestSoundtrack from './../assets/audio/tracks/world2Soundtrack.mp3';
 import underworldSoundtrack from './../assets/audio/tracks/world3Soundtrack.wav';
-import { CanvasBounding, GamePart, GameResult, LogType } from '@/typescript/enums';
+import { CanvasBounding, ContextMenu, GamePart, GameResult, LogType } from '@/typescript/enums';
 import type { Mouse } from '@/typescript/types';
 
 export default {
     components: {
         TransitionInfo,
-        // NewTowerMenu,
-        // UpdateTowerMenu,
+        NewTowerMenu,
+        UpgradeTowerMenu,
+        Loading,
+    },
+    methods: {
+        mouseMoveHandler(event: MouseEvent) {
+            if (!this.canvasRef) return;
+            const canvasTopOffset = this.canvasRef!.getBoundingClientRect().top;
+            const canvasLeftOffset = this.canvasRef!.getBoundingClientRect().left;
+            const x = event.clientX - canvasLeftOffset;
+            const y = event.clientY - canvasTopOffset;
+            this.mousePosition.x = x;
+            this.mousePosition.y = y;
+            if (this.tacticalMode) return;
+            this.updateSubstructuresInit({ x, y });
+        },
+        updateSubstructuresInit(mouse: Mouse) {
+            this.substructures.forEach(substructure => substructure.update(mouse));
+        }
     },
     setup() {
         const gameStore = useGameStore();
@@ -70,10 +82,10 @@ export default {
         const time = ref(3);
         const isInfoVisible = ref(false);
 
-        const contextMenuPosition = ref({ x: -1000, y: 0 });
-        const contextMenu = ref(null);
-        const clickedTower = ref(null);
-        const mousePosition = ref({ x: 0, y: 0 });
+        const contextMenuPosition = reactive({ x: -1000, y: 0 });
+        const contextMenu = ref<ContextMenu | null>(null);
+        const clickedTower = ref<Tower | null>(null);
+        const mousePosition = reactive({ x: 0, y: 0 });
         const tacticalMode = ref(false);
 
         const towers = ref<Tower[]>([]);
@@ -81,7 +93,7 @@ export default {
         const explosions = ref<Explosion[]>([]);
         const substructures = ref<Substructure[]>([]);
 
-        const currentSubstructure = ref(null);
+        const currentSubstructure = ref<Substructure | null>(null);
 
         const player = ref<Player | null>(null);
         const scene = ref<Scene | null>(null);
@@ -89,45 +101,101 @@ export default {
         const gamePart = ref<GamePart | null>(null);
         const start = ref(false);
 
-        let activeSubstructure = ref(null);
+        const activeSubstructure = ref<Substructure | null>(null);
 
         const initialize = () => {
-            if (canvasRef.value) {
-                canvasRef.value.width = CanvasBounding.WIDTH;
-                canvasRef.value.height = CanvasBounding.HEIGHT;
-                context2D.value!.fillRect(0, 0, canvasRef.value.width, canvasRef.value.height);
-                setLife(player.value!.getLife());
-                setMoney(player.value!.getMoney());
-                setScore(player.value!.getScore());
-                setWave(scene.value!.getWave());
-                setLevel(scene.value!.getLevel());
-                setWorld(scene.value!.getWorldName());
-                substructures.value = fillSubstructures(context2D.value!, scene.value!);
-                enemies.value = spawnEnemies(context2D.value!, scene.value! as Scene);
-                explosions.value = [];
-                isInitialized.value = true;
-            }
+            canvasRef.value!.width = CanvasBounding.WIDTH;
+            canvasRef.value!.height = CanvasBounding.HEIGHT;
+            context2D.value!.fillRect(0, 0, canvasRef.value!.width, canvasRef.value!.height);
+            setLife(player.value!.getLife());
+            setMoney(player.value!.getMoney());
+            setScore(player.value!.getScore());
+            setWave(scene.value!.getWave());
+            setLevel(scene.value!.getLevel());
+            setWorld(scene.value!.getWorldName());
+            substructures.value = fillSubstructures(context2D.value!, scene.value!);
+            enemies.value = spawnEnemies(context2D.value!, scene.value! as Scene);
+            explosions.value = [];
+            isInitialized.value = true;
         }
+
         const animate = () => {
             animationRef.value = requestAnimationFrame(animate);
             const image = new Image();
             image.src = scene.value!.getCurrentMap();
             context2D.value!.drawImage(image, 0, 0);
-            // updateTowers();
+            updateTowers();
             updateEnemies();
             updateSubstructures({ x: 0, y: 0 });
-            // updateExplosions();
+            updateExplosions();
         }
-        const refreshAssets = () => {
 
+        const refreshAssets = () => {
+            const image = new Image();
+            image.src = scene.value!.getCurrentMap();
+            context2D.value!.drawImage(image, 0, 0);
+            updateTowers();
+            updateEnemies();
+            updateSubstructures({ x: 0, y: 0 });
+            updateExplosions();
+        }
+
+        const updateTowers = () => {
+            towers.value.forEach(tower => {
+                tower.update();
+                tower.setTarget(null);
+                const validEnemies = enemies.value.filter(enemy => {
+                    const xDifference = (enemy.getPosition().x + enemy.getBounding().width / 2) - tower.getPosition().x - tower.getSize() / 2;
+                    const yDifference = (enemy.getPosition().y + enemy.getBounding().height / 2) - tower.getPosition().y - tower.getSize() / 2;
+                    const distance = Math.hypot(xDifference, yDifference);
+                    return distance < enemy.getBounding().radius + tower.getRadius();
+                });
+                tower.setTarget(validEnemies[validEnemies.length - 1]);
+                updateBullet(tower as Tower, enemies.value! as Enemy[]);
+            });
+        }
+
+        const updateBullet = (tower: Tower, enemies: Enemy[]) => {
+            for (let i = tower.getBullets().length - 1; i >= 0; i--) {
+                const bullet = tower.getBullet(i);
+                bullet.update();
+                const xDifference = (bullet.getEnemy().getPosition().x + bullet.getEnemy().getBounding().width / 2) - bullet.getPosition().x;
+                const yDifference = (bullet.getEnemy().getPosition().y + bullet.getEnemy().getBounding().height / 2) - bullet.getPosition().y;
+                const distance = Math.hypot(xDifference, yDifference);
+                if (distance < bullet.getEnemy().getBounding().radius) {
+                    bullet.getEnemy().decreaseHealth(tower.getDamage());
+                    explosions.value.push(new Explosion(
+                        context2D.value!,
+                        { x: bullet.getEnemy().getPosition().x, y: bullet.getEnemy().getPosition().y },
+                        tower.getExplosionImg(),
+                        { max: tower.getMaxExplosionFrames() })
+                    );
+                    tower.getBullets().splice(i, 1);
+                    enemyHitEffect.play();
+                    if (bullet.getEnemy().getHealth() <= 0) {
+                        const enemyIndex = enemies.findIndex((enemy) => {
+                            return bullet.getEnemy() === enemy;
+                        });
+                        if (enemyIndex > -1) {
+                            const targetedEnemy = enemies[enemyIndex];
+                            enemies.splice(enemyIndex, 1);
+                            enemyDeadEffect.play();
+                            addToLogs(logs, `${targetedEnemy.getName()} has been eliminated!`, LogType.SUCCESS);
+                            player.value!.setMoney(player.value!.getMoney() + targetedEnemy.getMoney());
+                            player.value!.setScore(player.value!.getScore() + targetedEnemy.getScore());
+                            setScore(player.value!.getScore());
+                            setMoney(player.value!.getMoney());
+                        }
+                    }
+                    if (enemies.length === 0) increaseWave();
+                }
+            }
         }
 
         const updateEnemies = () => {
             for (let i = enemies.value.length - 1; i >= 0; i--) {
                 const enemy = enemies.value[i];
-                // console.log(enemy);
                 enemy.update();
-                // console.log(typeof enemy);
                 decreasePlayerLife(enemy as Enemy, i);
             }
         }
@@ -136,6 +204,60 @@ export default {
             substructures.value.forEach(substructure => substructure.update(mouse));
         }
 
+        const updateExplosions = () => {
+            for (let i = explosions.value.length - 1; i >= 0; i--) {
+                const explosion = explosions.value[i];
+                explosion.update();
+                if (explosion.getFrames().current >= explosion.getFrames().max - 1) explosions.value.splice(i, 1);
+            }
+        }
+
+        const placementClicked = () => {
+            console.log(contextMenu.value);
+            for (let i = 0; i < substructures.value.length; i++) {
+                const tile = substructures.value[i];
+                if (
+                    mousePosition.x > tile.getPosition().x &&
+                    mousePosition.x < tile.getPosition().x + tile.getSize() &&
+                    mousePosition.y > tile.getPosition().y &&
+                    mousePosition.y < tile.getPosition().y + tile.getSize()
+                ) {
+                    activeSubstructure.value = tile;
+                    break;
+                }
+            }
+            console.log(activeSubstructure);
+            if (activeSubstructure) {
+                contextMenuPosition.x = mousePosition.x;
+                contextMenuPosition.y = mousePosition.y;
+                checkSubstructure(activeSubstructure.value! as Substructure);
+            } else {
+                contextMenuPosition.x = -1000;
+                contextMenuPosition.y = 0;
+                contextMenu.value = ContextMenu.NONE;
+
+            }
+        }
+        const checkSubstructure = (activeSubstructure: Substructure) => {
+            currentSubstructure.value = activeSubstructure;
+            if (activeSubstructure) {
+                if (!activeSubstructure.getOccupied()) contextMenu.value = ContextMenu.NEW_TOWER;
+                else if (activeSubstructure.getOccupied()) {
+                    const tower = towers.value.filter((tower) => tower.getPosition().x === activeSubstructure.getPosition().x && tower.getPosition().y === activeSubstructure.getPosition().y);
+                    clickedTower.value = tower[0];
+                    contextMenu.value = ContextMenu.UPGRADE_TOWER;
+                } else {
+                    contextMenuPosition.x = -1000;
+                    contextMenuPosition.y = 0;
+                    contextMenu.value = ContextMenu.NONE;
+                }
+            } else {
+                contextMenuPosition.x = -1000;
+                contextMenuPosition.y = 0;
+                contextMenu.value = ContextMenu.NONE;
+            }
+
+        }
         const decreasePlayerLife = (enemy: Enemy, index: number) => {
             const worldData = scene.value!.getCurrentWorldData();
             if (enemy.getWaypointIndex() === worldData.waypoints.length - 1) {
@@ -151,6 +273,7 @@ export default {
                 if (enemies.value.length === 0) increaseWave();
             }
         }
+
         const gameReset = () => {
             desertTrack.pause();
             forestTrack.pause();
@@ -165,6 +288,7 @@ export default {
             logs.slice(0, logs.length);
             setLogs([]);
         }
+
         const increaseWave = () => {
             if (scene.value!.getWave() >= scene.value!.getCurrentWorldData().enemies.length) increaseLevel();
             else {
@@ -173,11 +297,43 @@ export default {
                 enemies.value = spawnEnemies(context2D.value!, scene.value! as Scene);
             }
         }
+
         const increaseLevel = () => {
-
+            if (scene.value!.getLevel() >= scene.value!.getMaps().length) changeWorld();
+            else {
+                gamePart.value = GamePart.LEVEL;
+                scene.value!.setLevel(scene.value!.getLevel() + 1);
+                towers.value.splice(0, towers.value.length);
+                towers.value = [];
+                activeSubstructure.value = null;
+                substructures.value = fillSubstructures(context2D.value!, scene.value! as Scene);
+                scene.value!.setWave(1);
+                enemies.value = spawnEnemies(context2D.value!, scene.value! as Scene);
+                player.value!.setMoney(((scene.value!.getWorld() * 100) + ((scene.value!.getLevel() - 1) * 20)));
+                contextMenu.value = null;
+            }
         }
-        const changeWorld = () => {
 
+        const changeWorld = () => {
+            if (scene.value!.getWorld() >= scene.value!.getWorldsLength()) {
+                setEndGame(GameResult.WIN);
+                player.value!.setScore(player.value!.getScore() + player.value!.getLife() * 100);
+                setScore(player.value!.getScore());
+                gameReset();
+            } else {
+                scene.value!.setWave(1);
+                scene.value!.setLevel(1);
+                scene.value!.setWorld(scene.value!.getWorld() + 1);
+                towers.value.splice(0, towers.value!.length);
+                towers.value = [];
+                activeSubstructure.value = null;
+                start.value = false;
+                substructures.value = fillSubstructures(context2D.value!, scene.value! as Scene);
+                enemies.value = spawnEnemies(context2D.value!, scene.value! as Scene);
+                player.value!.setLife(player.value!.getLife() + 3);
+                player.value!.setMoney(100 * scene.value!.getWorld());
+                contextMenu.value = null;
+            }
         }
         const gameTransition = (part: GamePart) => {
             setTimeout(() => {
@@ -188,9 +344,19 @@ export default {
             info.value = part;
 
             if (part === GamePart.START && start) {
-                if (scene.value!.getWorldName() === 'Desert') desertTrack.play();
-                if (scene.value!.getWorldName() === 'Forest') forestTrack.play();
-                if (scene.value!.getWorldName() === 'Underworld') underworldTrack.play();
+                if (scene.value!.getWorldName() === 'Desert') {
+                    desertTrack.loop = true;
+                    desertTrack.volume = 0.5;
+                    desertTrack.play();
+                } if (scene.value!.getWorldName() === 'Forest') {
+                    forestTrack.loop = true;
+                    forestTrack.volume = 0.5;
+                    forestTrack.play();
+                } if (scene.value!.getWorldName() === 'Underworld') {
+                    underworldTrack.loop = true;
+                    underworldTrack.volume = 0.5;
+                    underworldTrack.play();
+                }
                 isInfoVisible.value = false;
                 animate();
             } else if ((part === GamePart.WAVE || part === GamePart.LEVEL) && start) {
@@ -237,12 +403,23 @@ export default {
             gamePart.value = null;
         }
 
-
-
-
-        const handleTacticalMode = () => {
-            console.log('click');
+        const handleTacticalMode = (state: boolean) => {
+            tacticalMode.value = state;
+            if (!state) animate();
+            else cancelAnimationFrame(animationRef.value);
         }
+
+        const mouseMove = (event: MouseEvent) => {
+            const canvasTopOffset = canvasRef.value!.getBoundingClientRect().top;
+            const canvasLeftOffset = canvasRef.value!.getBoundingClientRect().left;
+            const x = event.clientX - canvasLeftOffset;
+            const y = event.clientY - canvasTopOffset;
+            mousePosition.x = x;
+            mousePosition.y = y;
+            if (tacticalMode) return;
+            updateSubstructures({ x, y });
+            // console.log(mousePosition);
+        };
 
         onMounted(() => {
             const canvas = canvasRef.value;
@@ -250,6 +427,7 @@ export default {
             if (!ctx) return;
             context2D.value = ctx;
             initCanvas.value = true;
+            window.addEventListener('mousemove', mouseMove);
         });
         watch(
             () => initCanvas.value,
@@ -330,29 +508,31 @@ export default {
             start,
             activeSubstructure,
             handleTacticalMode,
+            mouseMove,
+            placementClicked,
+            ContextMenu,
         };
     },
 };
 </script>
 <template>
     <div class="canvasWrapper">
-        <div class="tacticalModeBtn">
-            <i @click="handleTacticalMode" class="fa fa-pause-circle-o" aria-hidden="true"></i>
-        </div>
         <div class="fade">
+            <div class="tacticalModeBtn">
+                <i @click="() => handleTacticalMode(!tacticalMode)" class="fa fa-pause-circle-o" aria-hidden="true"></i>
+            </div>
             <span v-if="tacticalMode" class="tacticalMode">Tactical Mode is Active</span>
             <TransitionInfo v-if="isInfoVisible" :info="info" :time="time" :start="start" />
-            <!-- <NewTowerMenu v-if="contextMenu === ContextMenu.NEW_TOWER" :contextMenuPosition="contextMenuPosition"
-                                                                                                                                                                                                    :currentSubstructure="currentSubstructure" :setCurrentSubstructure="setCurrentSubstructure"
-                                                                                                                                                                                                    :setContextMenu="setContextMenu" :context2D="context2D" :towers="towers" :player="player" />
-                                                                                                                                                                                                <UpgradeTowerMenu v-if="contextMenu === ContextMenu.UPGRADE_TOWER" :contextMenuPosition="contextMenuPosition"
-                                                                                                                                                                                                    :setContextMenu="setContextMenu" :currentSubstructure="currentSubstructure" :towers="towers"
-                                                                                                                                                                                                    :currentTower="clickedTower" :player="player" :refreshAssets="refreshAssets" /> -->
+            <NewTowerMenu v-if="contextMenu === ContextMenu.NEW_TOWER" :contextMenuPosition="contextMenuPosition"
+                :currentSubstructure="currentSubstructure" :context2D="context2D" :towers="towers" :player="player" />
 
-            <canvas ref="canvasRef" class="sceneCanvas"></canvas>
+            <!-- <UpgradeTowerMenu v-if="contextMenu === ContextMenu.UPGRADE_TOWER" :contextMenuPosition="contextMenuPosition"
+                                    :currentSubstructure="currentSubstructure" :towers="towers" :currentTower="clickedTower" :player="player"
+                                    :refreshAssets="refreshAssets" /> -->
+            <UpgradeTowerMenu v-if="contextMenu === ContextMenu.UPGRADE_TOWER" :contextMenuPosition="contextMenuPosition"
+                :currentSubstructure="currentSubstructure" :towers="towers" :currentTower="clickedTower" :player="player" />
 
-            <!-- <canvas ref="canvasRef" class="sceneCanvas" @click="placementClicked"
-                                                                                                                                                                                                    @mousemove="event => mouseMove({ event, canvasRef, tacticalMode, setMousePosition, updateSubstructures })"></canvas> -->
+            <canvas ref="canvasRef" class="sceneCanvas" @click="placementClicked" @mousemove="mouseMoveHandler"></canvas>
         </div>
         <Loading v-if="!isLoaded" />
     </div>

@@ -60,8 +60,12 @@ export default {
         onMounted(() => {
             console.log(props.gameResult);
             if (endGame === GameResult.WIN) {
+                winTrack.loop = true;
+                winTrack.volume = 0.5;
                 winTrack.play();
             } else if (endGame === GameResult.DEFEAT) {
+                gameOverTrack.loop = true;
+                gameOverTrack.volume = 0.5;
                 gameOverTrack.play();
             }
         });

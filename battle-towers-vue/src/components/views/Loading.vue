@@ -1,4 +1,25 @@
-@import '../variables';
+<template>
+    <div class="loading">
+        <div class="loaders">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <h2>Loading</h2>
+    </div>
+</template>
+  
+<script lang="ts">
+
+export default {
+    name: 'Loading'
+};
+</script>
+  
+<style scoped lang="scss">
+@import '@/assets/scss/_variables.scss';
 
 .loading {
     position: fixed;
@@ -92,3 +113,4 @@
 
     }
 }
+</style>

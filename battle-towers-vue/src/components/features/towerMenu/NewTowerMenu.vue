@@ -124,22 +124,22 @@ export default {
             }
         });
 
-        // onMounted(() => {
-        //     const menuBounding = {
-        //         width: menuRef.value!.clientWidth,
-        //         height: menuRef.value!.clientHeight
-        //     };
-        //     const totalWidth = menuBounding.width + newPosition.x;
-        //     const totalHeight = menuBounding.height + newPosition.y;
-        //     let updatedPosition = { x: newPosition.x, y: newPosition.y };
-        //     if (totalWidth > CanvasBounding.WIDTH) {
-        //         updatedPosition.x = newPosition.x - (totalWidth - CanvasBounding.WIDTH);
-        //     }
-        //     if (totalHeight > CanvasBounding.HEIGHT) {
-        //         updatedPosition.y = newPosition.y - (totalHeight - CanvasBounding.HEIGHT) - 50;
-        //     }
-        //     position.value = updatedPosition;
-        // });
+        watch(props.contextMenuPosition, (newPosition) => {
+            const menuBounding = {
+                width: menuRef.value!.clientWidth,
+                height: menuRef.value!.clientHeight
+            };
+            const totalWidth = menuBounding.width + newPosition.x;
+            const totalHeight = menuBounding.height + newPosition.y;
+            let updatedPosition = { x: newPosition.x, y: newPosition.y };
+            if (totalWidth > CanvasBounding.WIDTH) {
+                updatedPosition.x = newPosition.x - (totalWidth - CanvasBounding.WIDTH);
+            }
+            if (totalHeight > CanvasBounding.HEIGHT) {
+                updatedPosition.y = newPosition.y - (totalHeight - CanvasBounding.HEIGHT) - 50;
+            }
+            position.value = updatedPosition;
+        });
 
         return {
             menuRef,
@@ -157,5 +157,5 @@ export default {
 </script>
   
 <style scoped lang="scss">
-@import './../../../assets/scss/_variables.scss';
+@import '@/assets/scss/variables';
 </style>

@@ -3,17 +3,18 @@
         <div class="modal">
             <h3 class="header">Battle Journal</h3>
             <div class="articles">
-                <article :class="[activeArticle === BattleJournalPage.RULES ? 'active' : '']"
+                <article @mouseenter="playHoverEffect" :class="[activeArticle === BattleJournalPage.RULES ? 'active' : '']"
                     @click="handleActive(BattleJournalPage.RULES)">
                     <img :src="rules" alt="Rules icon" />
                     <h3>Rules</h3>
                 </article>
-                <article :class="[activeArticle === BattleJournalPage.ENEMIES ? 'active' : '']"
+                <article @mouseenter="playHoverEffect"
+                    :class="[activeArticle === BattleJournalPage.ENEMIES ? 'active' : '']"
                     @click="handleActive(BattleJournalPage.ENEMIES)">
                     <img :src="enemies" alt="Enemies icon" />
                     <h3>Enemies</h3>
                 </article>
-                <article :class="[activeArticle === BattleJournalPage.TOWERS ? 'active' : '']"
+                <article @mouseenter="playHoverEffect" :class="[activeArticle === BattleJournalPage.TOWERS ? 'active' : '']"
                     @click="handleActive(BattleJournalPage.TOWERS)">
                     <img :src="towers" alt="Towers icon" />
                     <h3>Towers</h3>
@@ -24,7 +25,7 @@
                 <Enemies v-if="activeArticle === BattleJournalPage.ENEMIES" />
                 <Towers v-if="activeArticle === BattleJournalPage.TOWERS" />
             </div>
-            <i class="close fa fa-times" @click="appStore.setIsHelpOpen(false)" />
+            <i class="close fa fa-times" @mouseenter="playHoverEffect" @click="handleClose" />
         </div>
     </section>
 </template>
@@ -39,6 +40,8 @@ import Rules from './Rules.vue';
 import Enemies from './Enemies.vue';
 import Towers from './Towers.vue';
 import { useAppStore } from '@/stores/app';
+import playConfirm from '@/assets/audio/effects/confirmMenu.wav';
+import playHover from '@/assets/audio/effects/towerPlace.wav';
 
 export default {
     name: 'BattleJournal',
@@ -47,7 +50,7 @@ export default {
         Enemies,
         Towers
     },
-    setup(props) {
+    setup() {
         const appStore = useAppStore();
         const activeArticle = ref(BattleJournalPage.RULES);
         const handleActive = (page: BattleJournalPage) => {
@@ -62,8 +65,18 @@ export default {
                 target.closest('article')?.classList.add('active');
                 activeArticle.value = page;
             }
+            const audio = new Audio(playConfirm);
+            audio.play();
         };
-
+        const handleClose = () => {
+            appStore.setIsHelpOpen(false)
+            const audio = new Audio(playConfirm);
+            audio.play();
+        }
+        const playHoverEffect = () => {
+            const audio = new Audio(playHover);
+            audio.play();
+        }
         onMounted(() => {
             const modal = document.querySelector('battleJournal');
             if (modal) modal.classList.add('active');
@@ -77,6 +90,8 @@ export default {
             enemies,
             towers,
             handleActive,
+            handleClose,
+            playHoverEffect,
         };
     }
 };

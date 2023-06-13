@@ -9,7 +9,7 @@
                 <img src="@/assets/img/vue.png" alt="React logo" />
             </div>
             <div class="journal">
-                <i @click="appStore.setIsHelpOpen(true)" class="fa fa-book" aria-hidden="true"></i>
+                <i @mouseenter="playHoverEffect" @click="handleOpen" class="fa fa-book" aria-hidden="true"></i>
                 <span>Battle Journal</span>
             </div>
             <div :class="[resolutionIsOk ? 'resolutionSuccess' : 'resolutionError']">
@@ -30,11 +30,9 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import Button from '../features/Button.vue';
 import BattleJournal from '../features/battleJournal/BattleJournal.vue';
 import { useAppStore } from '@/stores/app';
-import { useSoundsStore } from '@/stores/sounds';
 import type { Resolution } from '@/typescript/types';
 import playConfirm from './../../assets/audio/effects/confirmMenu.wav';
 import playHover from './../../assets/audio/effects/towerPlace.wav';
-import { PlayFunction } from '@/typescript/enums';
 import menuSoundtrack from './../../assets/audio/tracks/menuSoundtrack.mp3';
 
 export default {
@@ -72,8 +70,14 @@ export default {
             const audio = new Audio(playHover);
             audio.play();
         }
+        const handleOpen = () => {
+            appStore.setIsHelpOpen(true)
+            const audio = new Audio(playConfirm);
+            audio.play();
+        }
         onMounted(() => {
-            // soundStore.menuSountrack(PlayFunction.PLAY);
+            menuAudio.loop = true;
+            menuAudio.volume = 0.5;
             menuAudio.play();
             checkResolution();
             window.addEventListener('resize', checkResolution);
@@ -92,6 +96,7 @@ export default {
             playHoverEffect,
             init,
             localStorage,
+            handleOpen,
         };
     },
 };
