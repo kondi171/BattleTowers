@@ -1,6 +1,7 @@
 <template>
     <div class="transitionInfo">
-        <h3 v-if="info === GamePart.START || info === GamePart.WORLD" @click="!start">Ready? <br />Click to Start!
+        <h3 v-if="info === GamePart.START || info === GamePart.WORLD" @click="emit('setStart')">Ready?
+            <br />Click to Start!
         </h3>
         <h3 v-else>Next {{ info }} in {{ time }}...</h3>
     </div>
@@ -26,11 +27,12 @@ export default {
             required: true
         }
     },
-    setup(props) {
+    setup(props, { emit }) {
         const start = ref(props.start);
         return {
             GamePart,
             start,
+            emit,
         };
     }
 };

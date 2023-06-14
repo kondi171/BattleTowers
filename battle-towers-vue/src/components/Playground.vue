@@ -101,7 +101,7 @@ export default {
         const gamePart = ref<GamePart | null>(null);
         const start = ref(false);
 
-        const activeSubstructure = ref<Substructure | null>(null);
+        let activeSubstructure: null | Substructure = null;
 
         const initialize = () => {
             canvasRef.value!.width = CanvasBounding.WIDTH;
@@ -213,7 +213,6 @@ export default {
         }
 
         const placementClicked = () => {
-            console.log(contextMenu.value);
             for (let i = 0; i < substructures.value.length; i++) {
                 const tile = substructures.value[i];
                 if (
@@ -222,21 +221,20 @@ export default {
                     mousePosition.y > tile.getPosition().y &&
                     mousePosition.y < tile.getPosition().y + tile.getSize()
                 ) {
-                    activeSubstructure.value = tile;
+                    activeSubstructure = tile as Substructure;
                     break;
                 }
             }
-            console.log(activeSubstructure);
             if (activeSubstructure) {
                 contextMenuPosition.x = mousePosition.x;
                 contextMenuPosition.y = mousePosition.y;
-                checkSubstructure(activeSubstructure.value! as Substructure);
+                checkSubstructure(activeSubstructure);
             } else {
                 contextMenuPosition.x = -1000;
                 contextMenuPosition.y = 0;
                 contextMenu.value = ContextMenu.NONE;
-
             }
+            activeSubstructure = null;
         }
         const checkSubstructure = (activeSubstructure: Substructure) => {
             currentSubstructure.value = activeSubstructure;
@@ -246,17 +244,12 @@ export default {
                     const tower = towers.value.filter((tower) => tower.getPosition().x === activeSubstructure.getPosition().x && tower.getPosition().y === activeSubstructure.getPosition().y);
                     clickedTower.value = tower[0];
                     contextMenu.value = ContextMenu.UPGRADE_TOWER;
-                } else {
-                    contextMenuPosition.x = -1000;
-                    contextMenuPosition.y = 0;
-                    contextMenu.value = ContextMenu.NONE;
                 }
             } else {
                 contextMenuPosition.x = -1000;
                 contextMenuPosition.y = 0;
                 contextMenu.value = ContextMenu.NONE;
             }
-
         }
         const decreasePlayerLife = (enemy: Enemy, index: number) => {
             const worldData = scene.value!.getCurrentWorldData();
@@ -305,7 +298,7 @@ export default {
                 scene.value!.setLevel(scene.value!.getLevel() + 1);
                 towers.value.splice(0, towers.value.length);
                 towers.value = [];
-                activeSubstructure.value = null;
+                activeSubstructure = null;
                 substructures.value = fillSubstructures(context2D.value!, scene.value! as Scene);
                 scene.value!.setWave(1);
                 enemies.value = spawnEnemies(context2D.value!, scene.value! as Scene);
@@ -326,7 +319,7 @@ export default {
                 scene.value!.setWorld(scene.value!.getWorld() + 1);
                 towers.value.splice(0, towers.value!.length);
                 towers.value = [];
-                activeSubstructure.value = null;
+                activeSubstructure = null;
                 start.value = false;
                 substructures.value = fillSubstructures(context2D.value!, scene.value! as Scene);
                 enemies.value = spawnEnemies(context2D.value!, scene.value! as Scene);
@@ -339,11 +332,11 @@ export default {
             setTimeout(() => {
                 isLoaded.value = true;
             }, 2000);
-            nextGamePartEffect.play();
             isInfoVisible.value = true;
             info.value = part;
 
-            if (part === GamePart.START && start) {
+            if (part === GamePart.START && start.value) {
+                nextGamePartEffect.play();
                 if (scene.value!.getWorldName() === 'Desert') {
                     desertTrack.loop = true;
                     desertTrack.volume = 0.5;
@@ -359,7 +352,7 @@ export default {
                 }
                 isInfoVisible.value = false;
                 animate();
-            } else if ((part === GamePart.WAVE || part === GamePart.LEVEL) && start) {
+            } else if ((part === GamePart.WAVE || part === GamePart.LEVEL) && start.value) {
                 if (player.value!.getLife() <= 0) return;
                 setTimeout(() => {
                     isInfoVisible.value = false;
@@ -418,9 +411,22 @@ export default {
             mousePosition.y = y;
             if (tacticalMode) return;
             updateSubstructures({ x, y });
-            // console.log(mousePosition);
         };
 
+        const setStart = () => {
+            start.value = true;
+        }
+        const setContextMenu = () => {
+            contextMenuPosition.x = -1000;
+            contextMenuPosition.y = 0;
+            contextMenu.value = ContextMenu.NONE;
+        }
+        const towerSetted = (money: number) => {
+            player.value?.setMoney(money);
+            contextMenu.value = ContextMenu.NONE;
+            contextMenuPosition.x = -1000;
+            contextMenuPosition.y = 0;
+        }
         onMounted(() => {
             const canvas = canvasRef.value;
             const ctx = canvas?.getContext('2d');
@@ -511,6 +517,8 @@ export default {
             mouseMove,
             placementClicked,
             ContextMenu,
+            setStart,
+            towerSetted,
         };
     },
 };
@@ -522,15 +530,17 @@ export default {
                 <i @click="() => handleTacticalMode(!tacticalMode)" class="fa fa-pause-circle-o" aria-hidden="true"></i>
             </div>
             <span v-if="tacticalMode" class="tacticalMode">Tactical Mode is Active</span>
-            <TransitionInfo v-if="isInfoVisible" :info="info" :time="time" :start="start" />
+            <TransitionInfo v-if="isInfoVisible" :info="info" :time="time" :start="start" @setStart="setStart" />
             <NewTowerMenu v-if="contextMenu === ContextMenu.NEW_TOWER" :contextMenuPosition="contextMenuPosition"
-                :currentSubstructure="currentSubstructure" :context2D="context2D" :towers="towers" :player="player" />
+                :currentSubstructure="currentSubstructure" :context2D="context2D" :towers="towers" :player="player"
+                :towerSetted="towerSetted" />
 
             <!-- <UpgradeTowerMenu v-if="contextMenu === ContextMenu.UPGRADE_TOWER" :contextMenuPosition="contextMenuPosition"
-                                    :currentSubstructure="currentSubstructure" :towers="towers" :currentTower="clickedTower" :player="player"
-                                    :refreshAssets="refreshAssets" /> -->
+                                                                                                                                                                                                                                                                                        :currentSubstructure="currentSubstructure" :towers="towers" :currentTower="clickedTower" :player="player"
+                                                                                                                                                                                                                                                                                        :refreshAssets="refreshAssets" /> -->
             <UpgradeTowerMenu v-if="contextMenu === ContextMenu.UPGRADE_TOWER" :contextMenuPosition="contextMenuPosition"
-                :currentSubstructure="currentSubstructure" :towers="towers" :currentTower="clickedTower" :player="player" />
+                :currentSubstructure="currentSubstructure" :towers="towers" :currentTower="clickedTower" :player="player"
+                :towerSetted="towerSetted" />
 
             <canvas ref="canvasRef" class="sceneCanvas" @click="placementClicked" @mousemove="mouseMoveHandler"></canvas>
         </div>

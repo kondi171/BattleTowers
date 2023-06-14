@@ -29,7 +29,11 @@
             :disabled="player.money < nextTower.money">Upgrade</button>
         <button v-else disabled>Upgrade</button> -->
         <!-- <button @click="upgradeTower">Upgrade</button> -->
-        <button @click="upgradeTower">Upgrade</button>
+        <!-- <button @click="upgradeTower">Upgrade</button> -->
+
+
+        <button v-if="nextTower && player.getMoney() >= Number(nextTower.money)" @click="upgradeTower">Upgrade</button>
+        <button v-else class="error" @click="upgradeTower">Upgrade</button>
     </div>
     <div v-else ref="menuRef" class="maxLevel"
         :style="{ left: `${position.x.toFixed()}px`, top: `${position.y.toFixed()}px` }">
@@ -72,13 +76,16 @@ export default {
         player: {
             type: Object,
             required: true
+        },
+        towerSetted: {
+            type: Function,
+            required: true,
         }
     },
     setup(props) {
         const gameStore = useGameStore();
         const towerPlaceEffect = new Audio(towerPlace);
         const { logs, setMoney } = gameStore;
-        const instance = getCurrentInstance();
         const menuRef = ref<HTMLDivElement | null>(null);
         const position = reactive({ x: 0, y: 0 });
         const presentTower = reactive<TowerStats>({
@@ -103,28 +110,36 @@ export default {
         const upgradeTower = () => {
             const clickedTower = props.towers.filter(tower => tower.getPosition().x === props.currentSubstructure.getPosition().x && tower.getPosition().y === props.currentSubstructure.getPosition().y);
             const activeTower = clickedTower[0];
-            if (!towerValue.value) return;
-            towerValue.value = nextTower.money;
             if (!nextTower.money) return;
-            console.log(nextTower.money);
             if (props.player.getMoney() < nextTower.money) {
-                props.player.setMoney(props.player.getMoney() - nextTower.money);
-                setMoney(props.player.getMoney());
                 isMoneyChanged.value = true;
                 addToLogs(logs, 'Not enough money!', LogType.FAILURE);
             } else {
                 activeTower.upgradeTower();
                 towerPlaceEffect.play();
-                props.player.setMoney(props.player.getMoney() - nextTower.money);
+                props.towerSetted(props.player.getMoney() - nextTower.money);
                 setMoney(props.player.getMoney());
                 addToLogs(logs, `${activeTower.getName()} Tower has been upgraded to level ${activeTower.getCurrentLevelInfo().level}`, LogType.SUCCESS);
-                // Emit an event to change the contextMenu value in the parent component
-                // emitContextMenu(ContextMenu.NONE);
             }
         };
 
         onMounted(() => {
-            if (!props.currentTower) return;
+            const menuBounding = {
+                width: menuRef.value!.clientWidth,
+                height: menuRef.value!.clientHeight
+            };
+            const totalWidth = menuBounding.width + props.contextMenuPosition.x;
+            const totalHeight = menuBounding.height + props.contextMenuPosition.y;
+            let updatedPosition = { x: props.contextMenuPosition.x, y: props.contextMenuPosition.y };
+            if (totalWidth > CanvasBounding.WIDTH) {
+                updatedPosition.x = props.contextMenuPosition.x - (totalWidth - CanvasBounding.WIDTH);
+            }
+            if (totalHeight > CanvasBounding.HEIGHT) {
+                updatedPosition.y = props.contextMenuPosition.y - (totalHeight - CanvasBounding.HEIGHT) - 50;
+            }
+            position.x = updatedPosition.x;
+            position.y = updatedPosition.y;
+
             const presentTowerData = {
                 name: props.currentTower.getName(),
                 level: props.currentTower.getCurrentLevelInfo().level,

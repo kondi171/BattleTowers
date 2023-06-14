@@ -42,7 +42,7 @@
   
 <script lang="ts">
 import { ref, watch, onMounted } from 'vue';
-import { ContextMenu, LogType, NewTower, CanvasBounding } from '@/typescript/enums';
+import { LogType, NewTower, CanvasBounding } from '@/typescript/enums';
 import addToLogs from '@/scripts/addToLogs';
 
 import towerPlace from '@/assets/audio/effects/towerPlace.wav';
@@ -75,6 +75,10 @@ export default {
         player: {
             type: Object,
             required: true
+        },
+        towerSetted: {
+            type: Function,
+            required: true
         }
     },
     setup(props) {
@@ -82,10 +86,8 @@ export default {
         const { setMoney, logs } = gameStore;
         const menuRef = ref<HTMLDivElement | null>(null);
         const position = ref({ x: 0, y: 0 });
-        const isMoneyChanged = ref(false);
         const towerValue = ref(0);
         const towerPlaceEffect = new Audio(towerPlace);
-
         const placeTower = (newTower: NewTower) => {
             let tower = null;
             if (props.currentSubstructure && props.context2D) {
@@ -94,35 +96,43 @@ export default {
                 else if (newTower === NewTower.MISSILE) tower = new Missile(props.context2D! as CanvasRenderingContext2D, { x: props.currentSubstructure.getPosition().x, y: props.currentSubstructure.getPosition().y });
                 if (tower) {
                     if (tower.getMoney() <= props.player.getMoney()) {
-                        props.player.setMoney(props.player.getMoney() - tower.getMoney());
-                        props.player.setMoney(props.player.getMoney());
-                        setMoney(props.player.setMoney(props.player.getMoney()));
+                        props.towerSetted(props.player.getMoney() - tower.getMoney());
+                        setMoney(props.player.getMoney());
                         props.towers.push(tower);
-                        props.contextMenuPosition.value = ContextMenu.NONE;
                         towerPlaceEffect.play();
                         addToLogs(logs, `${tower.getName()} has been placed!`, LogType.SUCCESS);
                         props.currentSubstructure.setOccupied(true);
-                        props.currentSubstructure.value = null;
                     } else {
-                        props.player.setMoney(props.player.getMoney() - tower.getMoney());
-                        isMoneyChanged.value = true;
                         towerValue.value = tower.getMoney();
-                        props.player.setMoney(props.player.getMoney());
-                        setMoney(props.player.setMoney(props.player.getMoney()));
                         addToLogs(logs, `Not Enough money`, LogType.FAILURE);
                     }
                 }
             }
         };
-
-        watch(isMoneyChanged, (newValue) => {
-            if (newValue) {
-                props.player.setMoney(props.player.getMoney() + towerValue.value);
-                props.player.setMoney(props.player.getMoney());
-                setMoney(props.player.setMoney(props.player.getMoney()));
-                isMoneyChanged.value = false;
+        onMounted(() => {
+            const menuBounding = {
+                width: menuRef.value!.clientWidth,
+                height: menuRef.value!.clientHeight
+            };
+            const totalWidth = menuBounding.width + props.contextMenuPosition.x;
+            const totalHeight = menuBounding.height + props.contextMenuPosition.y;
+            let updatedPosition = { x: props.contextMenuPosition.x, y: props.contextMenuPosition.y };
+            if (totalWidth > CanvasBounding.WIDTH) {
+                updatedPosition.x = props.contextMenuPosition.x - (totalWidth - CanvasBounding.WIDTH);
             }
+            if (totalHeight > CanvasBounding.HEIGHT) {
+                updatedPosition.y = props.contextMenuPosition.y - (totalHeight - CanvasBounding.HEIGHT) - 50;
+            }
+            position.value = updatedPosition;
         });
+        // watch(isMoneyChanged, (newValue) => {
+        //     if (newValue) {
+        //         props.player.setMoney(props.player.getMoney() + towerValue.value);
+        //         props.player.setMoney(props.player.getMoney());
+        //         setMoney(props.player.setMoney(props.player.getMoney()));
+        //         isMoneyChanged.value = false;
+        //     }
+        // });
 
         watch(props.contextMenuPosition, (newPosition) => {
             const menuBounding = {
@@ -148,7 +158,6 @@ export default {
             cannonData,
             minigunData,
             missileData,
-            isMoneyChanged,
             towerValue,
             NewTower,
         };
