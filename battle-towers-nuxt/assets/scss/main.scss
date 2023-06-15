@@ -1,0 +1,53 @@
+@import 'variables';
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    font-size: 10px;
+}
+
+body {
+    background-color: $bgColor;
+}
+
+.wrapper {
+    background-color: $bgColor;
+    background-image: url('./../img//wave_background.svg');
+    background-blend-mode: soft-light;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: $supportFont;
+    overflow: hidden;
+}
+
+::selection {
+    background-color: $primaryColor;
+    color: $bgColor;
+}
+
+::-webkit-scrollbar {
+    background-color: $bgColor;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: $bgColor;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $primaryColor;
+    transition-duration: .4s;
+    border-radius: 100vw;
+    border: 3px solid $bgColor;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: $secondaryColor;
+}
