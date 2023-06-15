@@ -9,7 +9,7 @@
                 <img src="@/assets/img/nuxt.png" alt="React logo" />
             </div>
             <div class="journal">
-                <i @mouseenter="playHoverEffect" @click="handleOpen" class="fa fa-book" aria-hidden="true"></i>
+                <Icon name="uil:book" @mouseenter="playHoverEffect" @click="handleOpen" />
                 <span>Battle Journal</span>
             </div>
             <div :class="[resolutionIsOk ? 'resolutionSuccess' : 'resolutionError']">
@@ -20,7 +20,7 @@
             <div class="score">Best score: {{ localStorage.getItem('score') === '0' ? 0 : localStorage.getItem('score') }}
             </div>
         </div>
-        <!-- <BattleJournal v-if="appStore.isHelpOpen" /> -->
+        <BattleJournal v-if="appStore.isHelpOpen" />
     </div>
 </template>
   
@@ -28,7 +28,7 @@
 
 import { ref, onMounted, onUnmounted } from 'vue';
 import Button from '../features/Button.vue';
-// import BattleJournal from '../features/battleJournal/BattleJournal.vue';
+import BattleJournal from '../features/battleJournal/BattleJournal.vue';
 import { useAppStore } from '@/stores/app';
 import type { Resolution } from '@/typescript/types';
 import playConfirm from './../../assets/audio/effects/confirmMenu.wav';
@@ -39,7 +39,7 @@ export default {
 
     components: {
         Button,
-        // BattleJournal,
+        BattleJournal,
     },
     setup() {
         const appStore = useAppStore();
@@ -70,6 +70,7 @@ export default {
         const playHoverEffect = () => {
             const audio = new Audio(playHover);
             audio.play();
+            console.log('hover');
         }
         const handleOpen = () => {
             appStore.setIsHelpOpen(true)
@@ -190,7 +191,7 @@ export default {
                 transform: translateY(-200px);
             }
 
-            i {
+            svg {
                 order: 2;
 
                 &:hover {

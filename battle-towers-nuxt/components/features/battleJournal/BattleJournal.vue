@@ -25,16 +25,17 @@
                 <Enemies v-if="activeArticle === BattleJournalPage.ENEMIES" />
                 <Towers v-if="activeArticle === BattleJournalPage.TOWERS" />
             </div>
-            <i class="close fa fa-times" @mouseenter="playHoverEffect" @click="handleClose" />
+            <!-- <i class="close fa fa-times" @mouseenter="playHoverEffect" @click="handleClose" /> -->
+            <Icon class="close" name="uil:times" @mouseenter="playHoverEffect" @click="handleClose" />
         </div>
     </section>
 </template>
   
 <script lang="ts">
 import { ref, onMounted } from 'vue';
-import enemies from './../../../assets/img/journal/contents/enemies.png';
-import towers from './../../../assets/img/journal/contents/towers.png';
-import rules from './../../../assets/img/journal/contents/rules.png';
+import enemies from '~/assets/img/journal/contents/enemies.png';
+import towers from '~/assets/img/journal/contents/towers.png';
+import rules from '~/assets/img/journal/contents/rules.png';
 import { BattleJournalPage } from '@/typescript/enums';
 import Rules from './Rules.vue';
 import Enemies from './Enemies.vue';
