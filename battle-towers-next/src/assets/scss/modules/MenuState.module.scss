@@ -1,0 +1,103 @@
+@import '../variables';
+
+.btn {
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+
+.menuState {
+    position: fixed;
+
+    .resolutionSuccess,
+    .resolutionError,
+    .score {
+        color: $primaryColor;
+        position: fixed;
+        bottom: 2vh;
+        font-size: 2rem;
+    }
+
+    .resolutionSuccess,
+    .resolutionError {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        left: 2vw;
+
+        .icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-left: 1vw;
+            font-size: 2rem;
+        }
+    }
+
+    .resolutionError {
+        color: $errorColor;
+    }
+
+    .resolutionSuccess {
+        color: $successColor;
+    }
+
+    .score {
+        right: 2vw;
+    }
+
+    .powered {
+        position: fixed;
+        top: 2rem;
+        left: 2rem;
+        color: $fontColor;
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+
+        img {
+            margin-left: 20px;
+            width: 7%;
+            height: 7%;
+            // background-color: #fff;
+            // padding: 10px;
+            // border-radius: 4px;
+        }
+    }
+
+    .journal {
+        color: $primaryColor;
+        position: fixed;
+        right: 2rem;
+        top: 2rem;
+        font-size: 6rem;
+        transition-duration: .4s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+            order: 1;
+            opacity: 0;
+            transition-duration: .4s;
+            font-size: 2rem;
+            margin-right: 1rem;
+            transform: translateY(-200px);
+        }
+
+        .icon {
+            order: 2;
+
+            &:hover {
+                cursor: pointer;
+                color: $secondaryColor;
+                transition-duration: .4s;
+
+                &+span {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+    }
+}

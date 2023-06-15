@@ -1,0 +1,23 @@
+@import '../variables';
+
+.scrollState {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 100vw;
+    height: 100vh;
+
+    img {
+        width: 40vw;
+        height: 25vw;
+    }
+
+    div {
+        color: $primaryColor;
+        font-size: 5vmin;
+        text-align: center;
+        font-family: $primaryFont;
+    }
+}

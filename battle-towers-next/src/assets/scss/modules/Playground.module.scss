@@ -1,0 +1,342 @@
+@import '../variables';
+
+.canvasWrapper {
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  .tacticalModeBtn {
+    position: absolute;
+    right: 2rem;
+    bottom: 1rem;
+    font-size: 6rem;
+    color: $secondaryColor;
+    text-shadow: 1px 1px 5px black,
+      -1px 1px 5px black,
+      1px -1px 5px black,
+      -1px -1px 5px black;
+    filter: drop-shadow(0 0 0.75rem black);
+    animation-delay: 3000ms;
+    animation-name: myAnimation;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    transform: scale(0);
+
+    i {
+      transition-duration: .4s;
+
+      &:hover {
+        cursor: pointer;
+        color: $primaryColor;
+      }
+    }
+
+    @keyframes myAnimation {
+      0% {
+        transform: scale(0);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+  }
+
+  .tacticalMode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 1rem;
+    color: $primaryColor;
+    font-size: 2rem;
+    background-color: $bgColor;
+    padding: 1rem;
+    opacity: .7;
+    border-radius: 4px;
+  }
+
+  .transitionInfo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    color: $fontColor;
+    font-family: $titleFont;
+    font-size: 8rem;
+    background-color: #000;
+    opacity: .8;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    z-index: 3;
+
+    h3 {
+      width: 100%;
+      padding: 20%;
+      -webkit-text-stroke: 1px $secondaryColor;
+    }
+  }
+
+  .newTowerMenu {
+    position: absolute;
+    border-radius: 8px;
+    border: 2px solid $secondaryColor;
+    background-color: #202022c3;
+    padding: 20px;
+    width: 450px;
+    height: 440px;
+
+    h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: $primaryColor;
+      font-family: $primaryFont;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 0 0.75rem black);
+    }
+
+    .newTower {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      transition-duration: .4s;
+      border-radius: 4px;
+      margin: 1rem;
+
+      .error {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: red;
+        width: 100%;
+        height: 100%;
+        font-size: 2rem;
+        font-family: $primaryFont;
+        border-radius: 4px;
+      }
+
+      &:hover {
+        cursor: pointer;
+        background-color: $primaryColor;
+      }
+
+      .imageWrapper {
+        width: 80%;
+        margin: 20px;
+        color: $fontColor;
+
+        p {
+          filter: drop-shadow(0 0 0.75rem black);
+          margin-bottom: 2rem;
+        }
+
+        img {
+          width: 50%;
+          height: 50%;
+        }
+      }
+
+      .infoWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        line-height: 150%;
+        font-size: 1.2rem;
+
+        .health {
+          color: $errorColor;
+          filter: drop-shadow(0 0 0.75rem black);
+        }
+
+        .money {
+          color: $successColor;
+          filter: drop-shadow(0 0 0.75rem black);
+        }
+
+        .speed {
+          color: gold;
+          filter: drop-shadow(0 0 0.75rem black);
+        }
+      }
+    }
+  }
+
+  .upgradeTowerMenu {
+    position: absolute;
+    border-radius: 8px;
+    border: 2px solid $secondaryColor;
+    background-color: #202022c3;
+    padding: 20px;
+    width: 470px;
+    height: 550px;
+
+    h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: $primaryColor;
+      font-family: $primaryFont;
+      filter: drop-shadow(0 0 0.75rem black);
+    }
+
+    i {
+      display: block;
+      color: $secondaryColor;
+      font-size: 10rem;
+      text-align: center;
+    }
+
+
+    button {
+      display: block;
+      text-align: center;
+      margin: 0 auto;
+      margin-top: 2rem;
+      width: 80%;
+      height: 5vh;
+      border-radius: 4px;
+      outline: none;
+      border: 2px solid $secondaryColor;
+      background-color: $primaryColor;
+      color: darken($secondaryColor, 10%);
+      font-size: 2rem;
+      font-weight: bold;
+      font-family: $supportFont;
+      transition-duration: .4s;
+      outline: 2px solid $secondaryColor;
+
+      &.error {
+        color: $errorColor;
+        font-size: 1.5rem;
+        outline: 2px solid $errorColor;
+        border: 2px solid $errorColor;
+        background-color: darken($errorColor, 30%);
+        color: $errorColor;
+
+        &:hover {
+          border-color: $errorColor;
+          background-color: lighten($errorColor, 20%);
+          color: $bgColor;
+          outline-color: $errorColor;
+        }
+      }
+
+      &:hover {
+        cursor: pointer;
+        border-color: $primaryColor;
+        background-color: $secondaryColor;
+        color: $primaryColor;
+        outline-offset: 4px;
+        outline-color: $primaryColor;
+      }
+    }
+
+    .upgradeTower {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      transition-duration: .4s;
+      border-radius: 4px;
+      border: 2px solid $secondaryColor;
+      background-color: #00747c4e;
+
+      .imageWrapper {
+        width: 80%;
+        margin: 20px;
+        color: $fontColor;
+
+        p {
+          filter: drop-shadow(0 0 0.75rem black);
+          margin-bottom: 2rem;
+        }
+
+        img {
+          width: 50%;
+          height: 50%;
+        }
+      }
+
+      .infoWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        line-height: 150%;
+        font-size: 1.2rem;
+
+        .health {
+          color: $errorColor;
+          filter: drop-shadow(0 0 0.75rem black);
+        }
+
+        .money {
+          color: $successColor;
+          filter: drop-shadow(0 0 0.75rem black);
+        }
+
+        .speed {
+          color: gold;
+          filter: drop-shadow(0 0 0.75rem black);
+        }
+      }
+    }
+  }
+
+  .maxLevel {
+    position: absolute;
+    border-radius: 8px;
+    border: 2px solid $secondaryColor;
+    background-color: #202022c3;
+    padding: 20px;
+    width: 470px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+
+    h2 {
+
+      padding: 2rem 0;
+
+      &:first-child {
+        color: $primaryColor;
+        font-size: 2rem;
+      }
+
+      &:last-child {
+        color: $fontColor;
+        font-size: 1.7rem;
+        filter: drop-shadow(0 0 0.75rem black);
+      }
+    }
+
+    img {
+      width: 30%;
+    }
+  }
+
+  .sceneCanvas {
+    width: $canvasWidth;
+    height: $canvasHeight;
+    background-color: green;
+    border-radius: 5px;
+    border: 2px solid $secondaryColor;
+    box-shadow: 0 0 4px 2px $secondaryColor;
+    z-index: 1;
+  }
+}
