@@ -6,7 +6,7 @@
 </template>
   
 <script lang="ts">
-import CtrlScroll from './../../assets/img/CtrlScroll.png';
+import CtrlScroll from '~/assets/img/CtrlScroll.png';
 
 export default {
     data() {
@@ -26,7 +26,7 @@ export default {
 </script>
   
 <style lang="scss" scoped>
-@import './../../assets/scss/variables';
+@import '~/assets/scss/variables';
 
 .scrollState {
     display: flex;

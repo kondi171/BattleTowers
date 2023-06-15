@@ -27,7 +27,7 @@
         <h2 class="rulesHeader">Placing Towers</h2>
         <p class="rulesParagraph">
             <span>You can place the towers only on specific placements</span>
-            <img src="@/assets/img/journal/towers/substructure.png" alt="Substructure of tower" />
+            <img src="~/assets/img/journal/towers/substructure.png" alt="Substructure of tower" />
             <span>If the substructure is hovered over, it will be highlighted</span>
         </p>
         <h2 class="rulesHeader">Tactical Mode</h2>
@@ -47,7 +47,7 @@ export default {
 </script>
   
 <style scoped lang="scss">
-@import './../../../assets/scss/variables';
+@import '~/assets/scss/variables';
 
 .rulesHeader {
     text-align: center;

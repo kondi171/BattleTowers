@@ -9,7 +9,7 @@
   
 <script lang="ts">
 import { ref } from 'vue';
-import { GamePart } from '@/typescript/enums';
+import { GamePart } from '~/typescript/enums';
 
 export default {
     name: 'TransitionInfo',
@@ -39,7 +39,7 @@ export default {
 </script>
   
 <style lang="scss" scoped>
-@import './../../assets/scss/variables';
+@import '~/assets/scss/variables';
 
 .transitionInfo {
     position: absolute;

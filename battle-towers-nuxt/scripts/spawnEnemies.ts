@@ -1,9 +1,9 @@
-import { StartingPoint } from '@/typescript/enums';
-import SoldierOrc from '@/classes/enemies/SoldierOrc';
-import Enemy from '@/classes/enemies/Enemy';
-import ScoutOrc from '@/classes/enemies/ScoutOrc';
-import WarriorOrc from '@/classes/enemies/WarriorOrc';
-import Scene from '@/classes/Scene';
+import { StartingPoint } from '~/typescript/enums';
+import SoldierOrc from '~/classes/enemies/SoldierOrc';
+import Enemy from '~/classes/enemies/Enemy';
+import ScoutOrc from '~/classes/enemies/ScoutOrc';
+import WarriorOrc from '~/classes/enemies/WarriorOrc';
+import Scene from '~/classes/Scene';
 
 const spawnEnemies = (ctx: CanvasRenderingContext2D, scene: Scene) => {
 

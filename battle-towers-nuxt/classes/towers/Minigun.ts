@@ -1,12 +1,12 @@
-import type { Position } from "@/typescript/types";
+import type { Position } from "~/typescript/types";
 import Tower from "./Tower";
-import minigun1 from "@/assets/img/towers/structures/minigun/mg1.png";
-import minigun2 from "@/assets/img/towers/structures/minigun/mg2.png";
-import minigun3 from "@/assets/img/towers/structures/minigun/mg3.png";
+import minigun1 from "~/assets/img/towers/structures/minigun/mg1.png";
+import minigun2 from "~/assets/img/towers/structures/minigun/mg2.png";
+import minigun3 from "~/assets/img/towers/structures/minigun/mg3.png";
 
-import minigunBullet from '@/assets/img/towers/projectiles/minigun.png';
-import minigunData from '@/resources/towers/minigun.json';
-import minigunExplosion from '@/assets/img/towers/explosions/minigun_explosion.png';
+import minigunBullet from '~/assets/img/towers/projectiles/minigun.png';
+import minigunData from '~/resources/towers/minigun.json';
+import minigunExplosion from '~/assets/img/towers/explosions/minigun_explosion.png';
 
 class Minigun extends Tower {
   constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position) {

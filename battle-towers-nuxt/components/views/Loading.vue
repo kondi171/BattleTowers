@@ -19,7 +19,7 @@ export default {
 </script>
   
 <style scoped lang="scss">
-@import '@/assets/scss/_variables.scss';
+@import '~/assets/scss/_variables.scss';
 
 .loading {
     position: fixed;

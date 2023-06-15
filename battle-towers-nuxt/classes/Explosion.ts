@@ -1,4 +1,4 @@
-import type { Position } from "@/typescript/types";
+import type { Position } from "~/typescript/types";
 import Sprite from "./Sprite";
 
 class Explosion extends Sprite {

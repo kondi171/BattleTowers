@@ -1,4 +1,4 @@
-import type { Position, TowerData } from "@/typescript/types";
+import type { Position, TowerData } from "~/typescript/types";
 import Bullet from "../Bullet";
 import Sprite from "../Sprite";
 import Enemy from "../enemies/Enemy";
@@ -48,7 +48,6 @@ class Tower extends Sprite {
 
     private drawBlastField() {
         this.canvasRenderingContext.beginPath();
-        // this.canvasRenderingContext.globalAlpha = 0.9;
         this.canvasRenderingContext.arc(this.position.x + this.size / 2, this.position.y + this.size / 2, this.radius, 0, Math.PI * 2);
         this.canvasRenderingContext.fillStyle = `rgba(${0}, ${0}, ${255}, ${0.1})`;
         this.canvasRenderingContext.strokeStyle = `rgba(${0}, ${0}, ${255}, ${0.6})`;

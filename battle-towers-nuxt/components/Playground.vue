@@ -1,36 +1,36 @@
 <script lang="ts">
 import { ref, watch, reactive, onMounted } from 'vue';
 
-import Enemy from '@/classes/enemies/Enemy';
-import Tower from '@/classes/towers/Tower';
-import Substructure from '@/classes/Substructure';
-import Scene from '@/classes/Scene';
-import Player from '@/classes/Player';
-import Explosion from '@/classes/Explosion';
+import Enemy from '~/classes/enemies/Enemy';
+import Tower from '~/classes/towers/Tower';
+import Substructure from '~/classes/Substructure';
+import Scene from '~/classes/Scene';
+import Player from '~/classes/Player';
+import Explosion from '~/classes/Explosion';
 
-import fillSubstructures from '@/scripts/fillSubstructures';
-import spawnEnemies from '@/scripts/spawnEnemies';
-import addToLogs from '@/scripts/addToLogs';
+import fillSubstructures from '~/scripts/fillSubstructures';
+import spawnEnemies from '~/scripts/spawnEnemies';
+import addToLogs from '~/scripts/addToLogs';
 
-import TransitionInfo from '@/components/features/TransitionInfo.vue';
-import NewTowerMenu from '@/components/features/towerMenu/NewTowerMenu.vue';
-import UpgradeTowerMenu from '@/components/features/towerMenu/UpgradeTowerMenu.vue';
+import TransitionInfo from '~/components/features/TransitionInfo.vue';
+import NewTowerMenu from '~/components/features/towerMenu/NewTowerMenu.vue';
+import UpgradeTowerMenu from '~/components/features/towerMenu/UpgradeTowerMenu.vue';
 
-import Loading from '@/components/views/Loading.vue';
+import Loading from '~/components/views/Loading.vue';
 
-import { useGameStore } from '@/stores/game';
-import { useAppStore } from '@/stores/app';
+import { useGameStore } from '~/stores/game';
+import { useAppStore } from '~/stores/app';
 
-import lostLife from './../assets/audio/effects/lostLife.wav';
-import enemyDead from './../assets/audio/effects/enemyDead.wav';
-import enemyHit from './../assets/audio/effects/enemyHit.wav';
-import nextGamePart from './../assets/audio/effects/nextGamePart.wav';
+import lostLife from '~/assets/audio/effects/lostLife.wav';
+import enemyDead from '~/assets/audio/effects/enemyDead.wav';
+import enemyHit from '~/assets/audio/effects/enemyHit.wav';
+import nextGamePart from '~/assets/audio/effects/nextGamePart.wav';
 
-import desertSoundtrack from './../assets/audio/tracks/world1Soundtrack.mp3';
-import forestSoundtrack from './../assets/audio/tracks/world2Soundtrack.mp3';
-import underworldSoundtrack from './../assets/audio/tracks/world3Soundtrack.wav';
-import { CanvasBounding, ContextMenu, GamePart, GameResult, LogType } from '@/typescript/enums';
-import type { Mouse } from '@/typescript/types';
+import desertSoundtrack from '~/assets/audio/tracks/world1Soundtrack.mp3';
+import forestSoundtrack from '~/assets/audio/tracks/world2Soundtrack.mp3';
+import underworldSoundtrack from '~/assets/audio/tracks/world3Soundtrack.wav';
+import { CanvasBounding, ContextMenu, GamePart, GameResult, LogType } from '~/typescript/enums';
+import type { Mouse } from '~/typescript/types';
 
 export default {
     components: {
@@ -416,11 +416,7 @@ export default {
         const setStart = () => {
             start.value = true;
         }
-        const setContextMenu = () => {
-            contextMenuPosition.x = -1000;
-            contextMenuPosition.y = 0;
-            contextMenu.value = ContextMenu.NONE;
-        }
+
         const towerSetted = (money: number) => {
             player.value?.setMoney(money);
             contextMenu.value = ContextMenu.NONE;
@@ -581,7 +577,6 @@ export default {
             1px -1px 5px black,
             -1px -1px 5px black;
         filter: drop-shadow(0 0 0.75rem black);
-        transform: scale(0);
         z-index: 100;
 
         svg {

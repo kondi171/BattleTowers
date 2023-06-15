@@ -1,5 +1,5 @@
-import { Direction, HealthBarDivider } from '@/typescript/enums';
-import type { Bounding, Position } from '@/typescript/types';
+import { Direction, HealthBarDivider } from '~/typescript/enums';
+import type { Bounding, Position } from '~/typescript/types';
 import Sprite from '../Sprite';
 
 abstract class Enemy extends Sprite {

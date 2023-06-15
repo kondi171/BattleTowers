@@ -14,14 +14,14 @@
     </section>
 </template>
 <script lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 
-import { GameResult } from '@/typescript/enums';
-import Button from '@/components/features/Button.vue';
-import { useAppStore } from '@/stores/app';
-import { useGameStore } from '@/stores/game';
-import winSoundTrack from '@/assets/audio/tracks/winSoundtrack.mp3';
-import gameOverSoundTrack from '@/assets/audio/tracks/gameOverSoundtrack.wav';
+import { GameResult } from '~/typescript/enums';
+import Button from '~/components/features/Button.vue';
+import { useAppStore } from '~/stores/app';
+import { useGameStore } from '~/stores/game';
+import winSoundTrack from '~/assets/audio/tracks/winSoundtrack.mp3';
+import gameOverSoundTrack from '~/assets/audio/tracks/gameOverSoundtrack.wav';
 
 export default {
     name: 'End',
@@ -89,7 +89,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import './../../assets/scss/variables';
+@import '~/assets/scss/variables';
 
 .fade {
     opacity: 0;

@@ -1,5 +1,4 @@
-import Substructure from '../classes/Substructure';
-import Scene from '../classes/Scene';
+import Substructure from '~/classes/Substructure';
 
 const fillSubstructures = (ctx: CanvasRenderingContext2D, scene: any) => {
 

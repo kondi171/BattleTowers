@@ -1,4 +1,4 @@
-import type { Position } from "@/typescript/types";
+import type { Position } from "~/typescript/types";
 import Enemy from "./enemies/Enemy";
 import Sprite from "./Sprite";
 

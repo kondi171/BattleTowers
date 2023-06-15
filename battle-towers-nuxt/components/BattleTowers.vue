@@ -4,7 +4,7 @@
             <template v-if="!appStore.isGameStart">
                 <header class="logo">
                     <div class="imageWrapper">
-                        <img src="@/assets/img/shield.png" alt="Shield - element of Battle Towers logo" />
+                        <img src="~/assets/img/shield.png" alt="Shield - element of Battle Towers logo" />
                     </div>
                     <h1>Battle Towers</h1>
                 </header>
@@ -28,7 +28,7 @@
 </template>
   
 <script lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import Intro from '~/components/views/Intro.vue';
 import Menu from '~/components/views/Menu.vue';
 import Game from '~/components/views/Game.vue';

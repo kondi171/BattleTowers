@@ -5,7 +5,7 @@
             <div v-if="player.getMoney() < cannonData.levels[0].money" class="error">Not enough money!</div>
             <div class="imageWrapper">
                 <p class="name">{{ cannonData.name }}</p>
-                <img src="@/assets/img/towers/structures/cannon/cannon1.png" alt="Cannon level 1" />
+                <img src="~/assets/img/towers/structures/cannon/cannon1.png" alt="Cannon level 1" />
             </div>
             <div class="infoWrapper">
                 <p class="health">Damage: {{ cannonData.levels[0].damage }}</p>
@@ -17,7 +17,7 @@
             <div v-if="player.getMoney() < minigunData.levels[0].money" class="error">Not enough money!</div>
             <div class="imageWrapper">
                 <p class="name">{{ minigunData.name }}</p>
-                <img src="@/assets/img/towers/structures/minigun/mg1.png" alt="Minigun level 1" />
+                <img src="~/assets/img/towers/structures/minigun/mg1.png" alt="Minigun level 1" />
             </div>
             <div class="infoWrapper">
                 <p class="health">Damage: {{ minigunData.levels[0].damage }}</p>
@@ -29,7 +29,7 @@
             <div v-if="player.getMoney() < missileData.levels[0].money" class="error">Not enough money!</div>
             <div class="imageWrapper">
                 <p class="name">{{ missileData.name }}</p>
-                <img src="@/assets/img/towers/structures/missile/missile1.png" alt="Missile Launcher level 1" />
+                <img src="~/assets/img/towers/structures/missile/missile1.png" alt="Missile Launcher level 1" />
             </div>
             <div class="infoWrapper">
                 <p class="health">Damage: {{ missileData.levels[0].damage }}</p>
@@ -42,17 +42,17 @@
   
 <script lang="ts">
 import { ref, watch, onMounted } from 'vue';
-import { LogType, NewTower, CanvasBounding } from '@/typescript/enums';
-import addToLogs from '@/scripts/addToLogs';
+import { LogType, NewTower, CanvasBounding } from '~/typescript/enums';
+import addToLogs from '~/scripts/addToLogs';
 
-import towerPlace from '@/assets/audio/effects/towerPlace.wav';
-import cannonData from './../../../resources/towers/cannon.json';
-import minigunData from './../../../resources/towers/minigun.json';
-import missileData from './../../../resources/towers/missile.json';
-import Cannon from '@/classes/towers/Cannon';
-import Minigun from '@/classes/towers/Minigun';
-import Missile from '@/classes/towers/Missile';
-import { useGameStore } from '@/stores/game';
+import towerPlace from '~/assets/audio/effects/towerPlace.wav';
+import cannonData from '~/resources/towers/cannon.json';
+import minigunData from '~/resources/towers/minigun.json';
+import missileData from '~/resources/towers/missile.json';
+import Cannon from '~/classes/towers/Cannon';
+import Minigun from '~/classes/towers/Minigun';
+import Missile from '~/classes/towers/Missile';
+import { useGameStore } from '~/stores/game';
 
 export default {
     props: {
@@ -125,14 +125,6 @@ export default {
             }
             position.value = updatedPosition;
         });
-        // watch(isMoneyChanged, (newValue) => {
-        //     if (newValue) {
-        //         props.player.setMoney(props.player.getMoney() + towerValue.value);
-        //         props.player.setMoney(props.player.getMoney());
-        //         setMoney(props.player.setMoney(props.player.getMoney()));
-        //         isMoneyChanged.value = false;
-        //     }
-        // });
 
         watch(props.contextMenuPosition, (newPosition) => {
             const menuBounding = {
@@ -166,5 +158,5 @@ export default {
 </script>
   
 <style scoped lang="scss">
-@import '@/assets/scss/variables';
+@import '~/assets/scss/variables';
 </style>

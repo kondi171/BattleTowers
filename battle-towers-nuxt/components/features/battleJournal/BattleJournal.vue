@@ -35,13 +35,13 @@ import { ref, onMounted } from 'vue';
 import enemies from '~/assets/img/journal/contents/enemies.png';
 import towers from '~/assets/img/journal/contents/towers.png';
 import rules from '~/assets/img/journal/contents/rules.png';
-import { BattleJournalPage } from '@/typescript/enums';
+import { BattleJournalPage } from '~/typescript/enums';
 import Rules from './Rules.vue';
 import Enemies from './Enemies.vue';
 import Towers from './Towers.vue';
-import { useAppStore } from '@/stores/app';
-import playConfirm from '@/assets/audio/effects/confirmMenu.wav';
-import playHover from '@/assets/audio/effects/towerPlace.wav';
+import { useAppStore } from '~/stores/app';
+import playConfirm from '~/assets/audio/effects/confirmMenu.wav';
+import playHover from '~/assets/audio/effects/towerPlace.wav';
 
 export default {
     name: 'BattleJournal',
@@ -98,7 +98,7 @@ export default {
 </script>
   
 <style scoped lang="scss">
-@import './../../../assets/scss/variables';
+@import '~/assets/scss/variables';
 
 .battleJournal {
     position: fixed;
@@ -109,7 +109,6 @@ export default {
     width: 100vw;
     height: 100vh;
     transition-duration: .4s;
-    // opacity: 1;
     background-color: rgba($color: #000000, $alpha: .9);
     display: flex;
     justify-content: center;
@@ -339,5 +338,4 @@ export default {
             }
         }
     }
-}
-</style>
+}</style>

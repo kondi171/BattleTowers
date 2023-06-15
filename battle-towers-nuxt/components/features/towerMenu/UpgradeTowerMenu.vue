@@ -37,15 +37,13 @@
 </template>
   
 <script lang="ts">
-import { ref, reactive, onMounted, watch, getCurrentInstance, type PropType } from 'vue';
-import type { Mouse, Position, TowerStats } from '@/typescript/types';
-import Tower from '@/classes/towers/Tower';
-import Substructure from '@/classes/Substructure';
-import Player from '@/classes/Player';
-import { CanvasBounding, ContextMenu, LogType } from '@/typescript/enums';
-import addToLogs from '@/scripts/addToLogs';
-import towerPlace from '@/assets/audio/effects/towerPlace.wav';
-import { useGameStore } from '@/stores/game';
+import { ref, reactive, onMounted, watch, type PropType } from 'vue';
+import type { TowerStats } from '~/typescript/types';
+import Tower from '~/classes/towers/Tower';
+import { CanvasBounding, LogType } from '~/typescript/enums';
+import addToLogs from '~/scripts/addToLogs';
+import towerPlace from '~/assets/audio/effects/towerPlace.wav';
+import { useGameStore } from '~/stores/game';
 
 export default {
     name: 'UpgradeTowerMenu',
@@ -215,5 +213,5 @@ export default {
 };
 </script>
 <style scoped>
-@import '@/assets/scss/_variables.scss';
+@import '~/assets/scss/_variables.scss';
 </style>

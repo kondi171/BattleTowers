@@ -11,8 +11,8 @@
   
 <script lang="ts">
 
-import { LogType } from '@/typescript/enums';
-import { useGameStore } from '@/stores/game';
+import { LogType } from '~/typescript/enums';
+import { useGameStore } from '~/stores/game';
 
 export default {
     name: 'Logs',
@@ -28,7 +28,7 @@ export default {
 </script>
   
 <style lang="scss" scoped>
-@import './../../assets/scss/variables';
+@import '~/assets/scss/variables';
 
 .logs {
     font-size: .8rem;

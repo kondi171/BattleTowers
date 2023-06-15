@@ -9,7 +9,7 @@
         <section class="graphicalInterface">
             <header class="logo logoMinimized">
                 <div class="imageWrapper">
-                    <img src="@/assets/img/shield.png" alt="Shield - element of Battle Towers logo" />
+                    <img src="~/assets/img/shield.png" alt="Shield - element of Battle Towers logo" />
                 </div>
                 <h1>Battle Towers</h1>
             </header>
@@ -40,11 +40,11 @@
 </template>
   
 <script lang="ts">
-import { defineComponent, ref, computed, reactive, watch, onMounted } from 'vue';
-import Scroll from './../views/Scroll.vue';
-import Playground from './../Playground.vue';
-import Logs from './../features/Logs.vue';
-import { useGameStore } from '@/stores/game';
+import { defineComponent, ref, computed, onMounted } from 'vue';
+import Scroll from '~/components/views/Scroll.vue';
+import Playground from '~/components/Playground.vue';
+import Logs from '~/components/features/Logs.vue';
+import { useGameStore } from '~/stores/game';
 
 export default defineComponent({
     name: 'Game',
@@ -84,7 +84,7 @@ export default defineComponent({
 </script>
   
 <style lang="scss" scoped>
-@import './../../assets/scss/variables';
+@import '~/assets/scss/variables';
 
 .logo {
     position: relative;
