@@ -23,11 +23,11 @@
             </div>
             <div class="levelInfo">
                 <div class="life">
-                    <i class="fa fa-heart" aria-hidden="true"></i>
+                    <Icon name="mdi:heart" />
                     <span>{{ life }}</span>
                 </div>
                 <div class="money">
-                    <i class="fa fa-money" aria-hidden="true"></i>
+                    <Icon name="ph:money-fill" />
                     <span>{{ money }}</span>
                 </div>
                 <div class="score">
@@ -247,7 +247,7 @@ export default defineComponent({
                 width: 80%;
                 line-height: 250%;
 
-                i {
+                svg {
                     padding-right: .5rem;
                     font-size: 2.5rem;
                 }

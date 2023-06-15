@@ -9,7 +9,7 @@
                 <img src="@/assets/img/nuxt.png" alt="React logo" />
             </div>
             <div class="journal">
-                <Icon name="uil:book" @mouseenter="playHoverEffect" @click="handleOpen" />
+                <Icon name="ic:baseline-menu-book" @mouseenter="playHoverEffect" @click="handleOpen" />
                 <span>Battle Journal</span>
             </div>
             <div :class="[resolutionIsOk ? 'resolutionSuccess' : 'resolutionError']">

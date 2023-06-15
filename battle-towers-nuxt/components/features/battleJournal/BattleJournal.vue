@@ -25,7 +25,7 @@
                 <Enemies v-if="activeArticle === BattleJournalPage.ENEMIES" />
                 <Towers v-if="activeArticle === BattleJournalPage.TOWERS" />
             </div>
-            <Icon class="close" name="uil:times" @mouseenter="playHoverEffect" @click="handleClose" />
+            <Icon class="close" name="mdi:close" @mouseenter="playHoverEffect" @click="handleClose" />
         </div>
     </section>
 </template>

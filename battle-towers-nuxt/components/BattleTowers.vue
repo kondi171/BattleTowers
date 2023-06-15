@@ -20,9 +20,9 @@
                     <Game />
                 </template>
             </template>
-            <!-- <template v-if="endGame !== GameResult.UNPLAYED">
-                <End :gameResult="endGame" />
-            </template> -->
+            <template v-if="appStore.endGame !== GameResult.UNPLAYED">
+                <End :gameResult="appStore.endGame" />
+            </template>
         </div>
     </div>
 </template>
@@ -32,7 +32,7 @@ import { ref, computed } from 'vue';
 import Intro from '~/components/views/Intro.vue';
 import Menu from '~/components/views/Menu.vue';
 import Game from '~/components/views/Game.vue';
-// import End from './components/views/End.vue';
+import End from '~/components/views/End.vue';
 import { GameResult } from '~/typescript/enums';
 import { useAppStore } from '~/stores/app';
 
@@ -41,7 +41,7 @@ export default {
         Intro,
         Menu,
         Game,
-        // End,
+        End,
     },
     setup() {
         const appStore = useAppStore();
