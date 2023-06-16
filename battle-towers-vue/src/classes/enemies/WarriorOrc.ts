@@ -1,7 +1,7 @@
 import type { Position } from "@/typescript/types";
 import Enemy from "./Enemy";
 import warriorOrc from '@/assets/img/enemies/warriorOrc.png';
-import warriorData from './../../resources/enemies/warrior.json';
+import warriorData from '@/resources/enemies/warrior.json';
 import { HealthBarDivider } from "@/typescript/enums";
 
 class WarriorOrc extends Enemy {
@@ -13,9 +13,7 @@ class WarriorOrc extends Enemy {
         this.money = warriorData.money;
         this.speed = warriorData.speed;
         this.score = warriorData.score;
-        // this.speed = 0;
         this.healthBarDivider = HealthBarDivider.WARRIOR_ORC;
-
     }
 
     public update() {

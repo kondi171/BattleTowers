@@ -7,7 +7,7 @@ import Menu from './views/Menu';
 import Game from './views/Game';
 import styles from './../assets/scss/modules/Logo.module.scss';
 import End from './views/End';
-import { GameResult } from '../enums';
+import { GameResult } from './../typescript//enums';
 
 const BattleTowers = () => {
   const [changeState, setChangeState] = useState<boolean>(false);

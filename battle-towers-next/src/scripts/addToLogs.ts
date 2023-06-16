@@ -1,5 +1,5 @@
-import { LogType } from "../../enums";
-import { Log } from "../../types";
+import { LogType } from "@/typescript/enums";
+import { Log } from "@/typescript/types";
 
 const addToLogs = (logs: Log[], content: string, type: LogType) => {
   const now = new Date();

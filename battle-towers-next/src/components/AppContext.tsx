@@ -1,13 +1,13 @@
 import { useState, createContext } from "react";
-import { GameResult } from "./../../enums";
-import { Log } from "./../../types";
+import { GameResult } from "@/typescript/enums";
+import { Log } from "@/typescript/types";
 import useSound from "use-sound";
 // @ts-ignore
-import gameOverSoundtrack from './../assets/audio/tracks/gameOverSoundtrack.wav';
+import gameOverSoundtrack from '@/assets/audio/tracks/gameOverSoundtrack.wav';
 // @ts-ignore
-import winSoundtrack from './../assets/audio/tracks/winSoundtrack.mp3';
+import winSoundtrack from '@/assets/audio/tracks/winSoundtrack.mp3';
 // @ts-ignore
-import menuSoundtrack from './../assets/audio/tracks/menuSoundtrack.mp3';
+import menuSoundtrack from '@/assets/audio/tracks/menuSoundtrack.mp3';
 import { PlayFunction } from "use-sound/dist/types";
 
 export type AppContextType = {

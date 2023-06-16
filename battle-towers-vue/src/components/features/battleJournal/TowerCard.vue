@@ -13,7 +13,6 @@
             <span>{{ opponent }} Orc</span>
         </p>
     </div>
-    <!-- <h2>ELO</h2> -->
 </template>
 <script lang="ts">
 
@@ -48,7 +47,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import './../../../assets/scss/variables';
+@import '@/assets/scss/variables';
 
 .cards {
     display: flex;

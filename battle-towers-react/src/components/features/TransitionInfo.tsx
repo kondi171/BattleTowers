@@ -1,4 +1,4 @@
-import { GamePart } from '../../enums';
+import { GamePart } from './../../typescript/enums';
 import styles from './../../assets/scss/modules/Playground.module.scss';
 
 interface TransitionInfoProps {

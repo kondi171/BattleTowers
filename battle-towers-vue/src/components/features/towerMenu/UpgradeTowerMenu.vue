@@ -25,13 +25,6 @@
                 <p class="speed">Speed: {{ nextTower.speed }} FPS</p>
             </div>
         </div>
-        <!-- <button v-if="nextTower" @click="upgradeTower" :class="{ error: player.money < nextTower.money }"
-            :disabled="player.money < nextTower.money">Upgrade</button>
-        <button v-else disabled>Upgrade</button> -->
-        <!-- <button @click="upgradeTower">Upgrade</button> -->
-        <!-- <button @click="upgradeTower">Upgrade</button> -->
-
-
         <button v-if="nextTower && player.getMoney() >= Number(nextTower.money)" @click="upgradeTower">Upgrade</button>
         <button v-else class="error" @click="upgradeTower">Upgrade</button>
     </div>
@@ -45,11 +38,9 @@
   
 <script lang="ts">
 import { ref, reactive, onMounted, watch, getCurrentInstance, type PropType } from 'vue';
-import type { Mouse, Position, TowerStats } from '@/typescript/types';
+import type { TowerStats } from '@/typescript/types';
 import Tower from '@/classes/towers/Tower';
-import Substructure from '@/classes/Substructure';
-import Player from '@/classes/Player';
-import { CanvasBounding, ContextMenu, LogType } from '@/typescript/enums';
+import { CanvasBounding, LogType } from '@/typescript/enums';
 import addToLogs from '@/scripts/addToLogs';
 import towerPlace from '@/assets/audio/effects/towerPlace.wav';
 import { useGameStore } from '@/stores/game';

@@ -7,7 +7,6 @@ import './assets/scss/main.scss';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-
 root.render(
   <React.StrictMode>
     <AppProvider>
@@ -15,3 +14,4 @@ root.render(
     </AppProvider>
   </React.StrictMode>
 );
+

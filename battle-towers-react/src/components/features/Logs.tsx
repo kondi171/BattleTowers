@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import styles from './../../assets/scss/modules/GameState.module.scss';
-import { LogType } from '../../enums';
+import { LogType } from './../../typescript/enums';
 import { AppContextType, AppContext } from '../AppContext';
 
 const Logs = () => {

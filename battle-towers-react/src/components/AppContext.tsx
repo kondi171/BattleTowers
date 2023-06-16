@@ -1,6 +1,6 @@
 import { useState, createContext } from "react";
-import { GameResult } from "../enums";
-import { Log } from "../types";
+import { GameResult } from "./../typescript//enums";
+import { Log } from "./../typescript/types";
 import useSound from "use-sound";
 import gameOverSoundtrack from './../assets/audio/tracks/gameOverSoundtrack.wav';
 import winSoundtrack from './../assets/audio/tracks/winSoundtrack.mp3';

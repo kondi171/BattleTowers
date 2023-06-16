@@ -32,21 +32,21 @@
 <script lang="ts">
 import TowerCard from './TowerCard.vue';
 
-import cannonTower1 from './../../../assets/img/journal/towers/cannon1.png';
-import minigunTower1 from './../../../assets/img/journal/towers/mg1.png';
-import missileTower1 from './../../../assets/img/journal/towers/missile1.png';
+import cannonTower1 from '@/assets/img/journal/towers/cannon1.png';
+import minigunTower1 from '@/assets/img/journal/towers/mg1.png';
+import missileTower1 from '@/assets/img/journal/towers/missile1.png';
 
-import cannonTower2 from './../../../assets/img/journal/towers/cannon2.png';
-import minigunTower2 from './../../../assets/img/journal/towers/mg2.png';
-import missileTower2 from './../../../assets/img/journal/towers/missile2.png';
+import cannonTower2 from '@/assets/img/journal/towers/cannon2.png';
+import minigunTower2 from '@/assets/img/journal/towers/mg2.png';
+import missileTower2 from '@/assets/img/journal/towers/missile2.png';
 
-import cannonTower3 from './../../../assets/img/journal/towers/cannon3.png';
-import minigunTower3 from './../../../assets/img/journal/towers/mg3.png';
-import missileTower3 from './../../../assets/img/journal/towers/missile3.png';
+import cannonTower3 from '@/assets/img/journal/towers/cannon3.png';
+import minigunTower3 from '@/assets/img/journal/towers/mg3.png';
+import missileTower3 from '@/assets/img/journal/towers/missile3.png';
 
-import cannonData from './../../../resources/towers/cannon.json';
-import minigunData from './../../../resources/towers/minigun.json';
-import missileData from './../../../resources/towers/missile.json';
+import cannonData from '@/resources/towers/cannon.json';
+import minigunData from '@/resources/towers/minigun.json';
+import missileData from '@/resources/towers/missile.json';
 
 export default {
     name: 'Towers',
@@ -72,7 +72,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import './../../../assets/scss/variables';
+@import '@/assets/scss/variables';
 
 h2 {
     text-align: center;

@@ -1,9 +1,9 @@
 import { useSpring, animated } from 'react-spring';
-import { GameResult } from '../../../enums';
+import { GameResult } from '@/typescript/enums';
 import { AppContext, AppContextType } from '../AppContext';
-import styles from './../../assets/scss/modules/EndState.module.scss';
+import styles from '@/assets/scss/modules/EndState.module.scss';
 import { useContext, useState, useEffect } from 'react';
-import Button from '../features/Button';
+import Button from '@/components/features/Button';
 
 interface EndProps {
     gameResult: GameResult

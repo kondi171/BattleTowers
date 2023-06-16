@@ -1,15 +1,15 @@
-import styles from './../../../assets/scss/modules/Playground.module.scss';
+import styles from '@/assets/scss/modules/Playground.module.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
 import useSound from 'use-sound';
-import { Mouse, Position, TowerStats } from '../../../../types';
-import Tower from '../../../classes/towers/Tower';
-import Substructure from '../../../classes/Substructure';
-import Player from '../../../classes/Player';
+import { Mouse, Position, TowerStats } from '@/typescript/types';
+import Tower from '@/classes/towers/Tower';
+import Substructure from '@/classes/Substructure';
+import Player from '@/classes/Player';
 import { AppContext, AppContextType } from '../../AppContext';
-import { CanvasBounding, ContextMenu, LogType } from '../../../../enums';
-import addToLogs from '../../../scripts/addToLogs';
+import { CanvasBounding, ContextMenu, LogType } from '@/typescript/enums';
+import addToLogs from '@/scripts/addToLogs';
 // @ts-ignore
-import towerPlace from './../../../assets/audio/effects/towerPlace.wav';
+import towerPlace from '@/assets/audio/effects/towerPlace.wav';
 
 interface UpgradeTowerMenuProps {
   contextMenuPosition: Mouse;

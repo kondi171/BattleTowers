@@ -10,9 +10,9 @@ import cannonTower3 from './../../../assets/img/journal/towers/cannon3.png';
 import minigunTower3 from './../../../assets/img/journal/towers/mg3.png';
 import missileTower3 from './../../../assets/img/journal/towers/missile3.png';
 
-import cannonData from './../../resources/towers/cannon.json';
-import minigunData from './../../resources/towers/minigun.json';
-import missileData from './../../resources/towers/missile.json';
+import cannonData from './../../../resources/towers/cannon.json';
+import minigunData from './../../../resources/towers/minigun.json';
+import missileData from './../../../resources/towers/missile.json';
 
 import styles from './../../../assets/scss/modules/BattleJournal.module.scss';
 import TowerCard from './TowerCard';

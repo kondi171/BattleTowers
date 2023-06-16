@@ -2,22 +2,22 @@ import { useEffect, useContext, useState, useRef } from 'react';
 import { AppContext, AppContextType } from './AppContext';
 import useSound from 'use-sound';
 
-import { Mouse } from '../types';
-import { ContextMenu, GamePart, GameResult, LogType, CanvasBounding } from '../enums';
+import { Mouse } from './../typescript/types';
+import { ContextMenu, GamePart, GameResult, LogType, CanvasBounding } from './../typescript/enums';
 
 import styles from './../assets/scss/modules/Playground.module.scss';
 
-import Enemy from './classes/enemies/Enemy';
-import Tower from './classes/towers/Tower';
-import Substructure from './classes/Substructure';
-import Scene from './classes/Scene';
-import Player from './classes/Player';
-import Explosion from './classes/Explosion';
+import Enemy from './../classes/enemies/Enemy';
+import Tower from './../classes/towers/Tower';
+import Substructure from './../classes/Substructure';
+import Scene from './../classes/Scene';
+import Player from './../classes/Player';
+import Explosion from './../classes/Explosion';
 
-import fillSubstructures from './scripts/fillSubstructures';
-import spawnEnemies from './scripts/spawnEnemies';
-import addToLogs from './scripts/addToLogs';
-import mouseMove from './scripts/mouseMove';
+import fillSubstructures from './../scripts/fillSubstructures';
+import spawnEnemies from './../scripts/spawnEnemies';
+import addToLogs from './../scripts/addToLogs';
+import mouseMove from './../scripts/mouseMove';
 
 import TransitionInfo from './features/TransitionInfo';
 import NewTowerMenu from './features/towerMenu/NewTowerMenu';

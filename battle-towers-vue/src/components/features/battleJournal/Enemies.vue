@@ -10,13 +10,12 @@
 </template>
 <script lang="ts">
 
-import soldierOrc from './../../../assets/img/journal/enemies/soldierOrc.png';
-import scoutOrc from './../../../assets/img/journal/enemies/scoutOrc.png';
-import warriorOrc from './../../../assets/img/journal/enemies/warriorOrc.png';
-// import soldierData from './../../../resources/enemies/soldier.json';
-import soldierData from './../../../resources/enemies/soldier.json';
-import scoutData from './../../../resources/enemies/scout.json';
-import warriorData from './../../../resources/enemies/warrior.json';
+import soldierOrc from '@/assets/img/journal/enemies/soldierOrc.png';
+import scoutOrc from '@/assets/img/journal/enemies/scoutOrc.png';
+import warriorOrc from '@/assets/img/journal/enemies/warriorOrc.png';
+import soldierData from '@/resources/enemies/soldier.json';
+import scoutData from '@/resources/enemies/scout.json';
+import warriorData from '@/resources/enemies/warrior.json';
 import EnemyCard from './EnemyCard.vue';
 
 export default {
@@ -37,7 +36,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import './../../../assets/scss/variables';
+@import '@/assets/scss/variables';
 
 .enemies {
     margin-top: 3rem;

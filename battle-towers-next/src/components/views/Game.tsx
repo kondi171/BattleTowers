@@ -1,13 +1,13 @@
-import styles from './../../assets/scss/modules/GameState.module.scss';
-import logo from './../../assets/scss/modules/Logo.module.scss';
+import styles from '@/assets/scss/modules/GameState.module.scss';
+import logo from '@/assets/scss/modules/Logo.module.scss';
 import Playground from '../Playground';
-import shield from './../../assets/img/shield.png';
+import shield from '@/assets/img/shield.png';
 import { useEffect, useState, useContext } from 'react';
 import { animated, useSpring } from 'react-spring';
 import { AppContext, AppContextType } from '../AppContext';
 import Scroll from './Scroll';
 import Image from 'next/image';
-import Logs from '../features/Logs';
+import Logs from '@/components/features/Logs';
 import { faHeart, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

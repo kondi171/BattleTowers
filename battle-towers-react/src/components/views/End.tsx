@@ -1,5 +1,5 @@
 import { useSpring, animated } from 'react-spring';
-import { GameResult } from '../../enums';
+import { GameResult } from './../../typescript/enums';
 import { AppContext, AppContextType } from '../AppContext';
 import Button from '../features/Button';
 import styles from './../../assets/scss/modules/EndState.module.scss';

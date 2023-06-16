@@ -1,5 +1,5 @@
-import styles from './../../../assets/scss/modules/BattleJournal.module.scss';
-import substructure from './../../../assets/img/towers/substructure.png';
+import styles from '@/assets/scss/modules/BattleJournal.module.scss';
+import substructure from '@/assets/img/journal/towers/substructure.png';
 import Image from 'next/image';
 const Rules = () => {
     return (

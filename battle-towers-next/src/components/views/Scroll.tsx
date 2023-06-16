@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import CtrlScroll from './../../assets/img/CtrlScroll.png';
-import styles from './../../assets/scss/modules/ScrollState.module.scss';
+import CtrlScroll from '@/assets/img/CtrlScroll.png';
+import styles from '@/assets/scss/modules/ScrollState.module.scss';
 import { useSpring, animated } from 'react-spring';
 
 const Scroll = () => {
@@ -12,7 +12,7 @@ const Scroll = () => {
     return (
         <animated.div className={styles.scrollState} style={stateAnimation}>
             <Image src={CtrlScroll} alt="Change resolution info" />
-            <div>If the game doesn't display correctly, try this combination</div>
+            <div>If the game doesn&apos;t display correctly, try this combination</div>
         </animated.div>
     );
 }

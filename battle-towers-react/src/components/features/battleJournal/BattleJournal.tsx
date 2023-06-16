@@ -3,7 +3,7 @@ import enemies from './../../../assets/img/journal/contents/enemies.png';
 import towers from './../../../assets/img/journal/contents/towers.png';
 import rules from './../../../assets/img/journal/contents/rules.png';
 import { useEffect, useState } from 'react';
-import { BattleJournalPage } from '../../../enums';
+import { BattleJournalPage } from './../../../typescript/enums';
 import Rules from './Rules';
 import Enemies from './Enemies';
 import Towers from './Towers';

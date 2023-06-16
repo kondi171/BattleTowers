@@ -1,9 +1,9 @@
 import useSound from 'use-sound';
-import styles from './../../assets/scss/modules/Button.module.scss';
+import styles from '@/assets/scss/modules/Button.module.scss';
 // @ts-ignore
-import confirmMenu from './../../assets/audio/effects/confirmMenu.wav';
+import confirmMenu from '@/assets/audio/effects/confirmMenu.wav';
 // @ts-ignore
-import hoverMenu from './../../assets/audio/effects/towerPlace.wav';
+import hoverMenu from '@/assets/audio/effects/towerPlace.wav';
 
 interface ButtonProps {
   name: string,

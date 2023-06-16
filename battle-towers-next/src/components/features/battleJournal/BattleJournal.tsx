@@ -1,18 +1,18 @@
-import styles from './../../../assets/scss/modules/BattleJournal.module.scss';
-import enemies from './../../../assets/img/journal/contents/enemies.png';
-import towers from './../../../assets/img/journal/contents/towers.png';
-import rules from './../../../assets/img/journal/contents/rules.png';
+import styles from '@/assets/scss/modules/BattleJournal.module.scss';
+import enemies from '@/assets/img/journal/contents/enemies.png';
+import towers from '@/assets/img/journal/contents/towers.png';
+import rules from '@/assets/img/journal/contents/rules.png';
 import { useEffect, useState } from 'react';
 import Rules from './Rules';
 import Enemies from './Enemies';
 import Towers from './Towers';
 import { animated, useSpring } from 'react-spring';
 // @ts-ignore
-import hoverElement from './../../../assets/audio/effects/towerPlace.wav';
+import hoverElement from '@/assets/audio/effects/towerPlace.wav';
 // @ts-ignore
-import confirmElement from './../../../assets/audio/effects/confirmMenu.wav';
+import confirmElement from '@/assets/audio/effects/confirmMenu.wav';
 import useSound from 'use-sound';
-import { BattleJournalPage } from '../../../../enums';
+import { BattleJournalPage } from '@/typescript/enums';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';

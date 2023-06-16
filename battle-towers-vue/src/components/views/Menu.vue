@@ -27,13 +27,13 @@
 <script lang="ts">
 
 import { ref, onMounted, onUnmounted } from 'vue';
-import Button from '../features/Button.vue';
-import BattleJournal from '../features/battleJournal/BattleJournal.vue';
+import Button from '@/components/features/Button.vue';
+import BattleJournal from '@/components/features/battleJournal/BattleJournal.vue';
 import { useAppStore } from '@/stores/app';
 import type { Resolution } from '@/typescript/types';
-import playConfirm from './../../assets/audio/effects/confirmMenu.wav';
-import playHover from './../../assets/audio/effects/towerPlace.wav';
-import menuSoundtrack from './../../assets/audio/tracks/menuSoundtrack.mp3';
+import playConfirm from '@/assets/audio/effects/confirmMenu.wav';
+import playHover from '@/assets/audio/effects/towerPlace.wav';
+import menuSoundtrack from '@/assets/audio/tracks/menuSoundtrack.mp3';
 
 export default {
 
@@ -103,7 +103,7 @@ export default {
 </script>
   
 <style lang="scss" scoped>
-@import './../../assets/scss/variables';
+@import '@/assets/scss/variables';
 
 .fade {
     opacity: 0;

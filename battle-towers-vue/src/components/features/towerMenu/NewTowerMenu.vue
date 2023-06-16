@@ -46,9 +46,9 @@ import { LogType, NewTower, CanvasBounding } from '@/typescript/enums';
 import addToLogs from '@/scripts/addToLogs';
 
 import towerPlace from '@/assets/audio/effects/towerPlace.wav';
-import cannonData from './../../../resources/towers/cannon.json';
-import minigunData from './../../../resources/towers/minigun.json';
-import missileData from './../../../resources/towers/missile.json';
+import cannonData from '@/resources/towers/cannon.json';
+import minigunData from '@/resources/towers/minigun.json';
+import missileData from '@/resources/towers/missile.json';
 import Cannon from '@/classes/towers/Cannon';
 import Minigun from '@/classes/towers/Minigun';
 import Missile from '@/classes/towers/Missile';
@@ -125,14 +125,6 @@ export default {
             }
             position.value = updatedPosition;
         });
-        // watch(isMoneyChanged, (newValue) => {
-        //     if (newValue) {
-        //         props.player.setMoney(props.player.getMoney() + towerValue.value);
-        //         props.player.setMoney(props.player.getMoney());
-        //         setMoney(props.player.setMoney(props.player.getMoney()));
-        //         isMoneyChanged.value = false;
-        //     }
-        // });
 
         watch(props.contextMenuPosition, (newPosition) => {
             const menuBounding = {

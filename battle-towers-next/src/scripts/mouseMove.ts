@@ -1,4 +1,4 @@
-import { Mouse } from "../../types";
+import { Mouse } from "@/typescript/types";
 
 interface MouseMoveParameters {
   event: React.MouseEvent<HTMLCanvasElement>;

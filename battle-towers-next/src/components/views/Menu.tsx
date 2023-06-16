@@ -1,20 +1,19 @@
 import { useContext, useEffect, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
-import styles from './../../assets/scss/modules/MenuState.module.scss';
+import styles from '@/assets/scss/modules/MenuState.module.scss';
 import { AppContext } from '../AppContext';
 import { AppContextType } from '../AppContext';
-// import next from './../../assets/img/next.svg';
-import next from './../../assets/img/next.png';
+import next from '@/assets/img/next.png';
 
 import useSound from 'use-sound';
 // @ts-ignore
-import hoverElement from './../../assets/audio/effects/towerPlace.wav';
+import hoverElement from '@/assets/audio/effects/towerPlace.wav';
 // @ts-ignore
-import confirmElement from './../../assets/audio/effects/confirmMenu.wav';
-import { Resolution } from '../../../types';
+import confirmElement from '@/assets/audio/effects/confirmMenu.wav';
+import { Resolution } from '@/typescript/types';
 import Image from 'next/image';
-import Button from '../features/Button';
-import BattleJournal from '../features/battleJournal/BattleJournal';
+import Button from '@/components/features/Button';
+import BattleJournal from '@/components/features/battleJournal/BattleJournal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook, faCheckCircle, faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 

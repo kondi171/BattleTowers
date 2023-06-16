@@ -1,4 +1,4 @@
-import { Frames, Position } from '../../types';
+import { Frames, Position } from '@/typescript/types';
 
 abstract class Sprite {
     protected canvasRenderingContext: CanvasRenderingContext2D;

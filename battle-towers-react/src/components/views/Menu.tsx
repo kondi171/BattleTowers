@@ -6,7 +6,7 @@ import { AppContext } from '../AppContext';
 import { AppContextType } from '../AppContext';
 import react from './../../assets/img/react.png';
 import BattleJournal from '../features/battleJournal/BattleJournal';
-import { Resolution } from '../../types';
+import { Resolution } from './../../typescript/types';
 import useSound from 'use-sound';
 import hoverElement from './../../assets/audio/effects/towerPlace.wav';
 import confirmElement from './../../assets/audio/effects/confirmMenu.wav';

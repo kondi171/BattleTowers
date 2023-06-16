@@ -2,24 +2,24 @@ import { useEffect, useContext, useState, useRef } from 'react';
 import { AppContext, AppContextType } from './AppContext';
 import useSound from 'use-sound';
 
-import styles from './../assets/scss/modules/Playground.module.scss';
+import styles from '@/assets/scss/modules/Playground.module.scss';
 // @ts-ignore
-import lostLife from './../assets/audio/effects/lostLife.wav';
+import lostLife from '@/assets/audio/effects/lostLife.wav';
 // @ts-ignore
-import enemyDead from './../assets/audio/effects/enemyDead.wav';
+import enemyDead from '@/assets/audio/effects/enemyDead.wav';
 // @ts-ignore
-import enemyHit from './../assets/audio/effects/enemyHit.wav';
+import enemyHit from '@/assets/audio/effects/enemyHit.wav';
 // @ts-ignore
-import nextGamePart from './../assets/audio/effects/nextGamePart.wav';
+import nextGamePart from '@/assets/audio/effects/nextGamePart.wav';
 // @ts-ignore
-import desertSoundtrack from './../assets/audio/tracks/world1Soundtrack.mp3';
+import desertSoundtrack from '@/assets/audio/tracks/world1Soundtrack.mp3';
 // @ts-ignore
-import forestSoundtrack from './../assets/audio/tracks/world2Soundtrack.mp3';
+import forestSoundtrack from '@/assets/audio/tracks/world2Soundtrack.mp3';
 // @ts-ignore
-import underworldSoundtrack from './../assets/audio/tracks/world3Soundtrack.wav';
+import underworldSoundtrack from '@/assets/audio/tracks/world3Soundtrack.wav';
 import Loading from './views/Loading';
-import { Mouse } from '../../types';
-import { CanvasBounding, ContextMenu, GamePart, GameResult, LogType } from '../../enums';
+import { Mouse } from '@/typescript/types';
+import { CanvasBounding, ContextMenu, GamePart, GameResult, LogType } from '@/typescript/enums';
 import Tower from '@/classes/towers/Tower';
 import Enemy from '@/classes/enemies/Enemy';
 import Explosion from '@/classes/Explosion';

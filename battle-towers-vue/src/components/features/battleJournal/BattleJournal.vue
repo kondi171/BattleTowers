@@ -32,9 +32,9 @@
   
 <script lang="ts">
 import { ref, onMounted } from 'vue';
-import enemies from './../../../assets/img/journal/contents/enemies.png';
-import towers from './../../../assets/img/journal/contents/towers.png';
-import rules from './../../../assets/img/journal/contents/rules.png';
+import enemies from '@/assets/img/journal/contents/enemies.png';
+import towers from '@/assets/img/journal/contents/towers.png';
+import rules from '@/assets/img/journal/contents/rules.png';
 import { BattleJournalPage } from '@/typescript/enums';
 import Rules from './Rules.vue';
 import Enemies from './Enemies.vue';
@@ -98,7 +98,7 @@ export default {
 </script>
   
 <style scoped lang="scss">
-@import './../../../assets/scss/variables';
+@import '@/assets/scss/variables';
 
 .battleJournal {
     position: fixed;

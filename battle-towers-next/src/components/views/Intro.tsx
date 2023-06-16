@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
-import styles from './../../assets/scss/modules/IntroState.module.scss';
+import styles from '@/assets/scss/modules/IntroState.module.scss';
 
 interface IntroProps {
   setChangeState: (accept: boolean) => void;

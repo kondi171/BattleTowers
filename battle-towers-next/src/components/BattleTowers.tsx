@@ -1,12 +1,12 @@
 import { useEffect, useState, useContext } from 'react';
 import { animated, useSpring } from 'react-spring';
-import shield from './../assets/img/shield.png';
+import shield from '@/assets/img/shield.png';
 import Intro from './views/Intro';
 import Menu from './views/Menu';
 import Game from './views/Game';
-import styles from './../assets/scss/modules/Logo.module.scss';
+import styles from '@/assets/scss/modules/Logo.module.scss';
 import End from './views/End';
-import { GameResult } from '../../enums';
+import { GameResult } from '@/typescript/enums';
 
 import Image from 'next/image';
 import { AppContext, AppContextType } from './AppContext';

@@ -21,14 +21,14 @@ import Loading from '@/components/views/Loading.vue';
 import { useGameStore } from '@/stores/game';
 import { useAppStore } from '@/stores/app';
 
-import lostLife from './../assets/audio/effects/lostLife.wav';
-import enemyDead from './../assets/audio/effects/enemyDead.wav';
-import enemyHit from './../assets/audio/effects/enemyHit.wav';
-import nextGamePart from './../assets/audio/effects/nextGamePart.wav';
+import lostLife from '@/assets/audio/effects/lostLife.wav';
+import enemyDead from '@/assets/audio/effects/enemyDead.wav';
+import enemyHit from '@/assets/audio/effects/enemyHit.wav';
+import nextGamePart from '@/assets/audio/effects/nextGamePart.wav';
 
-import desertSoundtrack from './../assets/audio/tracks/world1Soundtrack.mp3';
-import forestSoundtrack from './../assets/audio/tracks/world2Soundtrack.mp3';
-import underworldSoundtrack from './../assets/audio/tracks/world3Soundtrack.wav';
+import desertSoundtrack from '@/assets/audio/tracks/world1Soundtrack.mp3';
+import forestSoundtrack from '@/assets/audio/tracks/world2Soundtrack.mp3';
+import underworldSoundtrack from '@/assets/audio/tracks/world3Soundtrack.wav';
 import { CanvasBounding, ContextMenu, GamePart, GameResult, LogType } from '@/typescript/enums';
 import type { Mouse } from '@/typescript/types';
 
@@ -526,7 +526,7 @@ export default {
 <template>
     <div class="canvasWrapper">
         <div class="fade">
-            <div class="tacticalModeBtn">
+            <div v-if="!isInfoVisible" class="tacticalModeBtn">
                 <i @click="() => handleTacticalMode(!tacticalMode)" class="fa fa-pause-circle-o" aria-hidden="true"></i>
             </div>
             <span v-if="tacticalMode" class="tacticalMode">Tactical Mode is Active</span>
@@ -534,10 +534,6 @@ export default {
             <NewTowerMenu v-if="contextMenu === ContextMenu.NEW_TOWER" :contextMenuPosition="contextMenuPosition"
                 :currentSubstructure="currentSubstructure" :context2D="context2D" :towers="towers" :player="player"
                 :towerSetted="towerSetted" />
-
-            <!-- <UpgradeTowerMenu v-if="contextMenu === ContextMenu.UPGRADE_TOWER" :contextMenuPosition="contextMenuPosition"
-                                                                                                                                                                                                                                                                                        :currentSubstructure="currentSubstructure" :towers="towers" :currentTower="clickedTower" :player="player"
-                                                                                                                                                                                                                                                                                        :refreshAssets="refreshAssets" /> -->
             <UpgradeTowerMenu v-if="contextMenu === ContextMenu.UPGRADE_TOWER" :contextMenuPosition="contextMenuPosition"
                 :currentSubstructure="currentSubstructure" :towers="towers" :currentTower="clickedTower" :player="player"
                 :towerSetted="towerSetted" />
@@ -548,7 +544,7 @@ export default {
     </div>
 </template>
 <style lang="scss">
-@import '../assets/scss/_variables.scss';
+@import '@/assets/scss/variables';
 
 .fade {
     opacity: 0;
@@ -583,11 +579,6 @@ export default {
             1px -1px 5px black,
             -1px -1px 5px black;
         filter: drop-shadow(0 0 0.75rem black);
-        animation-delay: 3000ms;
-        animation-name: myAnimation;
-        animation-duration: 1s;
-        animation-fill-mode: forwards;
-        transform: scale(0);
         z-index: 100;
 
         i {
@@ -596,16 +587,6 @@ export default {
             &:hover {
                 cursor: pointer;
                 color: $primaryColor;
-            }
-        }
-
-        @keyframes myAnimation {
-            0% {
-                transform: scale(0);
-            }
-
-            100% {
-                transform: scale(1);
             }
         }
     }

@@ -1,4 +1,4 @@
-import { Position, Color, Mouse } from '../../types';
+import { Position, Color, Mouse } from '@/typescript/types';
 
 class Substructure {
   private canvasRenderingContext: CanvasRenderingContext2D;

@@ -1,26 +1,26 @@
 import styles from './../../../assets/scss/modules/Playground.module.scss';
-import { ContextMenu, LogType, NewTower, CanvasBounding } from '../../../enums';
+import { ContextMenu, LogType, NewTower, CanvasBounding } from './../../../typescript/enums';
 import { useContext, useEffect, useRef, useState } from 'react';
 import useSound from 'use-sound';
-import { Position } from '../../../types';
+import { Position } from './../../../typescript/types';
 import { AppContext, AppContextType } from '../../AppContext';
 
 import cannon1Image from './../../../assets/img/towers/structures/cannon/cannon1.png'
 import minigun1Image from './../../../assets/img/towers/structures/minigun/mg1.png'
 import missile1Image from './../../../assets/img/towers/structures/missile/missile1.png'
 
-import cannonData from '../../resources/towers/cannon.json';
-import minigunData from '../../resources/towers/minigun.json';
-import missileData from '../../resources/towers/missile.json';
+import cannonData from '../../../resources/towers/cannon.json';
+import minigunData from '../../../resources/towers/minigun.json';
+import missileData from '../../../resources/towers/missile.json';
 
-import Tower from '../../classes/towers/Tower';
-import Substructure from '../../classes/Substructure';
-import Cannon from '../../classes/towers/Cannon';
-import Minigun from '../../classes/towers/Minigun';
-import Missile from '../../classes/towers/Missile';
+import Tower from '../../../classes/towers/Tower';
+import Substructure from '../../../classes/Substructure';
+import Cannon from '../../../classes/towers/Cannon';
+import Minigun from '../../../classes/towers/Minigun';
+import Missile from '../../../classes/towers/Missile';
 
-import addToLogs from '../../scripts/addToLogs';
-import Player from '../../classes/Player';
+import addToLogs from '../../../scripts/addToLogs';
+import Player from '../../../classes/Player';
 
 import towerPlace from './../../../assets/audio/effects/towerPlace.wav';
 

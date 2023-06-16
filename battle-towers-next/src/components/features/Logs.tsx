@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import styles from './../../assets/scss/modules/GameState.module.scss';
+import styles from '@/assets/scss/modules/GameState.module.scss';
 
 import { AppContextType, AppContext } from '../AppContext';
-import { LogType } from '../../../enums';
+import { LogType } from '@/typescript/enums';
 
 const Logs = () => {
   const { logs } = useContext(AppContext) as AppContextType;

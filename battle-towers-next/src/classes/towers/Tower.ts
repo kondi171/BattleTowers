@@ -1,4 +1,4 @@
-import { Position, TowerData } from "../../../types";
+import { Position, TowerData } from "@/typescript/types";
 import Bullet from "../Bullet";
 import Sprite from "../Sprite";
 import Enemy from "../enemies/Enemy";

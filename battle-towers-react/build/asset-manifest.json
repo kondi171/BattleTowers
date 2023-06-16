@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.1ac6333c.css",
-    "main.js": "/static/js/main.9ed29b76.js",
+    "main.js": "/static/js/main.d2b64af9.js",
     "static/js/845.37813183.chunk.js": "/static/js/845.37813183.chunk.js",
     "static/media/world3Soundtrack.wav": "/static/media/world3Soundtrack.46819ca478224ca78e57.wav",
     "static/media/gameOverSoundtrack.wav": "/static/media/gameOverSoundtrack.1240b5637566927b4984.wav",
@@ -40,11 +40,11 @@
     "static/media/wave_background.svg": "/static/media/wave_background.34b2232fffde4e26e63d.svg",
     "index.html": "/index.html",
     "main.1ac6333c.css.map": "/static/css/main.1ac6333c.css.map",
-    "main.9ed29b76.js.map": "/static/js/main.9ed29b76.js.map",
+    "main.d2b64af9.js.map": "/static/js/main.d2b64af9.js.map",
     "845.37813183.chunk.js.map": "/static/js/845.37813183.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1ac6333c.css",
-    "static/js/main.9ed29b76.js"
+    "static/js/main.d2b64af9.js"
   ]
 }

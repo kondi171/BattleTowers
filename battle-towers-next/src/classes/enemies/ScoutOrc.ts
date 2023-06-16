@@ -1,8 +1,8 @@
-import { Position } from "../../../types";
+import { Position } from "@/typescript/types";
 import Enemy from "./Enemy";
-import scoutOrc from './../../assets/img/enemies/scoutOrc.png';
-import scoutData from './../../resources/enemies/scout.json';
-import { HealthBarDivider } from "../../../enums";
+import scoutOrc from '@/assets/img/enemies/scoutOrc.png';
+import scoutData from '@/resources/enemies/scout.json';
+import { HealthBarDivider } from "@/typescript/enums";
 
 class ScoutOrc extends Enemy {
     constructor(ctx: CanvasRenderingContext2D, { x = 0, y = 0 }: Position, waypoints: Position[]) {
@@ -12,7 +12,6 @@ class ScoutOrc extends Enemy {
         this.money = scoutData.money;
         this.speed = scoutData.speed;
         this.score = scoutData.score;
-        // this.speed = 0;
         this.healthBarDivider = HealthBarDivider.SCOUT_ORC;
     }
 

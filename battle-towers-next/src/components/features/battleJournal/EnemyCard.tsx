@@ -1,5 +1,5 @@
 import Image, { StaticImageData } from 'next/image';
-import styles from './../../../assets/scss/modules/BattleJournal.module.scss';
+import styles from '@/assets/scss/modules/BattleJournal.module.scss';
 
 interface EnemyCardProps {
   name: string

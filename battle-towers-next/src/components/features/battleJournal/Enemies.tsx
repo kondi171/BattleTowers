@@ -1,12 +1,12 @@
-import styles from './../../../assets/scss/modules/BattleJournal.module.scss';
+import styles from '@/assets/scss/modules/BattleJournal.module.scss';
 
-import soldierOrc from './../../../assets/img/journal/enemies/soldierOrc.png';
-import scoutOrc from './../../../assets/img/journal/enemies/scoutOrc.png';
-import warriorOrc from './../../../assets/img/journal/enemies/warriorOrc.png';
+import soldierOrc from '@/assets/img/journal/enemies/soldierOrc.png';
+import scoutOrc from '@/assets/img/journal/enemies/scoutOrc.png';
+import warriorOrc from '@/assets/img/journal/enemies/warriorOrc.png';
 
-import soldierData from './../../../resources/enemies/soldier.json';
-import scoutData from './../../../resources/enemies/scout.json';
-import warriorData from './../../../resources/enemies/warrior.json';
+import soldierData from '@/resources/enemies/soldier.json';
+import scoutData from '@/resources/enemies/scout.json';
+import warriorData from '@/resources/enemies/warrior.json';
 
 import EnemyCard from './EnemyCard';
 
