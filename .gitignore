@@ -8,7 +8,11 @@
 /.history
 /.pnp
 .pnp.js
-
+/.history
+/battle-towers-react/.history
+/battle-towers-next/.history
+/battle-towers-vue/.history
+/battle-towers-nuxt/.history
 # testing
 /coverage
 
